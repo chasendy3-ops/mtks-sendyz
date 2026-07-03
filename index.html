@@ -35,22 +35,16 @@
             --radius-lg: 28px;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Inter', 'Courier New', monospace;
             background: var(--bg-primary);
             color: var(--text-primary);
             min-height: 100vh;
             position: relative;
             overflow-x: hidden;
+            font-weight: 500;
         }
 
-        /* Animated Background */
         body::before {
             content: '';
             position: fixed;
@@ -75,7 +69,6 @@
             z-index: -1;
         }
 
-        /* Header */
         header {
             max-width: 600px;
             margin: 0 auto;
@@ -110,12 +103,14 @@
             align-items: center;
             gap: 8px;
             flex-wrap: wrap;
+            font-family: 'Inter', monospace;
         }
 
         .brand-info span {
             font-size: 0.7rem;
             color: var(--text-secondary);
-            font-weight: 500;
+            font-weight: 600;
+            letter-spacing: 0.5px;
         }
 
         .badge-pro {
@@ -123,7 +118,7 @@
             font-size: 0.6rem;
             padding: 3px 8px;
             border-radius: 20px;
-            font-weight: 600;
+            font-weight: 700;
         }
 
         .developer-badge {
@@ -133,17 +128,23 @@
             border-radius: 30px;
             border: 1px solid rgba(255, 255, 255, 0.08);
             color: var(--text-secondary);
-            font-weight: 500;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .developer-badge:hover {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: var(--error);
+            color: #f87171;
         }
 
-        /* Container */
         .container {
             max-width: 600px;
             margin: 0 auto;
             padding: 0 16px 100px;
         }
 
-        /* Cards */
         .card {
             background: var(--bg-card);
             backdrop-filter: blur(12px);
@@ -165,11 +166,112 @@
 
         .card-header h2 {
             font-size: 1.1rem;
-            font-weight: 600;
+            font-weight: 700;
             letter-spacing: -0.2px;
+            font-family: 'Inter', monospace;
         }
 
-        /* Timer Display */
+        /* ===== DASHBOARD MENU KOTAK (PPOB style) ===== */
+        .menu-grid-box {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .menu-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius-md);
+            padding: 16px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-align: center;
+        }
+        .menu-box:hover {
+            background: rgba(99, 102, 241, 0.12);
+            border-color: var(--primary);
+            transform: translateY(-3px);
+        }
+        .menu-box .icon-box {
+            width: 48px;
+            height: 48px;
+            background: rgba(99, 102, 241, 0.12);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-light);
+        }
+        .menu-box .icon-box svg {
+            width: 24px;
+            height: 24px;
+            stroke: currentColor;
+            stroke-width: 1.8;
+            fill: none;
+        }
+        .menu-box .label {
+            font-weight: 700;
+            font-size: 0.8rem;
+        }
+        .menu-box .sub {
+            font-size: 0.6rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* ===== MENU BAWAH (Chat Owner) ===== */
+        .menu-bottom {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            margin-top: 4px;
+        }
+        .menu-bottom-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 16px 20px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+        .menu-bottom-item:hover {
+            background: rgba(99, 102, 241, 0.08);
+            border-color: var(--primary);
+        }
+        .menu-bottom-item .icon-box {
+            width: 40px;
+            height: 40px;
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-light);
+        }
+        .menu-bottom-item .icon-box svg {
+            width: 20px;
+            height: 20px;
+            stroke: currentColor;
+            stroke-width: 1.8;
+            fill: none;
+        }
+        .menu-bottom-item .label {
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+        .menu-bottom-item .sub {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
         .timer-container {
             background: rgba(0, 0, 0, 0.4);
             border-radius: var(--radius-md);
@@ -185,6 +287,7 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             margin-bottom: 8px;
+            font-weight: 600;
         }
 
         .timer-display {
@@ -209,54 +312,6 @@
             50% { opacity: 0.6; }
         }
 
-        /* Menu Grid */
-        .menu-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 12px;
-        }
-
-        @media (min-width: 480px) {
-            .menu-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
-
-        .menu-item {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            padding: 18px;
-            border-radius: var(--radius-md);
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            cursor: pointer;
-            transition: all 0.25s ease;
-        }
-
-        .menu-item:hover {
-            background: rgba(99, 102, 241, 0.1);
-            border-color: var(--primary);
-            transform: translateY(-2px);
-        }
-
-        .menu-icon-box {
-            width: 48px;
-            height: 48px;
-            background: rgba(99, 102, 241, 0.12);
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary-light);
-        }
-
-        .menu-icon-box svg {
-            width: 24px;
-            height: 24px;
-        }
-
-        /* Calculator Grid */
         .calc-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -271,12 +326,13 @@
             border-radius: var(--radius-sm);
             color: var(--text-primary);
             font-size: 1.2rem;
-            font-weight: 500;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-family: 'Inter', monospace;
         }
 
         .calc-btn:active {
@@ -302,7 +358,6 @@
             grid-column: span 2;
         }
 
-        /* Inputs */
         input, textarea, select {
             width: 100%;
             background: rgba(0, 0, 0, 0.3);
@@ -326,7 +381,6 @@
             min-height: 80px;
         }
 
-        /* Buttons */
         .btn-primary {
             width: 100%;
             padding: 14px;
@@ -334,10 +388,11 @@
             border: none;
             border-radius: var(--radius-sm);
             color: white;
-            font-weight: 600;
+            font-weight: 700;
             font-size: 0.95rem;
             cursor: pointer;
             transition: all 0.25s ease;
+            font-family: 'Inter', monospace;
         }
 
         .btn-primary:active {
@@ -348,7 +403,10 @@
             background: rgba(255, 255, 255, 0.06);
         }
 
-        /* Output Display */
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+
         .output-display {
             background: rgba(0, 0, 0, 0.3);
             border: 1px solid rgba(255, 255, 255, 0.06);
@@ -357,8 +415,9 @@
             margin: 16px 0;
             text-align: right;
             font-size: 1.1rem;
-            font-weight: 500;
+            font-weight: 600;
             word-break: break-word;
+            font-family: 'Inter', monospace;
         }
 
         .output-result {
@@ -367,16 +426,15 @@
             font-weight: 700;
         }
 
-        /* Score Display */
         .score {
             text-align: center;
             font-size: 1.5rem;
             font-weight: 800;
             color: var(--primary-light);
             margin: 16px 0;
+            font-family: 'Inter', monospace;
         }
 
-        /* History Item */
         .history-item {
             padding: 14px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.06);
@@ -387,7 +445,6 @@
             background: rgba(255, 255, 255, 0.02);
         }
 
-        /* Table Styles */
         .result-table {
             width: 100%;
             border-collapse: collapse;
@@ -403,7 +460,7 @@
 
         .result-table th {
             color: var(--primary-light);
-            font-weight: 600;
+            font-weight: 700;
             font-size: 0.8rem;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -411,6 +468,7 @@
 
         .result-table td {
             font-size: 0.85rem;
+            font-family: 'Inter', monospace;
         }
 
         .result-table tr:hover td {
@@ -419,12 +477,12 @@
 
         .result-benar {
             color: var(--success);
-            font-weight: 600;
+            font-weight: 700;
         }
 
         .result-salah {
             color: var(--error);
-            font-weight: 600;
+            font-weight: 700;
         }
 
         .nilai-akhir {
@@ -438,15 +496,16 @@
         .nilai-akhir h3 {
             font-size: 1rem;
             margin-bottom: 8px;
+            font-weight: 700;
         }
 
         .nilai-akhir .nilai-besar {
             font-size: 2rem;
             font-weight: 800;
             color: var(--primary-light);
+            font-family: 'Inter', monospace;
         }
 
-        /* Bottom Navigation */
         .nav-dock {
             position: fixed;
             bottom: 20px;
@@ -495,10 +554,10 @@
 
         .nav-label {
             font-size: 0.6rem;
-            font-weight: 600;
+            font-weight: 700;
+            letter-spacing: 0.3px;
         }
 
-        /* Utilities */
         .hidden {
             display: none !important;
         }
@@ -522,7 +581,6 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Preview Image */
         #previewFoto {
             margin: 16px 0;
         }
@@ -535,12 +593,58 @@
 
         .soal-display {
             font-size: 1.4rem;
-            font-weight: 600;
+            font-weight: 700;
             text-align: center;
             word-break: break-word;
+            font-family: 'Inter', monospace;
         }
 
-        /* Responsive */
+        /* IQ label */
+        .iq-badge {
+            display: inline-block;
+            padding: 4px 14px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+            background: rgba(99, 102, 241, 0.2);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            color: var(--primary-light);
+        }
+
+        .iq-detail {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* Chat Owner */
+        .chat-messages {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 12px;
+            padding: 8px;
+            background: rgba(0,0,0,0.2);
+            border-radius: var(--radius-sm);
+        }
+        .chat-msg {
+            padding: 8px 12px;
+            margin-bottom: 6px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.04);
+            font-size: 0.85rem;
+        }
+        .chat-msg.own {
+            background: rgba(99,102,241,0.15);
+            border-left: 3px solid var(--primary);
+        }
+        .chat-msg .time {
+            font-size: 0.6rem;
+            color: var(--text-muted);
+            margin-left: 8px;
+        }
+
         @media (max-width: 480px) {
             .card {
                 padding: 18px;
@@ -573,6 +677,9 @@
                 width: 18px;
                 height: 18px;
             }
+            .menu-grid-box {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
     </style>
 </head>
@@ -586,12 +693,12 @@
                 </svg>
             </div>
             <div class="brand-info">
-                <h1>MTKS<span class="badge-pro">V1</span></h1>
-                <span>Ujian Simulasi Matematika</span>
+                <h1>MTKS<span class="badge-pro">V2</span></h1>
+                <span>Ujian Simulasi & IQ</span>
             </div>
         </div>
-        <div class="developer-badge">
-            SendyHost
+        <div class="developer-badge" onclick="logoutMTKS()" title="Klik untuk Logout">
+            👤 <span id="userDisplay">User</span> | Logout
         </div>
     </header>
 
@@ -606,13 +713,14 @@
                 </svg>
                 <h2>Dashboard</h2>
             </div>
-            <p style="color: var(--text-secondary); margin-bottom: 20px; line-height: 1.5; font-size: 0.85rem;">
-                Aplikasi matematika ujian simulasi dengan dukungan BigNumber & OCR. Pilih alat di bawah:
+            <p style="color: var(--text-secondary); margin-bottom: 20px; line-height: 1.5; font-size: 0.85rem; font-weight: 500;">
+                Aplikasi matematika ujian simulasi dengan dukungan BigNumber & OCR.
             </p>
             
-            <div class="menu-grid">
-                <div class="menu-item" onclick="showSection('calculator')">
-                    <div class="menu-icon-box">
+            <!-- 4 MENU KOTAK (PPOB style) -->
+            <div class="menu-grid-box">
+                <div class="menu-box" onclick="showSection('calculator')">
+                    <div class="icon-box">
                         <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" fill="none">
                             <rect x="4" y="2" width="16" height="20" rx="2"/>
                             <line x1="8" y1="6" x2="16" y2="6"/>
@@ -622,35 +730,58 @@
                             <line x1="8" y1="18" x2="16" y2="18"/>
                         </svg>
                     </div>
-                    <div>
-                        <div style="font-weight: 700;">Kalkulator</div>
-                        <div style="font-size: 0.7rem; color: var(--text-muted);">Scientific Mode</div>
-                    </div>
+                    <div class="label">Kalkulator</div>
+                    <div class="sub">Scientific</div>
                 </div>
 
-                <div class="menu-item" onclick="showSection('quiz')">
-                    <div class="menu-icon-box">
+                <div class="menu-box" onclick="showSection('quiz')">
+                    <div class="icon-box">
                         <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" fill="none">
                             <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/>
                             <path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/>
                         </svg>
                     </div>
-                    <div>
-                        <div style="font-weight: 700;">Mulai Soal</div>
-                        <div style="font-size: 0.7rem; color: var(--text-muted);">Timer System</div>
-                    </div>
+                    <div class="label">Mulai Soal</div>
+                    <div class="sub">Timer System</div>
                 </div>
 
-                <div class="menu-item" onclick="showSection('customSoal')">
-                    <div class="menu-icon-box">
+                <div class="menu-box" onclick="showSection('customSoal')">
+                    <div class="icon-box">
                         <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" fill="none">
                             <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
                             <circle cx="12" cy="13" r="4"/>
                         </svg>
                     </div>
+                    <div class="label">OCR Scanner</div>
+                    <div class="sub">Scan Image</div>
+                </div>
+
+                <div class="menu-box" onclick="showResultPage()">
+                    <div class="icon-box">
+                        <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" fill="none">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                            <polyline points="14 2 14 8 20 8"/>
+                            <line x1="16" y1="13" x2="8" y2="13"/>
+                            <line x1="16" y1="17" x2="8" y2="17"/>
+                            <polyline points="10 9 9 9 8 9"/>
+                        </svg>
+                    </div>
+                    <div class="label">Raport & IQ</div>
+                    <div class="sub">Estimasi</div>
+                </div>
+            </div>
+
+            <!-- MENU BAWAH (Chat Owner) -->
+            <div class="menu-bottom">
+                <div class="menu-bottom-item" onclick="showSection('chatOwner')">
+                    <div class="icon-box">
+                        <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" fill="none">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                        </svg>
+                    </div>
                     <div>
-                        <div style="font-weight: 700;">OCR Scanner</div>
-                        <div style="font-size: 0.7rem; color: var(--text-muted);">Scan by Image</div>
+                        <div class="label">💬 Chat Owner</div>
+                        <div class="sub">Kirim pesan ke pengembang</div>
                     </div>
                 </div>
             </div>
@@ -665,38 +796,38 @@
                 <h2>Scientific Calculator</h2>
             </div>
             
-            <input type="text" id="inputSoal" placeholder="0" style="text-align: right; font-size: 1.3rem; font-family: 'Inter', monospace; margin-bottom: 16px;">
+            <div style="background: rgba(0,0,0,0.4); border-radius: var(--radius-sm); padding: 16px; margin-bottom: 16px; text-align: right; font-size: 1.5rem; font-weight: 700; font-family: 'Inter', monospace; min-height: 60px;" id="calcDisplay">0</div>
             
             <div class="calc-grid">
-                <button class="calc-btn fn" onclick="clearInput()">AC</button>
-                <button class="calc-btn fn" onclick="backspace()">DEL</button>
-                <button class="calc-btn fn" onclick="appendToInput('%')">%</button>
-                <button class="calc-btn op" onclick="appendToInput('/')">÷</button>
+                <button class="calc-btn fn" onclick="clearCalc()">AC</button>
+                <button class="calc-btn fn" onclick="backspaceCalc()">DEL</button>
+                <button class="calc-btn fn" onclick="appendCalc('%')">%</button>
+                <button class="calc-btn op" onclick="appendCalc('/')">÷</button>
                 
-                <button class="calc-btn fn" onclick="appendToInput('sin(')">sin</button>
-                <button class="calc-btn fn" onclick="appendToInput('cos(')">cos</button>
-                <button class="calc-btn fn" onclick="appendToInput('√(')">√</button>
-                <button class="calc-btn op" onclick="appendToInput('^')">^</button>
+                <button class="calc-btn fn" onclick="appendCalc('sin(')">sin</button>
+                <button class="calc-btn fn" onclick="appendCalc('cos(')">cos</button>
+                <button class="calc-btn fn" onclick="appendCalc('√(')">√</button>
+                <button class="calc-btn op" onclick="appendCalc('^')">^</button>
 
-                <button class="calc-btn" onclick="appendToInput('7')">7</button>
-                <button class="calc-btn" onclick="appendToInput('8')">8</button>
-                <button class="calc-btn" onclick="appendToInput('9')">9</button>
-                <button class="calc-btn op" onclick="appendToInput('*')">×</button>
+                <button class="calc-btn" onclick="appendCalc('7')">7</button>
+                <button class="calc-btn" onclick="appendCalc('8')">8</button>
+                <button class="calc-btn" onclick="appendCalc('9')">9</button>
+                <button class="calc-btn op" onclick="appendCalc('*')">×</button>
                 
-                <button class="calc-btn" onclick="appendToInput('4')">4</button>
-                <button class="calc-btn" onclick="appendToInput('5')">5</button>
-                <button class="calc-btn" onclick="appendToInput('6')">6</button>
-                <button class="calc-btn op" onclick="appendToInput('-')">-</button>
+                <button class="calc-btn" onclick="appendCalc('4')">4</button>
+                <button class="calc-btn" onclick="appendCalc('5')">5</button>
+                <button class="calc-btn" onclick="appendCalc('6')">6</button>
+                <button class="calc-btn op" onclick="appendCalc('-')">-</button>
                 
-                <button class="calc-btn" onclick="appendToInput('1')">1</button>
-                <button class="calc-btn" onclick="appendToInput('2')">2</button>
-                <button class="calc-btn" onclick="appendToInput('3')">3</button>
-                <button class="calc-btn op" onclick="appendToInput('+')">+</button>
+                <button class="calc-btn" onclick="appendCalc('1')">1</button>
+                <button class="calc-btn" onclick="appendCalc('2')">2</button>
+                <button class="calc-btn" onclick="appendCalc('3')">3</button>
+                <button class="calc-btn op" onclick="appendCalc('+')">+</button>
                 
-                <button class="calc-btn" onclick="appendToInput('0')">0</button>
-                <button class="calc-btn" onclick="appendToInput('.')">.</button>
-                <button class="calc-btn eq" onclick="hitungSoal()">=</button>
-                <button class="calc-btn op" onclick="appendToInput('(')">(</button>
+                <button class="calc-btn" onclick="appendCalc('0')">0</button>
+                <button class="calc-btn" onclick="appendCalc('.')">.</button>
+                <button class="calc-btn eq" onclick="hitungCalc()">=</button>
+                <button class="calc-btn op" onclick="appendCalc('(')">(</button>
             </div>
             
             <div id="loadingCalculator" class="loading hidden">
@@ -707,12 +838,12 @@
             </div>
             
             <div>
-                <label style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;">Hasil</label>
-                <div class="output-display" id="outputHasil"></div>
+                <label style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">Hasil</label>
+                <div class="output-display" id="outputHasilCalc"></div>
             </div>
         </div>
 
-        <!-- Quiz Section with Timer -->
+        <!-- Quiz Section -->
         <div id="quiz" class="card hidden">
             <div class="card-header">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="1.8">
@@ -721,7 +852,6 @@
                 <h2>Math Quiz Challenge</h2>
             </div>
             
-            <!-- Timer Display -->
             <div class="timer-container" id="timerContainer">
                 <div class="timer-label">⏱️ Waktu Tersisa</div>
                 <div class="timer-display" id="timerDisplay">00:00</div>
@@ -729,11 +859,11 @@
             
             <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px;">
                 <select id="tingkatPendidikan" onchange="updateQuizOptions()">
-                    <option value="tk">🎨 TK (Pemula)</option>
-                    <option value="sd">👦 SD (Dasar) - 5 Menit</option>
-                    <option value="smp">👨‍🎓 SMP (Menengah) - 8 Menit</option>
-                    <option value="sma">👩‍🎓 SMA (Lanjut) - 12 Menit</option>
-                    <option value="mahasiswa">🎓 Universitas - 15 Menit</option>
+                    <option value="tk">🎨 TK (Usia 4-6)</option>
+                    <option value="sd">👦 SD (Usia 6-12) - 5 Menit</option>
+                    <option value="smp">👨‍🎓 SMP (Usia 12-15) - 8 Menit</option>
+                    <option value="sma">👩‍🎓 SMA (Usia 15-18) - 12 Menit</option>
+                    <option value="mahasiswa">🎓 Universitas (Usia 18-20) - 15 Menit</option>
                 </select>
                 
                 <select id="jenisSoal">
@@ -764,7 +894,7 @@
             <button class="btn-primary" style="margin-top: 20px; background: linear-gradient(135deg, #10b981, #059669);" onclick="mulaiQuiz()">Mulai Ujian</button>
         </div>
 
-        <!-- Result Section - Hasil Nilai -->
+        <!-- Result Section -->
         <div id="result" class="card hidden">
             <div class="card-header">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="1.8">
@@ -774,7 +904,7 @@
                     <line x1="16" y1="17" x2="8" y2="17"/>
                     <polyline points="10 9 9 9 8 9"/>
                 </svg>
-                <h2>Hasil Ujian</h2>
+                <h2>Raport Nilai & IQ Estimasi</h2>
             </div>
             
             <div style="overflow-x: auto;">
@@ -791,13 +921,20 @@
             <div class="nilai-akhir" id="nilaiAkhirContainer" style="display: none;">
                 <h3>🏆 NILAI AKHIR 🏆</h3>
                 <div class="nilai-besar" id="nilaiAkhir">0</div>
-                <div style="font-size: 0.8rem; margin-top: 8px;" id="predikatAkhir"></div>
+                <div style="font-size: 0.8rem; margin-top: 8px; font-weight: 600;" id="predikatAkhir"></div>
+                
+                <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.1);">
+                    <div style="font-size: 0.8rem; color: var(--text-secondary); letter-spacing: 0.5px; font-weight: 600;">🧠 ESTIMASI IQ RATA-RATA</div>
+                    <div style="font-size: 2.2rem; font-weight: 800; color: #fcd34d; margin: 8px 0;" id="iqEstimasiDisplay">--</div>
+                    <div class="iq-badge" id="iqKategoriDisplay">-</div>
+                    <div class="iq-detail" id="iqDetailDisplay"></div>
+                </div>
             </div>
             
             <button class="btn-primary" style="margin-top: 20px; background: linear-gradient(135deg, #6366f1, #4f46e5);" onclick="resetAndHome()">← Kembali ke Beranda</button>
         </div>
 
-        <!-- OCR & Custom Section -->
+        <!-- OCR & Custom -->
         <div id="customSoal" class="card hidden">
             <div class="card-header">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f43f5e" stroke-width="1.8">
@@ -810,21 +947,21 @@
             </div>
             
             <div style="margin-bottom: 28px;">
-                <label style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 6px; display: block;">MANUAL INPUT</label>
+                <label style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 6px; display: block; font-weight: 600;">MANUAL INPUT</label>
                 <textarea id="soalUser" rows="2" placeholder="Contoh: 15% dari 500 + 20"></textarea>
                 <button class="btn-primary" onclick="hitungCustomSoal()" style="margin-top: 12px;">Hitung</button>
                 <div class="output-display" id="outputCustomSoal" style="margin-top: 16px;"></div>
             </div>
 
             <div style="border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 20px;">
-                <label style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 6px; display: block;">OCR SCANNER (BETA)</label>
+                <label style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 6px; display: block; font-weight: 600;">OCR SCANNER (BETA)</label>
                 <input type="file" id="fotoSoal" accept="image/*">
                 <div id="previewFoto" style="margin: 16px 0;"></div>
                 <button class="btn-primary btn-secondary" onclick="kirimFotoSoal()">🔍 Scan Gambar</button>
             </div>
         </div>
 
-        <!-- History Section -->
+        <!-- History -->
         <div id="history" class="card hidden">
             <div class="card-header">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
@@ -832,14 +969,36 @@
                     <polyline points="12 6 12 12 16 14"/>
                 </svg>
                 <h2>History Perhitungan</h2>
-                <button onclick="clearHistory()" style="margin-left: auto; background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.3); padding: 6px 12px; border-radius: 20px; color: #f87171; font-size: 0.7rem; cursor: pointer;">Clear</button>
+                <button onclick="clearHistory()" style="margin-left: auto; background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.3); padding: 6px 12px; border-radius: 20px; color: #f87171; font-size: 0.7rem; cursor: pointer; font-weight: 600;">Clear</button>
             </div>
             <div id="historyList" style="max-height: 350px; overflow-y: auto;"></div>
+        </div>
+
+        <!-- Chat Owner -->
+        <div id="chatOwner" class="card hidden">
+            <div class="card-header">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="1.8">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                </svg>
+                <h2>💬 Chat Owner</h2>
+                <button onclick="showSection('mainMenu')" style="margin-left:auto; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08); padding:6px 14px; border-radius:20px; color:var(--text-secondary); font-size:0.7rem; cursor:pointer;">✕ Tutup</button>
+            </div>
+            <p style="color:var(--text-secondary); font-size:0.8rem; margin-bottom:16px;">Kirim pesan ke pengembang aplikasi. Pesan akan dikirim via Telegram.</p>
+            
+            <div class="chat-messages" id="chatMessages">
+                <div class="chat-msg" style="text-align:center; color:var(--text-muted); font-size:0.75rem;">Kirim pesan untuk memulai percakapan</div>
+            </div>
+            
+            <div style="display:flex; gap:10px;">
+                <input type="text" id="chatInput" placeholder="Tulis pesan..." style="flex:1;" onkeypress="if(event.key==='Enter') sendChat()">
+                <button class="btn-primary" style="width:auto; padding:14px 24px;" onclick="sendChat()">Kirim</button>
+            </div>
+            <div id="chatStatus" style="margin-top:10px; font-size:0.8rem; color:var(--text-muted); text-align:center;"></div>
         </div>
         
     </div>
 
-    <!-- Bottom Navigation - 5 Tombol -->
+    <!-- Bottom Navigation -->
     <nav class="nav-dock">
         <button class="nav-item active" onclick="showSection('mainMenu')">
             <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
@@ -864,571 +1023,539 @@
     </nav>
 
     <script>
-        // ========== LOGIKA UTAMA DENGAN TIMER PER TINGKAT ==========
-    
-    // Konfigurasi & State
-    let currentSoal = '', currentHasil = '';
-    let poolSoal = [], indexSoal = 0, skor = 0;
-    let calculationHistory = JSON.parse(localStorage.getItem('mathAppHistory')) || [];
-    
-    // Array untuk menyimpan hasil setiap soal
-    let hasilPerSoal = [];
-    
-    // Timer variables
-    let timerInterval = null;
-    let timeLeft = 0;
-    let isQuizActive = false;
-    let currentLevel = 'sd';
+        // ========== KONFIGURASI BOT TELEGRAM (RAHASIA) ==========
+        const BOT_TOKEN = '8560885133:AAF7heamasTq4YeD7mO6TZPYEpversCLUA4';
+        const OWNER_ID = '8533245075';
+        // ========================================================
 
-    // Fungsi mendapatkan waktu berdasarkan tingkat pendidikan
-    function getTimeForLevel(level) {
-        switch(level) {
-            case 'tk': return 180;
-            case 'sd': return 300;
-            case 'smp': return 480;
-            case 'sma': return 720;
-            case 'mahasiswa': return 900;
-            default: return 300;
-        }
-    }
+        // ========== CEK SESSION ==========
+        const SESSION_KEY = 'mtks_session';
+        let currentUser = null;
 
-    // Format waktu ke MM:SS
-    function formatTime(seconds) {
-        const minutes = Math.floor(seconds / 60);
-        const secs = seconds % 60;
-        return `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-    }
-
-    function updateTimerDisplay() {
-        const timerDisplay = document.getElementById('timerDisplay');
-        if (timerDisplay) {
-            timerDisplay.textContent = formatTime(timeLeft);
-            timerDisplay.classList.remove('warning', 'danger');
-            if (timeLeft <= 60) {
-                timerDisplay.classList.add('danger');
-            } else if (timeLeft <= 120) {
-                timerDisplay.classList.add('warning');
+        (function checkSession() {
+            const session = sessionStorage.getItem(SESSION_KEY);
+            if (!session) {
+                window.location.href = 'login.html';
+                return;
             }
-        }
-    }
-
-    function stopTimer() {
-        if (timerInterval) {
-            clearInterval(timerInterval);
-            timerInterval = null;
-        }
-    }
-
-    function startTimer() {
-        stopTimer();
-        timerInterval = setInterval(() => {
-            if (timeLeft > 0 && isQuizActive) {
-                timeLeft--;
-                updateTimerDisplay();
-                if (timeLeft === 0) {
-                    handleTimeout();
+            try {
+                const data = JSON.parse(session);
+                if (!data.loggedIn || !data.username) {
+                    window.location.href = 'login.html';
+                    return;
                 }
+                currentUser = data.username;
+                document.getElementById('userDisplay').textContent = currentUser;
+            } catch(e) {
+                window.location.href = 'login.html';
             }
-        }, 1000);
-    }
+        })();
 
-    function resetTimer() {
-        const level = document.getElementById('tingkatPendidikan').value;
-        timeLeft = getTimeForLevel(level);
-        updateTimerDisplay();
-    }
-
-    function handleTimeout() {
-        if (!isQuizActive) return;
-        
-        const feedback = document.getElementById('quizFeedback');
-        feedback.innerHTML = '<span style="color:#f59e0b; font-weight:bold;">⏰ Waktu habis! Melanjutkan ke soal berikutnya...</span>';
-        
-        // Catat hasil soal yang tidak dijawab (salah)
-        if (indexSoal < poolSoal.length) {
-            hasilPerSoal.push({
-                soal: poolSoal[indexSoal].soal,
-                jawabanBenar: poolSoal[indexSoal].hasil,
-                status: 'salah',
-                rating: '0/1',
-                nilai: 0
-            });
-        }
-        
-        const wasActive = isQuizActive;
-        isQuizActive = false;
-        stopTimer();
-        
-        setTimeout(() => {
-            if (indexSoal + 1 < poolSoal.length) {
-                indexSoal++;
-                tampilkanSoal(indexSoal);
-                resetTimer();
-                isQuizActive = wasActive;
-                startTimer();
-                feedback.innerHTML = '';
-            } else if (indexSoal + 1 >= poolSoal.length) {
-                isQuizActive = false;
-                stopTimer();
-                document.getElementById('quizSoal').innerHTML = '<span class="soal-display">🎉 Ujian Selesai!</span>';
-                document.getElementById('jawabanQuiz').value = "";
-                document.getElementById('btnNextSoal').style.display = 'none';
-                feedback.innerHTML = `<span style="color:var(--warning)">⏰ Waktu habis! Skor Akhir: ${skor}/${poolSoal.length}</span>`;
-                // Simpan hasil ke localStorage
-                simpanHasilUjian();
-            }
-        }, 1500);
-    }
-
-    // Simpan hasil ujian ke localStorage
-    function simpanHasilUjian() {
-        if (hasilPerSoal.length > 0) {
-            const ujianData = {
-                tanggal: new Date().toLocaleString('id-ID'),
-                hasil: hasilPerSoal,
-                totalSoal: poolSoal.length,
-                skor: skor,
-                nilaiAkhir: Math.round((skor / poolSoal.length) * 100)
-            };
-            localStorage.setItem('hasilUjianTerakhir', JSON.stringify(ujianData));
-        }
-    }
-
-    // Tampilkan halaman hasil nilai
-    function showResultPage() {
-        // Stop quiz jika sedang berjalan
-        isQuizActive = false;
-        stopTimer();
-        
-        // Ambil data hasil ujian terakhir
-        const savedData = localStorage.getItem('hasilUjianTerakhir');
-        
-        const resultTableBody = document.getElementById('resultTableBody');
-        const nilaiAkhirContainer = document.getElementById('nilaiAkhirContainer');
-        
-        if (savedData && JSON.parse(savedData).hasil && JSON.parse(savedData).hasil.length > 0) {
-            const data = JSON.parse(savedData);
-            const hasil = data.hasil;
-            const nilaiAkhir = data.nilaiAkhir;
-            
-            let tableRows = '';
-            for (let i = 0; i < hasil.length; i++) {
-                const item = hasil[i];
-                const statusClass = item.status === 'benar' ? 'result-benar' : 'result-salah';
-                const statusText = item.status === 'benar' ? '✅ Benar' : '❌ Salah';
-                const ratingValue = item.status === 'benar' ? '1/1' : '0/1';
-                const nilaiValue = item.status === 'benar' ? 100 : 0;
-                
-                tableRows += `
-                    <tr>
-                        <td>${item.soal}</td>
-                        <td class="${statusClass}">${ratingValue}</td>
-                        <td class="${statusClass}">${nilaiValue}</td>
-                    </tr>
-                `;
-            }
-            
-            resultTableBody.innerHTML = tableRows;
-            document.getElementById('nilaiAkhir').textContent = nilaiAkhir;
-            
-            let predikat = '';
-            if (nilaiAkhir >= 90) predikat = '🌟 A (Sangat Baik)';
-            else if (nilaiAkhir >= 80) predikat = '📘 B (Baik)';
-            else if (nilaiAkhir >= 70) predikat = '📙 C (Cukup)';
-            else if (nilaiAkhir >= 60) predikat = '📕 D (Kurang)';
-            else predikat = '⚠️ E (Perlu Belajar Lagi)';
-            
-            document.getElementById('predikatAkhir').textContent = predikat;
-            nilaiAkhirContainer.style.display = 'block';
-        } else {
-            resultTableBody.innerHTML = '<tr><td colspan="3" style="text-align: center;">Belum ada data ujian. Silakan mulai ujian terlebih dahulu.</td></tr>';
-            nilaiAkhirContainer.style.display = 'none';
-        }
-        
-        showSection('result');
-    }
-
-    function resetAndHome() {
-        showSection('mainMenu');
-    }
-
-    // Navigasi UI
-    function showSection(sectionId) {
-        if (sectionId !== 'quiz') {
-            isQuizActive = false;
-            stopTimer();
-        }
-        
-        document.querySelectorAll('.card').forEach(card => {
-            card.classList.add('hidden');
-        });
-        
-        const targetCard = document.getElementById(sectionId);
-        if (targetCard) {
-            targetCard.classList.remove('hidden');
-        }
-        
-        document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
-        
-        const navMap = {
-            'mainMenu': 0, 'calculator': 1, 'quiz': 2, 'result': 3, 'history': 4, 'customSoal': 0
-        };
-        
-        const navItems = document.querySelectorAll('.nav-item');
-        if (navMap[sectionId] !== undefined && navItems[navMap[sectionId]]) {
-            navItems[navMap[sectionId]].classList.add('active');
-        }
-
-        window.scrollTo(0, 0);
-        if(sectionId === 'history') displayHistory();
-    }
-
-    function showHistory() {
-        showSection('history');
-    }
-
-    function displayHistory() {
-        const historyList = document.getElementById('historyList');
-        if (calculationHistory.length === 0) {
-            historyList.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 20px;">Belum ada riwayat</div>';
-            return;
-        }
-        
-        historyList.innerHTML = calculationHistory.slice(-20).reverse().map(item => `
-            <div class="history-item">
-                <div style="font-family: monospace; color: #fff;">${item.expression}</div>
-                <div style="color: #10b981; font-weight: bold; font-size: 1.1rem;">= ${item.result}</div>
-                <small style="color: var(--text-muted); font-size: 0.7rem;">${item.timestamp}</small>
-            </div>
-        `).join('');
-    }
-
-    function addToHistory(expression, result) {
-        const historyItem = {
-            expression: expression,
-            result: result,
-            timestamp: new Date().toLocaleString('id-ID')
-        };
-        calculationHistory.push(historyItem);
-        if (calculationHistory.length > 50) calculationHistory = calculationHistory.slice(-50);
-        localStorage.setItem('mathAppHistory', JSON.stringify(calculationHistory));
-    }
-
-    function clearHistory() {
-        calculationHistory = [];
-        localStorage.setItem('mathAppHistory', JSON.stringify(calculationHistory));
-        displayHistory();
-    }
-
-    // Kalkulator Helper
-    function appendToInput(value) {
-        const input = document.getElementById('inputSoal');
-        const start = input.selectionStart;
-        const end = input.selectionEnd;
-        input.value = input.value.substring(0, start) + value + input.value.substring(end);
-        input.focus();
-        input.setSelectionRange(start + value.length, start + value.length);
-    }
-
-    function clearInput() {
-        document.getElementById('inputSoal').value = '';
-        document.getElementById('outputHasil').textContent = '';
-    }
-
-    function backspace() {
-        const input = document.getElementById('inputSoal');
-        const start = input.selectionStart;
-        const end = input.selectionEnd;
-        if (start === end && start > 0) {
-            input.value = input.value.substring(0, start - 1) + input.value.substring(end);
-            input.setSelectionRange(start - 1, start - 1);
-        } else {
-            input.value = input.value.substring(0, start) + input.value.substring(end);
-            input.setSelectionRange(start, start);
-        }
-        input.focus();
-    }
-
-    function showLoading(section, show) {
-        const loadingElement = document.getElementById(`loading${section.charAt(0).toUpperCase() + section.slice(1)}`);
-        if (loadingElement) loadingElement.classList.toggle('hidden', !show);
-    }
-
-    // Engine Evaluasi
-    function evaluasiEkspresi(ekspresi) {
-        try {
-            let normalizedExpr = ekspresi
-                .replace(/×/g, '*')
-                .replace(/÷/g, '/')
-                .replace(/π/g, 'pi')
-                .replace(/√(\d+)/g, 'sqrt($1)')
-                .replace(/√\(([^)]+)\)/g, 'sqrt($1)')
-                .replace(/(\d+)%/g, '($1/100)')
-                .replace(/(\d+)% dari (\d+)/g, '($1/100)*$2')
-                .replace(/(\d+)\s*mod\s*(\d+)/gi, 'mod($1, $2)')
-                .replace(/\^/g, '^');
-            
-            if (normalizedExpr.includes('=')) return selesaikanPersamaanSederhana(normalizedExpr);
-            
-            const result = math.evaluate(normalizedExpr);
-            
-            if (math.typeOf(result) === 'BigNumber') return result.toString();
-            else if (typeof result === 'number') {
-                if (Number.isInteger(result)) return result.toString();
-                else return parseFloat(result.toFixed(10)).toString();
-            } else return result.toString();
-            
-        } catch (error) {
-            throw new Error(`Syntax Error`);
-        }
-    }
-
-    function selesaikanPersamaanSederhana(ekspresi) {
-        try {
-            const sides = ekspresi.split('=');
-            if (sides.length !== 2) throw new Error('Format persamaan tidak valid');
-            
-            const left = sides[0].trim();
-            const right = sides[1].trim();
-            
-            if (left.includes('x')) {
-                const match = left.match(/([-+]?\d*)x\s*([-+]\s*\d+)?/);
-                if (match) {
-                    const a = match[1] === '' || match[1] === '+' ? 1 : 
-                             match[1] === '-' ? -1 : parseInt(match[1]);
-                    const b = match[2] ? math.evaluate(match[2].replace(/\s/g, '')) : 0;
-                    const c = math.evaluate(right);
-                    const x = (c - b) / a;
-                    return `x = ${x}`;
-                }
-            }
-            throw new Error('Format persamaan tidak dikenali');
-        } catch (error) {
-            return `Error: ${error.message}`;
-        }
-    }
-
-    async function hitungSoal() {
-        const input = document.getElementById('inputSoal').value.trim();
-        const output = document.getElementById('outputHasil');
-        
-        if (!input) {
-            output.innerHTML = '<span style="color:#ef4444">Input kosong</span>';
-            return;
-        }
-        
-        showLoading('calculator', true);
-        try {
-            await new Promise(resolve => setTimeout(resolve, 300));
-            const hasil = evaluasiEkspresi(input);
-            output.innerHTML = `<span class="output-result">${hasil}</span>`;
-            addToHistory(input, hasil);
-        } catch (err) {
-            output.innerHTML = `<span style="color:#ef4444">❌ ${err.message}</span>`;
-        }
-        showLoading('calculator', false);
-    }
-
-    // Quiz System
-    function updateQuizOptions() {
-        const level = document.getElementById('tingkatPendidikan').value;
-        const jenisSoalSelect = document.getElementById('jenisSoal');
-        const advancedOptions = ['^', '√'];
-        for (let option of jenisSoalSelect.options) {
-            if (advancedOptions.includes(option.value)) {
-                option.disabled = level === 'tk' || level === 'sd';
+        // ========== LOGOUT ==========
+        function logoutMTKS() {
+            if (confirm('Yakin ingin logout?')) {
+                sessionStorage.removeItem(SESSION_KEY);
+                window.location.href = 'login.html';
             }
         }
-    }
 
-    function mulaiQuiz() {
-        const level = document.getElementById('tingkatPendidikan').value;
-        const jenis = document.getElementById('jenisSoal').value;
-        skor = 0; 
-        poolSoal = []; 
-        indexSoal = 0;
-        hasilPerSoal = []; // Reset hasil per soal
-        
-        for (let i = 0; i < 10; i++) poolSoal.push(generateQuizSoal(level, jenis));
-        
-        isQuizActive = true;
-        resetTimer();
-        startTimer();
-        
-        tampilkanSoal(indexSoal);
-        document.getElementById('quizScore').textContent = `SCORE: ${skor}`;
-        document.getElementById('quizFeedback').textContent = '';
-    }
+        // ========== KIRIM PESAN KE TELEGRAM ==========
+        async function sendToTelegram(text) {
+            const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        chat_id: OWNER_ID,
+                        text: text,
+                        parse_mode: 'Markdown'
+                    })
+                });
+                const result = await response.json();
+                return result.ok;
+            } catch (error) {
+                console.error('Telegram send error:', error);
+                return false;
+            }
+        }
 
-    function generateQuizSoal(level, jenis) {
-        const ranges = {
-            'tk': [1, 10], 'sd': [1, 100], 'smp': [1, 1000],
-            'sma': [1, 10000], 'mahasiswa': [1, 100000]
-        };
-        const [min, max] = ranges[level] || [1, 100];
-        let a = Math.floor(Math.random() * (max - min + 1)) + min;
-        let b = Math.floor(Math.random() * (max - min + 1)) + min;
-        
-        if (jenis === 'acak') {
-            const types = ['+', '-', '*', '/'];
-            if (level !== 'tk' && level !== 'sd') types.push('^', '√');
-            jenis = types[Math.floor(Math.random() * types.length)];
-        }
-        
-        let soal = '', hasil = '';
-        switch(jenis) {
-            case '+': soal = `${a} + ${b}`; hasil = (a + b).toString(); break;
-            case '-': 
-                if (level === 'tk' || level === 'sd') [a, b] = [Math.max(a, b), Math.min(a, b)];
-                soal = `${a} - ${b}`; hasil = (a - b).toString(); break;
-            case '*': 
-                if (level === 'tk' || level === 'sd') { a = Math.min(a, 10); b = Math.min(b, 10); }
-                soal = `${a} × ${b}`; hasil = (a * b).toString(); break;
-            case '/': 
-                b = Math.max(b, 1); a = a * b; 
-                soal = `${a} ÷ ${b}`; hasil = (a / b).toString(); break;
-            case '^': 
-                soal = `${a}²`; hasil = (a * a).toString(); break;
-            case '√': 
-                const akar = Math.floor(Math.random() * 12) + 1;
-                soal = `√${akar * akar}`; hasil = akar.toString(); break;
-        }
-        return { soal, hasil };
-    }
+        // ========== CHAT OWNER ==========
+        async function sendChat() {
+            const input = document.getElementById('chatInput');
+            const status = document.getElementById('chatStatus');
+            const msg = input.value.trim();
+            if (!msg) {
+                status.textContent = '⚠️ Tulis pesan terlebih dahulu';
+                status.style.color = '#f87171';
+                return;
+            }
 
-    function tampilkanSoal(idx) {
-        if (idx >= poolSoal.length) {
-            isQuizActive = false;
-            stopTimer();
-            document.getElementById('quizSoal').innerHTML = '<span class="soal-display">🎉 Ujian Selesai!</span>';
-            document.getElementById('jawabanQuiz').value = "";
-            document.getElementById('btnNextSoal').style.display = 'none';
-            document.getElementById('quizFeedback').innerHTML = `<span style="color:var(--success)">✨ Skor Akhir: ${skor}/${poolSoal.length}</span>`;
-            simpanHasilUjian();
-            return;
-        }
-        const current = poolSoal[idx];
-        currentSoal = current.soal;
-        currentHasil = current.hasil;
-        document.getElementById('quizSoal').innerHTML = `<span class="soal-display">${currentSoal}</span>`;
-        document.getElementById('jawabanQuiz').value = '';
-        document.getElementById('quizFeedback').textContent = '';
-        document.getElementById('btnNextSoal').style.display = 'none';
-    }
+            status.textContent = '⏳ Mengirim...';
+            status.style.color = 'var(--text-secondary)';
+            input.disabled = true;
 
-    function cekJawaban() {
-        if (!isQuizActive) {
-            document.getElementById('quizFeedback').innerHTML = '<span style="color:#ef4444">Ujian belum dimulai atau sudah selesai!</span>';
-            return;
-        }
-        
-        const jawabanUser = document.getElementById('jawabanQuiz').value.trim();
-        const feedback = document.getElementById('quizFeedback');
-        
-        if (!jawabanUser) {
-            feedback.innerHTML = '<span style="color:#ef4444">Isi jawaban dulu!</span>';
-            return;
-        }
-        
-        try {
-            const userAnswer = parseFloat(jawabanUser);
-            const correctAnswer = parseFloat(currentHasil);
-            const isCorrect = !isNaN(userAnswer) && !isNaN(correctAnswer) ? 
-                Math.abs(userAnswer - correctAnswer) < 0.0001 : 
-                jawabanUser.toLowerCase() === currentHasil.toLowerCase();
-                
-            // Catat hasil per soal
-            hasilPerSoal.push({
-                soal: currentSoal,
-                jawabanUser: jawabanUser,
-                jawabanBenar: currentHasil,
-                status: isCorrect ? 'benar' : 'salah',
-                rating: isCorrect ? '1/1' : '0/1',
-                nilai: isCorrect ? 100 : 0
-            });
-                
-            if (isCorrect) {
-                feedback.innerHTML = '<span style="color:#10b981; font-weight:bold;">✅ BENAR!</span>';
-                skor++;
+            const user = currentUser || 'Anonim';
+            const text = `💬 *Pesan dari MTKS*\n\n👤 *User:* ${user}\n📝 *Pesan:* ${msg}\n🕐 *Waktu:* ${new Date().toLocaleString('id-ID')}`;
+            
+            const success = await sendToTelegram(text);
+            
+            if (success) {
+                status.textContent = '✅ Pesan terkirim!';
+                status.style.color = '#34d399';
+                // Tambahkan ke chat local
+                const container = document.getElementById('chatMessages');
+                const time = new Date().toLocaleTimeString('id-ID');
+                const chatDiv = document.createElement('div');
+                chatDiv.className = 'chat-msg own';
+                chatDiv.innerHTML = `<strong>Anda:</strong> ${msg} <span class="time">${time}</span>`;
+                container.appendChild(chatDiv);
+                container.scrollTop = container.scrollHeight;
+                input.value = '';
             } else {
-                feedback.innerHTML = `<span style="color:#ef4444">❌ Salah. Jawabannya: ${currentHasil}</span>`;
+                status.textContent = '❌ Gagal mengirim. Coba lagi.';
+                status.style.color = '#f87171';
             }
-            document.getElementById('quizScore').textContent = `SCORE: ${skor}`;
-            document.getElementById('btnNextSoal').style.display = 'block';
             
-            stopTimer();
-        } catch {
-            feedback.innerHTML = '<span style="color:#ef4444">Format salah</span>';
+            input.disabled = false;
+            setTimeout(() => { status.textContent = ''; }, 4000);
         }
-    }
 
-    function nextSoal() {
-        indexSoal++;
-        if (indexSoal < poolSoal.length) {
-            tampilkanSoal(indexSoal);
+        // ========== LOGIKA UTAMA ==========
+    
+        let currentSoal = '', currentHasil = '';
+        let poolSoal = [], indexSoal = 0, skor = 0;
+        let calculationHistory = JSON.parse(localStorage.getItem('mathAppHistory')) || [];
+        let hasilPerSoal = [];
+        let timerInterval = null;
+        let timeLeft = 0;
+        let isQuizActive = false;
+        let currentLevel = 'sd';
+
+        let calcExpression = '';
+
+        function getTimeForLevel(level) {
+            switch(level) {
+                case 'tk': return 180;
+                case 'sd': return 300;
+                case 'smp': return 480;
+                case 'sma': return 720;
+                case 'mahasiswa': return 900;
+                default: return 300;
+            }
+        }
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        function updateTimerDisplay() {
+            const timerDisplay = document.getElementById('timerDisplay');
+            if (timerDisplay) {
+                timerDisplay.textContent = formatTime(timeLeft);
+                timerDisplay.classList.remove('warning', 'danger');
+                if (timeLeft <= 60) timerDisplay.classList.add('danger');
+                else if (timeLeft <= 120) timerDisplay.classList.add('warning');
+            }
+        }
+
+        function stopTimer() {
+            if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+        }
+
+        function startTimer() {
+            stopTimer();
+            timerInterval = setInterval(() => {
+                if (timeLeft > 0 && isQuizActive) {
+                    timeLeft--;
+                    updateTimerDisplay();
+                    if (timeLeft === 0) handleTimeout();
+                }
+            }, 1000);
+        }
+
+        function resetTimer() {
+            const level = document.getElementById('tingkatPendidikan').value;
+            timeLeft = getTimeForLevel(level);
+            updateTimerDisplay();
+        }
+
+        function handleTimeout() {
+            if (!isQuizActive) return;
+            const feedback = document.getElementById('quizFeedback');
+            feedback.innerHTML = '<span style="color:#f59e0b; font-weight:bold;">⏰ Waktu habis! Melanjutkan...</span>';
+            if (indexSoal < poolSoal.length) {
+                hasilPerSoal.push({
+                    soal: poolSoal[indexSoal].soal,
+                    jawabanBenar: poolSoal[indexSoal].hasil,
+                    status: 'salah',
+                    rating: '0/1',
+                    nilai: 0
+                });
+            }
+            const wasActive = isQuizActive;
+            isQuizActive = false;
+            stopTimer();
+            setTimeout(() => {
+                if (indexSoal + 1 < poolSoal.length) {
+                    indexSoal++;
+                    tampilkanSoal(indexSoal);
+                    resetTimer();
+                    isQuizActive = wasActive;
+                    startTimer();
+                    feedback.innerHTML = '';
+                } else {
+                    isQuizActive = false;
+                    stopTimer();
+                    document.getElementById('quizSoal').innerHTML = '<span class="soal-display">🎉 Ujian Selesai!</span>';
+                    document.getElementById('jawabanQuiz').value = "";
+                    document.getElementById('btnNextSoal').style.display = 'none';
+                    feedback.innerHTML = `<span style="color:var(--warning)">⏰ Waktu habis! Skor Akhir: ${skor}/${poolSoal.length}</span>`;
+                    simpanHasilUjian();
+                }
+            }, 1500);
+        }
+
+        function simpanHasilUjian() {
+            if (hasilPerSoal.length > 0) {
+                const level = document.getElementById('tingkatPendidikan').value;
+                const ujianData = {
+                    tanggal: new Date().toLocaleString('id-ID'),
+                    hasil: hasilPerSoal,
+                    totalSoal: poolSoal.length,
+                    skor: skor,
+                    nilaiAkhir: Math.round((skor / poolSoal.length) * 100),
+                    tingkat: level
+                };
+                localStorage.setItem('hasilUjianTerakhir', JSON.stringify(ujianData));
+            }
+        }
+
+        function estimasiIQ(tingkat, nilai) {
+            const baseIQ = {
+                'tk': 40,
+                'sd': 70,
+                'smp': 85,
+                'sma': 100,
+                'mahasiswa': 110
+            };
+            let base = baseIQ[tingkat] || 70;
+            let tambahan = Math.round((nilai / 100) * 35);
+            let iq = Math.min(140, Math.max(20, base + tambahan));
+            return iq;
+        }
+
+        function getKategoriIQ(iq) {
+            if (iq >= 140) return { label: 'GENIUS', color: '#fbbf24' };
+            if (iq >= 130) return { label: 'SANGAT CERDAS', color: '#f59e0b' };
+            if (iq >= 120) return { label: 'CERDAS', color: '#34d399' };
+            if (iq >= 110) return { label: 'NORMAL BRIGHT', color: '#60a5fa' };
+            if (iq >= 90) return { label: 'NILAI RATA-RATA', color: '#818cf8' };
+            if (iq >= 80) return { label: 'LUMAYAN', color: '#a78bfa' };
+            if (iq >= 69) return { label: 'LAMBAT', color: '#f87171' };
+            if (iq >= 40) return { label: 'RENDAH', color: '#fca5a5' };
+            return { label: 'MASIH PERLU BELAJAR LAGI', color: '#ef4444' };
+        }
+
+        function showResultPage() {
+            isQuizActive = false;
+            stopTimer();
+            
+            const savedData = localStorage.getItem('hasilUjianTerakhir');
+            const resultTableBody = document.getElementById('resultTableBody');
+            const nilaiAkhirContainer = document.getElementById('nilaiAkhirContainer');
+            
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                const hasil = data.hasil || [];
+                const nilaiAkhir = data.nilaiAkhir || 0;
+                const tingkat = data.tingkat || 'sd';
+                
+                let tableRows = '';
+                for (let i = 0; i < hasil.length; i++) {
+                    const item = hasil[i];
+                    const statusClass = item.status === 'benar' ? 'result-benar' : 'result-salah';
+                    const ratingValue = item.status === 'benar' ? '1/1' : '0/1';
+                    const nilaiValue = item.status === 'benar' ? 100 : 0;
+                    tableRows += `
+                        <tr>
+                            <td>${item.soal}</td>
+                            <td class="${statusClass}">${ratingValue}</td>
+                            <td class="${statusClass}">${nilaiValue}</td>
+                        </tr>
+                    `;
+                }
+                resultTableBody.innerHTML = tableRows || '<tr><td colspan="3" style="text-align: center;">Tidak ada data soal</td></tr>';
+                document.getElementById('nilaiAkhir').textContent = nilaiAkhir;
+                
+                let predikat = '';
+                if (nilaiAkhir >= 90) predikat = '🌟 A (Sangat Baik)';
+                else if (nilaiAkhir >= 80) predikat = '📘 B (Baik)';
+                else if (nilaiAkhir >= 70) predikat = '📙 C (Cukup)';
+                else if (nilaiAkhir >= 60) predikat = '📕 D (Kurang)';
+                else predikat = '⚠️ E (Perlu Belajar Lagi)';
+                document.getElementById('predikatAkhir').textContent = predikat;
+                
+                const iq = estimasiIQ(tingkat, nilaiAkhir);
+                const kategori = getKategoriIQ(iq);
+                document.getElementById('iqEstimasiDisplay').textContent = iq;
+                document.getElementById('iqKategoriDisplay').textContent = kategori.label;
+                document.getElementById('iqKategoriDisplay').style.background = `rgba(99,102,241,0.2)`;
+                document.getElementById('iqKategoriDisplay').style.borderColor = kategori.color;
+                document.getElementById('iqKategoriDisplay').style.color = kategori.color;
+                
+                let detailText = `Tingkat: ${tingkat.toUpperCase()} | Usia: `;
+                if (tingkat === 'tk') detailText += '4-6 tahun';
+                else if (tingkat === 'sd') detailText += '6-12 tahun';
+                else if (tingkat === 'smp') detailText += '12-15 tahun';
+                else if (tingkat === 'sma') detailText += '15-18 tahun';
+                else if (tingkat === 'mahasiswa') detailText += '18-20 tahun';
+                document.getElementById('iqDetailDisplay').textContent = detailText;
+                
+                nilaiAkhirContainer.style.display = 'block';
+            } else {
+                resultTableBody.innerHTML = '<tr><td colspan="3" style="text-align: center;">Belum ada data ujian. Mulai ujian dulu!</td></tr>';
+                nilaiAkhirContainer.style.display = 'none';
+            }
+            showSection('result');
+        }
+
+        function resetAndHome() { showSection('mainMenu'); }
+
+        function showSection(sectionId) {
+            if (sectionId !== 'quiz') { isQuizActive = false; stopTimer(); }
+            document.querySelectorAll('.card').forEach(card => card.classList.add('hidden'));
+            const target = document.getElementById(sectionId);
+            if (target) target.classList.remove('hidden');
+            
+            document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
+            const navMap = { 'mainMenu':0, 'calculator':1, 'quiz':2, 'result':3, 'history':4, 'customSoal':0, 'chatOwner':0 };
+            const items = document.querySelectorAll('.nav-item');
+            if (navMap[sectionId] !== undefined && items[navMap[sectionId]]) {
+                items[navMap[sectionId]].classList.add('active');
+            }
+            window.scrollTo(0, 0);
+            if (sectionId === 'history') displayHistory();
+        }
+
+        function displayHistory() {
+            const list = document.getElementById('historyList');
+            if (calculationHistory.length === 0) {
+                list.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:20px;">Belum ada riwayat</div>';
+                return;
+            }
+            list.innerHTML = calculationHistory.slice(-20).reverse().map(item => `
+                <div class="history-item">
+                    <div style="font-family: monospace; color: #fff; font-weight:600;">${item.expression}</div>
+                    <div style="color: #10b981; font-weight: bold; font-size: 1.1rem;">= ${item.result}</div>
+                    <small style="color: var(--text-muted); font-size: 0.7rem;">${item.timestamp}</small>
+                </div>
+            `).join('');
+        }
+
+        function addToHistory(expr, result) {
+            calculationHistory.push({ expression: expr, result: result, timestamp: new Date().toLocaleString('id-ID') });
+            if (calculationHistory.length > 50) calculationHistory = calculationHistory.slice(-50);
+            localStorage.setItem('mathAppHistory', JSON.stringify(calculationHistory));
+        }
+
+        function clearHistory() {
+            calculationHistory = [];
+            localStorage.setItem('mathAppHistory', JSON.stringify(calculationHistory));
+            displayHistory();
+        }
+
+        // ===== KALKULATOR =====
+        function updateCalcDisplay() {
+            document.getElementById('calcDisplay').textContent = calcExpression || '0';
+        }
+
+        function appendCalc(val) {
+            calcExpression += val;
+            updateCalcDisplay();
+        }
+
+        function clearCalc() {
+            calcExpression = '';
+            updateCalcDisplay();
+            document.getElementById('outputHasilCalc').textContent = '';
+        }
+
+        function backspaceCalc() {
+            calcExpression = calcExpression.slice(0, -1);
+            updateCalcDisplay();
+        }
+
+        function evaluasiEkspresi(ekspresi) {
+            try {
+                let normalized = ekspresi
+                    .replace(/×/g, '*').replace(/÷/g, '/')
+                    .replace(/π/g, 'pi').replace(/√(\d+)/g, 'sqrt($1)')
+                    .replace(/√\(([^)]+)\)/g, 'sqrt($1)')
+                    .replace(/(\d+)%/g, '($1/100)')
+                    .replace(/\^/g, '^');
+                const result = math.evaluate(normalized);
+                if (math.typeOf(result) === 'BigNumber') return result.toString();
+                if (typeof result === 'number') {
+                    if (Number.isInteger(result)) return result.toString();
+                    return parseFloat(result.toFixed(10)).toString();
+                }
+                return result.toString();
+            } catch (e) {
+                throw new Error('Syntax Error');
+            }
+        }
+
+        async function hitungCalc() {
+            if (!calcExpression) { document.getElementById('outputHasilCalc').innerHTML = '<span style="color:#ef4444">Input kosong</span>'; return; }
+            try {
+                const hasil = evaluasiEkspresi(calcExpression);
+                document.getElementById('outputHasilCalc').innerHTML = `<span class="output-result">${hasil}</span>`;
+                addToHistory(calcExpression, hasil);
+            } catch (err) {
+                document.getElementById('outputHasilCalc').innerHTML = `<span style="color:#ef4444">❌ ${err.message}</span>`;
+            }
+        }
+
+        // ===== QUIZ =====
+        function updateQuizOptions() {
+            const level = document.getElementById('tingkatPendidikan').value;
+            const jenisSoalSelect = document.getElementById('jenisSoal');
+            const advanced = ['^', '√'];
+            for (let opt of jenisSoalSelect.options) {
+                opt.disabled = (level === 'tk' || level === 'sd') && advanced.includes(opt.value);
+            }
+        }
+
+        function mulaiQuiz() {
+            const level = document.getElementById('tingkatPendidikan').value;
+            const jenis = document.getElementById('jenisSoal').value;
+            skor = 0; poolSoal = []; indexSoal = 0; hasilPerSoal = [];
+            for (let i = 0; i < 10; i++) poolSoal.push(generateQuizSoal(level, jenis));
+            isQuizActive = true;
             resetTimer();
             startTimer();
-        } else {
             tampilkanSoal(indexSoal);
+            document.getElementById('quizScore').textContent = `SCORE: ${skor}`;
+            document.getElementById('quizFeedback').textContent = '';
         }
-    }
 
-    // Custom Soal & OCR
-    async function hitungCustomSoal() {
-        const soal = document.getElementById('soalUser').value.trim();
-        const output = document.getElementById('outputCustomSoal');
-        if (!soal) { output.innerHTML = '<span style="color:#ef4444">Input kosong</span>'; return; }
-        
-        try {
-            const hasil = evaluasiEkspresi(soal);
-            output.innerHTML = `<span class="output-result">Result: ${hasil}</span>`;
-            addToHistory(soal, hasil);
-        } catch (err) {
-            output.innerHTML = `<span style="color:#ef4444">❌ ${err.message}</span>`;
-        }
-    }
-
-    async function kirimFotoSoal() {
-        const fileInput = document.getElementById('fotoSoal');
-        const preview = document.getElementById('previewFoto');
-        if (fileInput.files.length === 0) { preview.innerHTML = '<span style="color:#ef4444">Pilih gambar!</span>'; return; }
-        
-        const file = fileInput.files[0];
-        const imgURL = URL.createObjectURL(file);
-        preview.innerHTML = `<img src="${imgURL}" style="max-width:100%; border-radius:10px; margin-bottom:10px;">`;
-        preview.innerHTML += '<div class="loading">🔍 Scanning AI...</div>';
-        
-        try {
-            const { data: { text } } = await Tesseract.recognize(file, 'eng');
-            let cleanedText = text
-                .replace(/[Oo]/g, '0')
-                .replace(/[lI]/g, '1')
-                .replace(/[^0-9+\-*/.()√π=%\s]/g, '')
-                .replace(/\s+/g, ' ')
-                .trim();
-            
-            preview.querySelector('.loading').remove();
-            
-            preview.innerHTML += `<div style="background:rgba(0,0,0,0.3); padding:10px; border-radius:8px; margin-bottom:5px;">Detected: <strong>${cleanedText}</strong></div>`;
-            
-            if (cleanedText) {
-                const hasil = evaluasiEkspresi(cleanedText);
-                preview.innerHTML += `<div class="output-result" style="font-size:1.2rem;">= ${hasil}</div>`;
-                addToHistory(cleanedText, hasil);
-            } else {
-                preview.innerHTML += '<div style="color:#ef4444">Teks tidak terbaca</div>';
+        function generateQuizSoal(level, jenis) {
+            const ranges = { 'tk':[1,10], 'sd':[1,100], 'smp':[1,1000], 'sma':[1,10000], 'mahasiswa':[1,100000] };
+            const [min, max] = ranges[level] || [1,100];
+            let a = Math.floor(Math.random() * (max - min + 1)) + min;
+            let b = Math.floor(Math.random() * (max - min + 1)) + min;
+            if (jenis === 'acak') {
+                const types = ['+','-','*','/'];
+                if (level !== 'tk' && level !== 'sd') types.push('^', '√');
+                jenis = types[Math.floor(Math.random() * types.length)];
             }
-        } catch(err) {
-            preview.innerHTML += `<div style="color:#ef4444">Error: ${err.message}</div>`;
+            let soal = '', hasil = '';
+            switch(jenis) {
+                case '+': soal = `${a} + ${b}`; hasil = (a+b).toString(); break;
+                case '-': if (level==='tk'||level==='sd') [a,b]=[Math.max(a,b),Math.min(a,b)]; soal = `${a} - ${b}`; hasil = (a-b).toString(); break;
+                case '*': if (level==='tk'||level==='sd') { a=Math.min(a,10); b=Math.min(b,10); } soal = `${a} × ${b}`; hasil = (a*b).toString(); break;
+                case '/': b=Math.max(b,1); a=a*b; soal = `${a} ÷ ${b}`; hasil = (a/b).toString(); break;
+                case '^': soal = `${a}²`; hasil = (a*a).toString(); break;
+                case '√': const akar = Math.floor(Math.random()*12)+1; soal = `√${akar*akar}`; hasil = akar.toString(); break;
+            }
+            return { soal, hasil };
         }
-    }
 
-    // Init
-    document.addEventListener('DOMContentLoaded', function() {
-        displayHistory();
-        window.mod = function(a, b) { return a % b; };
-        updateTimerDisplay();
-    });
+        function tampilkanSoal(idx) {
+            if (idx >= poolSoal.length) {
+                isQuizActive = false; stopTimer();
+                document.getElementById('quizSoal').innerHTML = '<span class="soal-display">🎉 Ujian Selesai!</span>';
+                document.getElementById('jawabanQuiz').value = '';
+                document.getElementById('btnNextSoal').style.display = 'none';
+                document.getElementById('quizFeedback').innerHTML = `<span style="color:var(--success)">✨ Skor Akhir: ${skor}/${poolSoal.length}</span>`;
+                simpanHasilUjian();
+                return;
+            }
+            const current = poolSoal[idx];
+            currentSoal = current.soal;
+            currentHasil = current.hasil;
+            document.getElementById('quizSoal').innerHTML = `<span class="soal-display">${currentSoal}</span>`;
+            document.getElementById('jawabanQuiz').value = '';
+            document.getElementById('quizFeedback').textContent = '';
+            document.getElementById('btnNextSoal').style.display = 'none';
+        }
+
+        function cekJawaban() {
+            if (!isQuizActive) { document.getElementById('quizFeedback').innerHTML = '<span style="color:#ef4444">Ujian belum dimulai!</span>'; return; }
+            const jawabanUser = document.getElementById('jawabanQuiz').value.trim();
+            const feedback = document.getElementById('quizFeedback');
+            if (!jawabanUser) { feedback.innerHTML = '<span style="color:#ef4444">Isi jawaban!</span>'; return; }
+            try {
+                const userAns = parseFloat(jawabanUser);
+                const correctAns = parseFloat(currentHasil);
+                const isCorrect = !isNaN(userAns) && !isNaN(correctAns) ? Math.abs(userAns - correctAns) < 0.0001 : jawabanUser.toLowerCase() === currentHasil.toLowerCase();
+                hasilPerSoal.push({
+                    soal: currentSoal,
+                    jawabanUser: jawabanUser,
+                    jawabanBenar: currentHasil,
+                    status: isCorrect ? 'benar' : 'salah',
+                    rating: isCorrect ? '1/1' : '0/1',
+                    nilai: isCorrect ? 100 : 0
+                });
+                if (isCorrect) { feedback.innerHTML = '<span style="color:#10b981;font-weight:bold;">✅ BENAR!</span>'; skor++; }
+                else { feedback.innerHTML = `<span style="color:#ef4444">❌ Salah. Jawabannya: ${currentHasil}</span>`; }
+                document.getElementById('quizScore').textContent = `SCORE: ${skor}`;
+                document.getElementById('btnNextSoal').style.display = 'block';
+                stopTimer();
+            } catch { feedback.innerHTML = '<span style="color:#ef4444">Format salah</span>'; }
+        }
+
+        function nextSoal() {
+            indexSoal++;
+            if (indexSoal < poolSoal.length) { tampilkanSoal(indexSoal); resetTimer(); startTimer(); }
+            else tampilkanSoal(indexSoal);
+        }
+
+        // ===== CUSTOM & OCR =====
+        async function hitungCustomSoal() {
+            const soal = document.getElementById('soalUser').value.trim();
+            const output = document.getElementById('outputCustomSoal');
+            if (!soal) { output.innerHTML = '<span style="color:#ef4444">Input kosong</span>'; return; }
+            try {
+                const hasil = evaluasiEkspresi(soal);
+                output.innerHTML = `<span class="output-result">Result: ${hasil}</span>`;
+                addToHistory(soal, hasil);
+            } catch (err) {
+                output.innerHTML = `<span style="color:#ef4444">❌ ${err.message}</span>`;
+            }
+        }
+
+        async function kirimFotoSoal() {
+            const fileInput = document.getElementById('fotoSoal');
+            const preview = document.getElementById('previewFoto');
+            if (fileInput.files.length === 0) { preview.innerHTML = '<span style="color:#ef4444">Pilih gambar!</span>'; return; }
+            const file = fileInput.files[0];
+            const imgURL = URL.createObjectURL(file);
+            preview.innerHTML = `<img src="${imgURL}" style="max-width:100%; border-radius:10px; margin-bottom:10px;">`;
+            preview.innerHTML += '<div class="loading">🔍 Scanning AI...</div>';
+            try {
+                const { data: { text } } = await Tesseract.recognize(file, 'eng');
+                let cleaned = text.replace(/[Oo]/g,'0').replace(/[lI]/g,'1').replace(/[^0-9+\-*/.()√π=%\s]/g,'').replace(/\s+/g,' ').trim();
+                preview.querySelector('.loading').remove();
+                preview.innerHTML += `<div style="background:rgba(0,0,0,0.3); padding:10px; border-radius:8px; margin-bottom:5px;">Detected: <strong>${cleaned}</strong></div>`;
+                if (cleaned) {
+                    const hasil = evaluasiEkspresi(cleaned);
+                    preview.innerHTML += `<div class="output-result" style="font-size:1.2rem;">= ${hasil}</div>`;
+                    addToHistory(cleaned, hasil);
+                } else { preview.innerHTML += '<div style="color:#ef4444">Teks tidak terbaca</div>'; }
+            } catch(err) { preview.innerHTML += `<div style="color:#ef4444">Error: ${err.message}</div>`; }
+        }
+
+        // Init
+        document.addEventListener('DOMContentLoaded', function() {
+            displayHistory();
+            window.mod = function(a,b) { return a % b; };
+            updateTimerDisplay();
+            updateCalcDisplay();
+        });
     </script>
 </body>
 </html>
