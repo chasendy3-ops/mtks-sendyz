@@ -8,6 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.0.2/dist/tesseract.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mathjs@11.8.0/lib/browser/math.js"></script>
     <style>
+        /* semua style sama seperti sebelumnya */
         * {
             margin: 0;
             padding: 0;
@@ -171,7 +172,6 @@
             font-family: 'Inter', monospace;
         }
 
-        /* ===== DASHBOARD MENU KOTAK (PPOB style) ===== */
         .menu-grid-box {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -224,7 +224,6 @@
             font-weight: 500;
         }
 
-        /* ===== MENU BAWAH (Chat Owner) ===== */
         .menu-bottom {
             display: grid;
             grid-template-columns: 1fr;
@@ -405,6 +404,10 @@
 
         .btn-danger {
             background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #10b981, #059669);
         }
 
         .output-display {
@@ -599,7 +602,6 @@
             font-family: 'Inter', monospace;
         }
 
-        /* IQ label */
         .iq-badge {
             display: inline-block;
             padding: 4px 14px;
@@ -619,7 +621,6 @@
             font-weight: 500;
         }
 
-        /* Chat Owner */
         .chat-messages {
             max-height: 300px;
             overflow-y: auto;
@@ -643,6 +644,44 @@
             font-size: 0.6rem;
             color: var(--text-muted);
             margin-left: 8px;
+        }
+
+        .inline-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+        .inline-buttons .btn-inline {
+            flex: 1;
+            min-width: 120px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-family: 'Inter', monospace;
+        }
+        .btn-inline.primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
+        .btn-inline.primary:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+        }
+        .btn-inline.success {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+        .btn-inline.success:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
         }
 
         @media (max-width: 480px) {
@@ -679,6 +718,11 @@
             }
             .menu-grid-box {
                 grid-template-columns: repeat(2, 1fr);
+            }
+            .inline-buttons .btn-inline {
+                min-width: 100px;
+                font-size: 0.75rem;
+                padding: 10px 14px;
             }
         }
     </style>
@@ -717,7 +761,6 @@
                 Aplikasi matematika ujian simulasi dengan dukungan BigNumber & OCR.
             </p>
             
-            <!-- 4 MENU KOTAK (PPOB style) -->
             <div class="menu-grid-box">
                 <div class="menu-box" onclick="showSection('calculator')">
                     <div class="icon-box">
@@ -771,7 +814,6 @@
                 </div>
             </div>
 
-            <!-- MENU BAWAH (Chat Owner) -->
             <div class="menu-bottom">
                 <div class="menu-bottom-item" onclick="showSection('chatOwner')">
                     <div class="icon-box">
@@ -929,6 +971,23 @@
                     <div class="iq-badge" id="iqKategoriDisplay">-</div>
                     <div class="iq-detail" id="iqDetailDisplay"></div>
                 </div>
+
+                <!-- Tombol Kirim ke Channel & Inline Buttons -->
+                <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.1);">
+                    <button class="btn-primary btn-success" onclick="kirimHasilIQKeChannel()" id="btnKirimChannel">
+                        📤 Kirim Hasil IQ ke Channel
+                    </button>
+                    <div id="statusKirimChannel" style="margin-top: 8px; font-size: 0.8rem; color: var(--text-muted);"></div>
+                    
+                    <div class="inline-buttons">
+                        <a href="https://t.me/MTKS_VBOT" target="_blank" class="btn-inline primary">
+                            🤖 @MTKS_VBOT
+                        </a>
+                        <a href="https://t.me/SENDY4Z" target="_blank" class="btn-inline success">
+                            👤 @SENDY4Z
+                        </a>
+                    </div>
+                </div>
             </div>
             
             <button class="btn-primary" style="margin-top: 20px; background: linear-gradient(135deg, #6366f1, #4f46e5);" onclick="resetAndHome()">← Kembali ke Beranda</button>
@@ -1023,10 +1082,11 @@
     </nav>
 
     <script>
-        // ========== KONFIGURASI BOT TELEGRAM (RAHASIA) ==========
+        // ========== KONFIGURASI BOT TELEGRAM ==========
         const BOT_TOKEN = '8560885133:AAF7heamasTq4YeD7mO6TZPYEpversCLUA4';
         const OWNER_ID = '8533245075';
-        // ========================================================
+        const CHANNEL_ID = '-1003400502811';
+        // ===============================================
 
         // ========== CEK SESSION ==========
         const SESSION_KEY = 'mtks_session';
@@ -1059,17 +1119,17 @@
             }
         }
 
-        // ========== KIRIM PESAN KE TELEGRAM ==========
-        async function sendToTelegram(text) {
+        // ========== KIRIM KE TELEGRAM (umum) ==========
+        async function sendToTelegram(chatId, text, parseMode = 'Markdown') {
             const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
             try {
                 const response = await fetch(url, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        chat_id: OWNER_ID,
+                        chat_id: chatId,
                         text: text,
-                        parse_mode: 'Markdown'
+                        parse_mode: parseMode
                     })
                 });
                 const result = await response.json();
@@ -1078,6 +1138,60 @@
                 console.error('Telegram send error:', error);
                 return false;
             }
+        }
+
+        // ========== KIRIM PESAN KE CHANNEL ==========
+        async function sendToChannel(text) {
+            return await sendToTelegram(CHANNEL_ID, text);
+        }
+
+        // ========== KIRIM HASIL IQ KE CHANNEL ==========
+        async function kirimHasilIQKeChannel() {
+            const btn = document.getElementById('btnKirimChannel');
+            const statusEl = document.getElementById('statusKirimChannel');
+            
+            const savedData = localStorage.getItem('hasilUjianTerakhir');
+            if (!savedData) {
+                statusEl.innerHTML = '<span style="color:#ef4444;">❌ Belum ada data ujian. Selesaikan ujian dulu!</span>';
+                return;
+            }
+
+            const data = JSON.parse(savedData);
+            const tingkat = data.tingkat || 'sd';
+            const nilaiAkhir = data.nilaiAkhir || 0;
+            const iq = estimasiIQ(tingkat, nilaiAkhir);
+            const kategori = getKategoriIQ(iq);
+
+            let keteranganUsia = '';
+            let statusPelajaran = tingkat.toUpperCase();
+            if (tingkat === 'tk') { statusPelajaran = 'TK'; keteranganUsia = 'Usia 4-6 tahun'; }
+            else if (tingkat === 'sd') { statusPelajaran = 'SD'; keteranganUsia = 'Usia 6-12 tahun'; }
+            else if (tingkat === 'smp') { statusPelajaran = 'SMP'; keteranganUsia = 'Usia 12-15 tahun'; }
+            else if (tingkat === 'sma') { statusPelajaran = 'SMA'; keteranganUsia = 'Usia 15-18 tahun'; }
+            else if (tingkat === 'mahasiswa') { statusPelajaran = 'Universitas'; keteranganUsia = 'Usia 18-20 tahun'; }
+
+            const username = currentUser || 'Anonim';
+            const pesan = `📊 *DETAIL USER CAPABILITIES!*\n\n👤 *USERNAME PLAYER:* ${username}\n🧠 *NILAI IQ RATA-RATA:* ${iq} (${kategori.label})\n📚 *OPSI STATUS PELAJAR:* ${statusPelajaran} (${keteranganUsia})\n📝 *NILAI UJIAN:* ${nilaiAkhir}/100`;
+
+            btn.disabled = true;
+            btn.textContent = '⏳ Mengirim...';
+            statusEl.innerHTML = '<span style="color: var(--text-secondary);">Mengirim ke channel...</span>';
+
+            const success = await sendToChannel(pesan);
+
+            if (success) {
+                statusEl.innerHTML = '<span style="color: #34d399;">✅ Berhasil dikirim ke channel!</span>';
+                btn.textContent = '✅ Terkirim!';
+            } else {
+                statusEl.innerHTML = '<span style="color: #ef4444;">❌ Gagal mengirim. Coba lagi nanti.</span>';
+                btn.disabled = false;
+                btn.textContent = '📤 Kirim Hasil IQ ke Channel';
+            }
+
+            setTimeout(() => {
+                btn.disabled = false;
+                btn.textContent = '📤 Kirim Hasil IQ ke Channel';
+            }, 5000);
         }
 
         // ========== CHAT OWNER ==========
@@ -1098,12 +1212,11 @@
             const user = currentUser || 'Anonim';
             const text = `💬 *Pesan dari MTKS*\n\n👤 *User:* ${user}\n📝 *Pesan:* ${msg}\n🕐 *Waktu:* ${new Date().toLocaleString('id-ID')}`;
             
-            const success = await sendToTelegram(text);
+            const success = await sendToTelegram(OWNER_ID, text);
             
             if (success) {
                 status.textContent = '✅ Pesan terkirim!';
                 status.style.color = '#34d399';
-                // Tambahkan ke chat local
                 const container = document.getElementById('chatMessages');
                 const time = new Date().toLocaleTimeString('id-ID');
                 const chatDiv = document.createElement('div');
