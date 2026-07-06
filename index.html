@@ -7,6 +7,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4.0.2/dist/tesseract.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mathjs@11.8.0/lib/browser/math.js"></script>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    
     <style>
         /* semua style sama seperti sebelumnya */
         * {
@@ -509,6 +515,85 @@
             font-family: 'Inter', monospace;
         }
 
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            border-radius: var(--radius-sm);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: background 0.2s;
+        }
+
+        .leaderboard-item:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .leaderboard-rank {
+            width: 28px;
+            height: 28px;
+            background: rgba(99, 102, 241, 0.15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.75rem;
+            color: var(--primary-light);
+            flex-shrink: 0;
+        }
+
+        .leaderboard-rank.top1 {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #78350f;
+        }
+
+        .leaderboard-rank.top2 {
+            background: linear-gradient(135deg, #94a3b8, #64748b);
+            color: #1e293b;
+        }
+
+        .leaderboard-rank.top3 {
+            background: linear-gradient(135deg, #d97706, #b45309);
+            color: #451a03;
+        }
+
+        .leaderboard-info {
+            flex: 1;
+        }
+
+        .leaderboard-username {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .leaderboard-username .me-badge {
+            background: rgba(99, 102, 241, 0.2);
+            color: var(--primary-light);
+            font-size: 0.55rem;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-left: 8px;
+            font-weight: 700;
+        }
+
+        .leaderboard-detail {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        .leaderboard-iq {
+            font-weight: 700;
+            font-size: 1rem;
+            color: #fcd34d;
+        }
+
+        .leaderboard-empty {
+            text-align: center;
+            padding: 30px 0;
+            color: var(--text-muted);
+        }
+
         .nav-dock {
             position: fixed;
             bottom: 20px;
@@ -723,6 +808,15 @@
                 min-width: 100px;
                 font-size: 0.75rem;
                 padding: 10px 14px;
+            }
+            .leaderboard-item {
+                padding: 8px 10px;
+            }
+            .leaderboard-username {
+                font-size: 0.8rem;
+            }
+            .leaderboard-iq {
+                font-size: 0.9rem;
             }
         }
     </style>
@@ -989,6 +1083,26 @@
                     </div>
                 </div>
             </div>
+
+            <!-- LEADERBOARD -->
+            <div style="margin-top: 24px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.08);">
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2">
+                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                    </svg>
+                    <h2 style="font-size: 1.1rem; font-weight: 700;">🏆 Papan Peringkat</h2>
+                    <span style="font-size: 0.65rem; color: var(--text-muted); margin-left: auto; background: rgba(255,255,255,0.05); padding: 4px 12px; border-radius: 12px;">7 Hari Terakhir</span>
+                </div>
+                <div id="leaderboardContainer">
+                    <div class="loading" id="leaderboardLoading">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+                        </svg>
+                        Memuat papan peringkat...
+                    </div>
+                    <div id="leaderboardList"></div>
+                </div>
+            </div>
             
             <button class="btn-primary" style="margin-top: 20px; background: linear-gradient(135deg, #6366f1, #4f46e5);" onclick="resetAndHome()">← Kembali ke Beranda</button>
         </div>
@@ -1082,6 +1196,21 @@
     </nav>
 
     <script>
+        // ========== FIREBASE KONFIGURASI ==========
+        const firebaseConfig = {
+            apiKey: "AIzaSyAdL1d50u_zVKPgLyNCnybRpE0pJzRBwno",
+            authDomain: "sendywcl.firebaseapp.com",
+            projectId: "sendywcl",
+            storageBucket: "sendywcl.firebasestorage.app",
+            messagingSenderId: "739834316928",
+            appId: "1:739834316928:web:cadfd05fe2d26bf818fe65"
+        };
+
+        // Inisialisasi Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
         // ========== KONFIGURASI BOT TELEGRAM ==========
         const BOT_TOKEN = '8560885133:AAF7heamasTq4YeD7mO6TZPYEpversCLUA4';
         const OWNER_ID = '8533245075';
@@ -1091,6 +1220,7 @@
         // ========== CEK SESSION ==========
         const SESSION_KEY = 'mtks_session';
         let currentUser = null;
+        let currentUserUID = null;
 
         (function checkSession() {
             const session = sessionStorage.getItem(SESSION_KEY);
@@ -1105,6 +1235,7 @@
                     return;
                 }
                 currentUser = data.username;
+                currentUserUID = data.uid || null;
                 document.getElementById('userDisplay').textContent = currentUser;
             } catch(e) {
                 window.location.href = 'login.html';
@@ -1114,8 +1245,13 @@
         // ========== LOGOUT ==========
         function logoutMTKS() {
             if (confirm('Yakin ingin logout?')) {
-                sessionStorage.removeItem(SESSION_KEY);
-                window.location.href = 'login.html';
+                auth.signOut().then(() => {
+                    sessionStorage.removeItem(SESSION_KEY);
+                    window.location.href = 'login.html';
+                }).catch(() => {
+                    sessionStorage.removeItem(SESSION_KEY);
+                    window.location.href = 'login.html';
+                });
             }
         }
 
@@ -1145,7 +1281,7 @@
             return await sendToTelegram(CHANNEL_ID, text);
         }
 
-        // ========== KIRIM HASIL IQ KE CHANNEL ==========
+        // ========== KIRIM HASIL IQ KE CHANNEL & FIREBASE ==========
         async function kirimHasilIQKeChannel() {
             const btn = document.getElementById('btnKirimChannel');
             const statusEl = document.getElementById('statusKirimChannel');
@@ -1177,11 +1313,31 @@
             btn.textContent = '⏳ Mengirim...';
             statusEl.innerHTML = '<span style="color: var(--text-secondary);">Mengirim ke channel...</span>';
 
+            // Kirim ke Telegram Channel
             const success = await sendToChannel(pesan);
+
+            // Simpan ke Firestore untuk Leaderboard
+            if (currentUserUID) {
+                try {
+                    await db.collection('leaderboard').doc(currentUserUID).set({
+                        username: username,
+                        uid: currentUserUID,
+                        iq: iq,
+                        nilai: nilaiAkhir,
+                        tingkat: tingkat,
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    }, { merge: true });
+                    console.log('Leaderboard data saved to Firestore');
+                } catch (err) {
+                    console.error('Error saving to Firestore:', err);
+                }
+            }
 
             if (success) {
                 statusEl.innerHTML = '<span style="color: #34d399;">✅ Berhasil dikirim ke channel!</span>';
                 btn.textContent = '✅ Terkirim!';
+                // Refresh leaderboard
+                loadLeaderboard();
             } else {
                 statusEl.innerHTML = '<span style="color: #ef4444;">❌ Gagal mengirim. Coba lagi nanti.</span>';
                 btn.disabled = false;
@@ -1192,6 +1348,82 @@
                 btn.disabled = false;
                 btn.textContent = '📤 Kirim Hasil IQ ke Channel';
             }, 5000);
+        }
+
+        // ========== LEADERBOARD ==========
+        async function loadLeaderboard() {
+            const container = document.getElementById('leaderboardList');
+            const loading = document.getElementById('leaderboardLoading');
+            
+            loading.style.display = 'flex';
+            container.innerHTML = '';
+
+            try {
+                // Ambil data leaderboard dari Firestore (7 hari terakhir)
+                const sevenDaysAgo = new Date();
+                sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+                const snapshot = await db.collection('leaderboard')
+                    .where('updatedAt', '>=', sevenDaysAgo)
+                    .orderBy('iq', 'desc')
+                    .limit(50)
+                    .get();
+
+                loading.style.display = 'none';
+
+                if (snapshot.empty) {
+                    container.innerHTML = `<div class="leaderboard-empty">📭 Belum ada data peringkat untuk 7 hari terakhir.</div>`;
+                    return;
+                }
+
+                let rank = 1;
+                let html = '';
+                const users = [];
+                
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    users.push({
+                        username: data.username || 'Anonim',
+                        iq: data.iq || 0,
+                        nilai: data.nilai || 0,
+                        uid: data.uid || '',
+                        tingkat: data.tingkat || 'sd'
+                    });
+                });
+
+                // Urutkan berdasarkan IQ (sudah diurutkan oleh Firestore)
+                for (const user of users) {
+                    let rankClass = '';
+                    let rankEmoji = '';
+                    if (rank === 1) { rankClass = 'top1'; rankEmoji = '🥇'; }
+                    else if (rank === 2) { rankClass = 'top2'; rankEmoji = '🥈'; }
+                    else if (rank === 3) { rankClass = 'top3'; rankEmoji = '🥉'; }
+
+                    const isMe = user.uid === currentUserUID;
+
+                    html += `
+                        <div class="leaderboard-item" style="${isMe ? 'background: rgba(99,102,241,0.1); border-left: 3px solid var(--primary);' : ''}">
+                            <div class="leaderboard-rank ${rankClass}">${rankEmoji || rank}</div>
+                            <div class="leaderboard-info">
+                                <div class="leaderboard-username">
+                                    ${user.username}
+                                    ${isMe ? '<span class="me-badge">Anda</span>' : ''}
+                                </div>
+                                <div class="leaderboard-detail">Nilai: ${user.nilai}/100 · ${user.tingkat.toUpperCase()}</div>
+                            </div>
+                            <div class="leaderboard-iq">${user.iq}</div>
+                        </div>
+                    `;
+                    rank++;
+                }
+
+                container.innerHTML = html;
+
+            } catch (error) {
+                console.error('Leaderboard error:', error);
+                loading.style.display = 'none';
+                container.innerHTML = `<div class="leaderboard-empty" style="color: #ef4444;">❌ Gagal memuat papan peringkat: ${error.message}</div>`;
+            }
         }
 
         // ========== CHAT OWNER ==========
@@ -1432,6 +1664,9 @@
                 resultTableBody.innerHTML = '<tr><td colspan="3" style="text-align: center;">Belum ada data ujian. Mulai ujian dulu!</td></tr>';
                 nilaiAkhirContainer.style.display = 'none';
             }
+            
+            // Load leaderboard
+            loadLeaderboard();
             showSection('result');
         }
 
@@ -1451,6 +1686,7 @@
             }
             window.scrollTo(0, 0);
             if (sectionId === 'history') displayHistory();
+            if (sectionId === 'result') loadLeaderboard();
         }
 
         function displayHistory() {
@@ -1668,6 +1904,10 @@
             window.mod = function(a,b) { return a % b; };
             updateTimerDisplay();
             updateCalcDisplay();
+            // Load leaderboard if result page is visible
+            if (!document.getElementById('result').classList.contains('hidden')) {
+                loadLeaderboard();
+            }
         });
     </script>
 </body>
