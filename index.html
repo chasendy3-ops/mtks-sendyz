@@ -1091,7 +1091,7 @@
                         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
                     </svg>
                     <h2 style="font-size: 1.1rem; font-weight: 700;">🏆 Papan Peringkat</h2>
-                    <span style="font-size: 0.65rem; color: var(--text-muted); margin-left: auto; background: rgba(255,255,255,0.05); padding: 4px 12px; border-radius: 12px;">Semua Player</span>
+                    <span style="font-size: 0.65rem; color: var(--text-muted); margin-left: auto; background: rgba(255,255,255,0.05); padding: 4px 12px; border-radius: 12px;">Total Nilai</span>
                 </div>
                 <div id="leaderboardContainer">
                     <div class="loading" id="leaderboardLoading">
@@ -1319,14 +1319,32 @@
             // Simpan ke Firestore untuk Leaderboard
             if (currentUserUID) {
                 try {
-                    await db.collection('leaderboard').doc(currentUserUID).set({
+                    // Cek apakah user sudah ada di leaderboard
+                    const docRef = db.collection('leaderboard').doc(currentUserUID);
+                    const doc = await docRef.get();
+                    
+                    let totalNilai = nilaiAkhir;
+                    let totalUjian = 1;
+                    
+                    if (doc.exists) {
+                        // Jika sudah ada, tambahkan nilai baru
+                        const existingData = doc.data();
+                        totalNilai = (existingData.totalNilai || 0) + nilaiAkhir;
+                        totalUjian = (existingData.totalUjian || 0) + 1;
+                    }
+                    
+                    // Simpan data dengan total nilai
+                    await docRef.set({
                         username: username,
                         uid: currentUserUID,
                         iq: iq,
                         nilai: nilaiAkhir,
+                        totalNilai: totalNilai,
+                        totalUjian: totalUjian,
                         tingkat: tingkat,
                         updatedAt: firebase.firestore.FieldValue.serverTimestamp()
                     }, { merge: true });
+                    
                     console.log('Leaderboard data saved to Firestore');
                 } catch (err) {
                     console.error('Error saving to Firestore:', err);
@@ -1359,9 +1377,9 @@
             container.innerHTML = '';
 
             try {
-                // Ambil data leaderboard dari Firestore (SEMUA PLAYER)
+                // Ambil data leaderboard dari Firestore (SEMUA PLAYER - urutkan berdasarkan totalNilai)
                 const snapshot = await db.collection('leaderboard')
-                    .orderBy('iq', 'desc')
+                    .orderBy('totalNilai', 'desc')
                     .limit(100)
                     .get();
 
@@ -1382,12 +1400,14 @@
                         username: data.username || 'Anonim',
                         iq: data.iq || 0,
                         nilai: data.nilai || 0,
+                        totalNilai: data.totalNilai || 0,
+                        totalUjian: data.totalUjian || 1,
                         uid: data.uid || '',
                         tingkat: data.tingkat || 'sd'
                     });
                 });
 
-                // Urutkan berdasarkan IQ (sudah diurutkan oleh Firestore)
+                // Urutkan berdasarkan totalNilai (sudah diurutkan oleh Firestore)
                 for (const user of users) {
                     let rankClass = '';
                     let rankEmoji = '';
@@ -1405,9 +1425,9 @@
                                     ${user.username}
                                     ${isMe ? '<span class="me-badge">Anda</span>' : ''}
                                 </div>
-                                <div class="leaderboard-detail">Nilai: ${user.nilai}/100 · ${user.tingkat.toUpperCase()}</div>
+                                <div class="leaderboard-detail">Total Nilai: ${user.totalNilai} · ${user.totalUjian} Ujian · ${user.tingkat.toUpperCase()}</div>
                             </div>
-                            <div class="leaderboard-iq">${user.iq}</div>
+                            <div class="leaderboard-iq">${user.totalNilai}</div>
                         </div>
                     `;
                     rank++;
