@@ -1247,50 +1247,50 @@
                         <div class="leaderboard-item" style="border-left: 3px solid var(--primary);">
                             <div class="leaderboard-rank top1">🥇</div>
                             <div class="leaderboard-info">
-                                <div class="leaderboard-username">SENDYZ <span class="me-badge">Anda</span></div>
-                                <div class="leaderboard-detail">Total Nilai: 450 · 5 Ujian · SMA</div>
+                                <div class="leaderboard-username">SENDYZ <span class="me-badge"></span></div>
+                                <div class="leaderboard-detail"></div>
                             </div>
-                            <div class="leaderboard-iq">450</div>
+                            <div class="leaderboard-iq"></div>
                         </div>
                         <div class="leaderboard-item">
                             <div class="leaderboard-rank top2">🥈</div>
                             <div class="leaderboard-info">
                                 <div class="leaderboard-username">RFTZY231</div>
-                                <div class="leaderboard-detail">Total Nilai: 380 · 4 Ujian · SMA</div>
+                                <div class="leaderboard-detail"></div>
                             </div>
-                            <div class="leaderboard-iq">380</div>
+                            <div class="leaderboard-iq"></div>
                         </div>
                         <div class="leaderboard-item">
                             <div class="leaderboard-rank top3">🥉</div>
                             <div class="leaderboard-info">
                                 <div class="leaderboard-username">FALISHA</div>
-                                <div class="leaderboard-detail">Total Nilai: 320 · 3 Ujian · SMP</div>
+                                <div class="leaderboard-detail"></div>
                             </div>
-                            <div class="leaderboard-iq">320</div>
+                            <div class="leaderboard-iq"></div>
                         </div>
                         <div class="leaderboard-item">
                             <div class="leaderboard-rank">4</div>
                             <div class="leaderboard-info">
                                 <div class="leaderboard-username">PLAYER4</div>
-                                <div class="leaderboard-detail">Total Nilai: 280 · 4 Ujian · SD</div>
+                                <div class="leaderboard-detail"></div>
                             </div>
-                            <div class="leaderboard-iq">280</div>
+                            <div class="leaderboard-iq"></div>
                         </div>
                         <div class="leaderboard-item">
                             <div class="leaderboard-rank">5</div>
                             <div class="leaderboard-info">
                                 <div class="leaderboard-username">PLAYER5</div>
-                                <div class="leaderboard-detail">Total Nilai: 250 · 3 Ujian · TK</div>
+                                <div class="leaderboard-detail"></div>
                             </div>
-                            <div class="leaderboard-iq">250</div>
+                            <div class="leaderboard-iq"></div>
                         </div>
                         <div class="leaderboard-item">
                             <div class="leaderboard-rank">6</div>
                             <div class="leaderboard-info">
                                 <div class="leaderboard-username">PLAYER6</div>
-                                <div class="leaderboard-detail">Total Nilai: 200 · 2 Ujian · SD</div>
+                                <div class="leaderboard-detail"></div>
                             </div>
-                            <div class="leaderboard-iq">200</div>
+                            <div class="leaderboard-iq"></div>
                         </div>
                     </div>
                 </div>
@@ -1879,6 +1879,7 @@
             }, 1500);
         }
 
+        // ========== SIMPAN HASIL UJIAN OTOMATIS KE PROFILE ==========
         function simpanHasilUjian() {
             if (hasilPerSoal.length > 0) {
                 const level = document.getElementById('tingkatPendidikan').value;
@@ -1893,10 +1894,37 @@
                 };
                 localStorage.setItem('hasilUjianTerakhir', JSON.stringify(ujianData));
                 
-                // Simpan ke level stats
+                // ===== UPDATE LEVEL STATS OTOMATIS =====
                 const levelStats = JSON.parse(localStorage.getItem('mtks_level_stats') || '{}');
-                levelStats[level] = (levelStats[level] || 0) + nilaiAkhir;
+                const currentValue = levelStats[level] || 0;
+                // Tambahkan nilai akhir ke level yang dipilih
+                levelStats[level] = currentValue + nilaiAkhir;
                 localStorage.setItem('mtks_level_stats', JSON.stringify(levelStats));
+                
+                // Update tampilan profile jika sedang terbuka
+                loadLevelStats();
+                
+                // Update total nilai di profile
+                if (currentUserUID) {
+                    db.collection('leaderboard').doc(currentUserUID).get().then(doc => {
+                        if (doc.exists) {
+                            const data = doc.data();
+                            const totalNilai = (data.totalNilai || 0) + nilaiAkhir;
+                            const totalUjian = (data.totalUjian || 0) + 1;
+                            db.collection('leaderboard').doc(currentUserUID).update({
+                                totalNilai: totalNilai,
+                                totalUjian: totalUjian
+                            }).then(() => {
+                                console.log('Profile updated with new exam result');
+                                // Update tampilan profile
+                                document.getElementById('profileTotalNilai').textContent = totalNilai;
+                                document.getElementById('profileTotalUjian').textContent = totalUjian;
+                                const rataNilai = totalUjian > 0 ? Math.round(totalNilai / totalUjian) : 0;
+                                document.getElementById('profileRataNilai').textContent = rataNilai;
+                            }).catch(err => console.error('Error updating profile:', err));
+                        }
+                    }).catch(err => console.error('Error loading profile for update:', err));
+                }
             }
         }
 
