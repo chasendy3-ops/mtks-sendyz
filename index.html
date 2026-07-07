@@ -22,28 +22,29 @@
         }
 
         :root {
-            --bg-primary: #070a14;
-            --bg-secondary: #0e1322;
-            --bg-card: rgba(18, 24, 40, 0.85);
-            --bg-card-solid: #11172b;
-            --border-glow: rgba(79, 70, 229, 0.3);
-            --primary: #6366f1;
-            --primary-dark: #4f46e5;
-            --primary-light: #818cf8;
-            --secondary: #06b6d4;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --error: #ef4444;
-            --text-primary: #f1f5f9;
+            --bg-primary: #0a0e17;
+            --bg-secondary: #111927;
+            --bg-card: rgba(18, 26, 42, 0.88);
+            --bg-card-solid: #121a2a;
+            --border-glow: rgba(108, 121, 255, 0.2);
+            --primary: #6c79ff;
+            --primary-dark: #5661e6;
+            --primary-light: #8b98ff;
+            --secondary: #22d3ee;
+            --success: #34d399;
+            --warning: #fbbf24;
+            --error: #f87171;
+            --text-primary: #e8edf5;
             --text-secondary: #94a3b8;
-            --text-muted: #64748b;
+            --text-muted: #5f6f8a;
             --radius-sm: 12px;
             --radius-md: 20px;
             --radius-lg: 28px;
+            --shadow-soft: 0 8px 32px rgba(0, 0, 0, 0.3);
         }
 
         body {
-            font-family: 'Inter', 'Courier New', monospace;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--bg-primary);
             color: var(--text-primary);
             min-height: 100vh;
@@ -60,26 +61,16 @@
             right: 0;
             bottom: 0;
             background: 
-                radial-gradient(circle at 20% 30%, rgba(99, 102, 241, 0.08) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(6, 182, 212, 0.06) 0%, transparent 50%);
-            z-index: -1;
-        }
-
-        body::after {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+                radial-gradient(ellipse at 20% 20%, rgba(108, 121, 255, 0.05) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(34, 211, 238, 0.04) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(255, 255, 255, 0.01) 0%, transparent 70%);
             z-index: -1;
         }
 
         header {
             max-width: 600px;
             margin: 0 auto;
-            padding: 20px 20px 10px;
+            padding: 16px 20px 8px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -88,61 +79,64 @@
         .brand {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 12px;
         }
 
         .logo-shape {
-            width: 48px;
-            height: 48px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            border-radius: 16px;
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(145deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 6px 20px rgba(108, 121, 255, 0.25);
+            transition: transform 0.3s ease;
+        }
+        .logo-shape:hover {
+            transform: scale(1.05);
         }
 
         .brand-info h1 {
-            font-size: 1.35rem;
+            font-size: 1.25rem;
             font-weight: 700;
             letter-spacing: -0.3px;
             display: flex;
             align-items: center;
-            gap: 8px;
-            flex-wrap: wrap;
-            font-family: 'Inter', monospace;
+            gap: 6px;
+            font-family: 'Inter', sans-serif;
         }
 
         .brand-info span {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: var(--text-secondary);
-            font-weight: 600;
-            letter-spacing: 0.5px;
+            font-weight: 500;
+            letter-spacing: 0.3px;
         }
 
         .badge-pro {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            font-size: 0.6rem;
-            padding: 3px 8px;
+            background: linear-gradient(145deg, var(--primary), var(--secondary));
+            font-size: 0.55rem;
+            padding: 2px 10px;
             border-radius: 20px;
             font-weight: 700;
+            box-shadow: 0 2px 12px rgba(108, 121, 255, 0.25);
         }
 
         .developer-badge {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             background: rgba(255, 255, 255, 0.03);
             padding: 6px 14px;
             border-radius: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             color: var(--text-secondary);
-            font-weight: 600;
-            letter-spacing: 0.3px;
+            font-weight: 500;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.2s ease;
         }
         .developer-badge:hover {
-            background: rgba(239, 68, 68, 0.15);
-            border-color: var(--error);
+            background: rgba(239, 68, 68, 0.08);
+            border-color: rgba(239, 68, 68, 0.2);
             color: #f87171;
         }
 
@@ -152,151 +146,306 @@
             padding: 0 16px 100px;
         }
 
+        /* ===== SLIDER HERO ===== */
+        .hero-slider {
+            position: relative;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            margin: 4px 0 20px;
+            box-shadow: var(--shadow-soft);
+            background: var(--bg-card-solid);
+            aspect-ratio: 16/9;
+            min-height: 170px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .slider-track {
+            display: flex;
+            transition: transform 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            height: 100%;
+            width: 100%;
+        }
+
+        .slider-slide {
+            min-width: 100%;
+            height: 100%;
+            position: relative;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .slider-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .slider-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 24px 24px 20px;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.75) 55%);
+        }
+
+        .slider-overlay .badge-slide {
+            display: inline-block;
+            font-size: 0.55rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            padding: 3px 12px;
+            border-radius: 20px;
+            background: rgba(108, 121, 255, 0.3);
+            color: var(--primary-light);
+            margin-bottom: 4px;
+            backdrop-filter: blur(4px);
+        }
+
+        .slider-overlay h3 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: white;
+            letter-spacing: -0.2px;
+        }
+
+        .slider-overlay p {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.6);
+            font-weight: 400;
+            margin-top: 2px;
+        }
+
+        .slider-dots {
+            position: absolute;
+            bottom: 10px;
+            right: 16px;
+            display: flex;
+            gap: 6px;
+            z-index: 5;
+        }
+
+        .slider-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.25);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            padding: 0;
+        }
+
+        .slider-dot.active {
+            background: white;
+            transform: scale(1.3);
+            box-shadow: 0 0 16px rgba(255, 255, 255, 0.2);
+        }
+
+        .slider-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            z-index: 5;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .slider-btn:hover {
+            background: rgba(108, 121, 255, 0.5);
+            border-color: var(--primary);
+        }
+
+        .slider-btn.prev {
+            left: 8px;
+        }
+        .slider-btn.next {
+            right: 8px;
+        }
+
         .card {
             background: var(--bg-card);
             backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.04);
             border-radius: var(--radius-lg);
-            padding: 24px;
-            margin-bottom: 20px;
+            padding: 22px 20px;
+            margin-bottom: 18px;
             transition: all 0.3s ease;
+            box-shadow: var(--shadow-soft);
         }
 
         .card-header {
             display: flex;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 24px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            gap: 10px;
+            margin-bottom: 18px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
         }
 
         .card-header h2 {
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 700;
             letter-spacing: -0.2px;
-            font-family: 'Inter', monospace;
+            font-family: 'Inter', sans-serif;
         }
 
         .menu-grid-box {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-            margin-bottom: 20px;
+            gap: 10px;
+            margin-bottom: 16px;
         }
 
         .menu-box {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: var(--radius-md);
-            padding: 16px 10px;
+            padding: 14px 8px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             cursor: pointer;
-            transition: all 0.25s ease;
+            transition: all 0.3s ease;
             text-align: center;
+            position: relative;
+        }
+        .menu-box::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(145deg, rgba(108, 121, 255, 0.04), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            border-radius: var(--radius-md);
+        }
+        .menu-box:hover::after {
+            opacity: 1;
         }
         .menu-box:hover {
-            background: rgba(99, 102, 241, 0.12);
-            border-color: var(--primary);
-            transform: translateY(-3px);
+            background: rgba(108, 121, 255, 0.06);
+            border-color: rgba(108, 121, 255, 0.15);
+            transform: translateY(-2px);
+        }
+        .menu-box:active {
+            transform: scale(0.95);
         }
         .menu-box .icon-box {
-            width: 48px;
-            height: 48px;
-            background: rgba(99, 102, 241, 0.12);
-            border-radius: 14px;
+            width: 44px;
+            height: 44px;
+            background: rgba(108, 121, 255, 0.08);
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: var(--primary-light);
+            position: relative;
+            z-index: 1;
         }
         .menu-box .icon-box svg {
-            width: 24px;
-            height: 24px;
+            width: 22px;
+            height: 22px;
             stroke: currentColor;
             stroke-width: 1.8;
             fill: none;
         }
         .menu-box .label {
-            font-weight: 700;
-            font-size: 0.8rem;
+            font-weight: 600;
+            font-size: 0.75rem;
+            position: relative;
+            z-index: 1;
         }
         .menu-box .sub {
-            font-size: 0.6rem;
+            font-size: 0.55rem;
             color: var(--text-muted);
             font-weight: 500;
+            position: relative;
+            z-index: 1;
         }
 
         .menu-bottom {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 10px;
-            margin-top: 4px;
+            gap: 8px;
+            margin-top: 2px;
         }
         .menu-bottom-item {
             background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            padding: 16px 20px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            padding: 14px 18px;
             border-radius: var(--radius-md);
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 14px;
             cursor: pointer;
-            transition: all 0.25s ease;
+            transition: all 0.3s ease;
         }
         .menu-bottom-item:hover {
-            background: rgba(99, 102, 241, 0.08);
-            border-color: var(--primary);
+            background: rgba(108, 121, 255, 0.05);
+            border-color: rgba(108, 121, 255, 0.1);
+            transform: translateX(3px);
         }
         .menu-bottom-item .icon-box {
-            width: 40px;
-            height: 40px;
-            background: rgba(99, 102, 241, 0.1);
-            border-radius: 12px;
+            width: 36px;
+            height: 36px;
+            background: rgba(108, 121, 255, 0.06);
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: var(--primary-light);
         }
         .menu-bottom-item .icon-box svg {
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             stroke: currentColor;
             stroke-width: 1.8;
             fill: none;
         }
         .menu-bottom-item .label {
-            font-weight: 700;
-            font-size: 0.9rem;
+            font-weight: 600;
+            font-size: 0.85rem;
         }
         .menu-bottom-item .sub {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: var(--text-muted);
         }
 
         .timer-container {
-            background: rgba(0, 0, 0, 0.4);
+            background: rgba(0, 0, 0, 0.35);
             border-radius: var(--radius-md);
-            padding: 16px;
-            margin-bottom: 20px;
+            padding: 14px;
+            margin-bottom: 18px;
             text-align: center;
-            border: 1px solid rgba(99, 102, 241, 0.3);
+            border: 1px solid rgba(108, 121, 255, 0.15);
         }
 
         .timer-label {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: var(--text-secondary);
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             font-weight: 600;
         }
 
         .timer-display {
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             font-weight: 700;
             font-family: 'Inter', monospace;
             letter-spacing: 2px;
@@ -314,23 +463,23 @@
 
         @keyframes pulse {
             0%, 100% { opacity: 1; }
-            50% { opacity: 0.6; }
+            50% { opacity: 0.5; }
         }
 
         .calc-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            margin-bottom: 20px;
+            gap: 8px;
+            margin-bottom: 16px;
         }
 
         .calc-btn {
             aspect-ratio: 1;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: var(--radius-sm);
             color: var(--text-primary);
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -341,93 +490,109 @@
         }
 
         .calc-btn:active {
-            transform: scale(0.96);
-            background: rgba(99, 102, 241, 0.2);
+            transform: scale(0.92);
+            background: rgba(108, 121, 255, 0.12);
         }
 
         .calc-btn.op {
             color: var(--secondary);
-            background: rgba(6, 182, 212, 0.08);
+            background: rgba(34, 211, 238, 0.05);
         }
 
         .calc-btn.fn {
             color: var(--primary-light);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
         .calc-btn.eq {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background: linear-gradient(145deg, var(--primary), var(--secondary));
             border: none;
             color: white;
             aspect-ratio: auto;
             grid-column: span 2;
+            box-shadow: 0 4px 16px rgba(108, 121, 255, 0.25);
+        }
+        .calc-btn.eq:hover {
+            box-shadow: 0 6px 24px rgba(108, 121, 255, 0.35);
+            transform: scale(1.02);
         }
 
         input, textarea, select {
             width: 100%;
             background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: var(--radius-sm);
-            padding: 14px 16px;
+            padding: 12px 16px;
             color: var(--text-primary);
-            font-size: 0.95rem;
-            font-family: 'Inter', monospace;
+            font-size: 0.9rem;
+            font-family: 'Inter', sans-serif;
             transition: all 0.2s ease;
         }
 
         input:focus, textarea:focus, select:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+            box-shadow: 0 0 0 3px rgba(108, 121, 255, 0.08);
         }
 
         textarea {
             resize: vertical;
-            min-height: 80px;
+            min-height: 72px;
         }
 
         .btn-primary {
             width: 100%;
-            padding: 14px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            padding: 13px;
+            background: linear-gradient(145deg, var(--primary), var(--primary-dark));
             border: none;
             border-radius: var(--radius-sm);
             color: white;
             font-weight: 700;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             cursor: pointer;
-            transition: all 0.25s ease;
-            font-family: 'Inter', monospace;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+            box-shadow: 0 4px 16px rgba(108, 121, 255, 0.15);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(108, 121, 255, 0.25);
         }
 
         .btn-primary:active {
-            transform: scale(0.98);
+            transform: scale(0.96);
         }
 
         .btn-secondary {
-            background: rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: none;
+        }
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: none;
         }
 
         .btn-danger {
-            background: linear-gradient(135deg, #ef4444, #dc2626);
+            background: linear-gradient(145deg, #ef4444, #dc2626);
         }
 
         .btn-success {
-            background: linear-gradient(135deg, #10b981, #059669);
+            background: linear-gradient(145deg, #34d399, #059669);
         }
 
         .btn-save {
-            background: linear-gradient(135deg, #f59e0b, #d97706);
+            background: linear-gradient(145deg, #fbbf24, #d97706);
         }
 
         .output-display {
             background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: var(--radius-md);
-            padding: 18px;
-            margin: 16px 0;
+            padding: 16px;
+            margin: 14px 0;
             text-align: right;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 600;
             word-break: break-word;
             font-family: 'Inter', monospace;
@@ -435,57 +600,57 @@
 
         .output-result {
             color: var(--success);
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: 700;
         }
 
         .score {
             text-align: center;
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: 800;
             color: var(--primary-light);
-            margin: 16px 0;
+            margin: 14px 0;
             font-family: 'Inter', monospace;
         }
 
         .history-item {
-            padding: 14px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
             transition: background 0.2s;
         }
 
         .history-item:hover {
-            background: rgba(255, 255, 255, 0.02);
+            background: rgba(255, 255, 255, 0.01);
         }
 
         .result-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 16px;
+            margin-top: 14px;
         }
 
         .result-table th,
         .result-table td {
-            padding: 12px 8px;
+            padding: 10px 8px;
             text-align: left;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .result-table th {
             color: var(--primary-light);
-            font-weight: 700;
-            font-size: 0.8rem;
+            font-weight: 600;
+            font-size: 0.7rem;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
         .result-table td {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-family: 'Inter', monospace;
         }
 
         .result-table tr:hover td {
-            background: rgba(99, 102, 241, 0.05);
+            background: rgba(108, 121, 255, 0.03);
         }
 
         .result-benar {
@@ -499,16 +664,17 @@
         }
 
         .nilai-akhir {
-            margin-top: 20px;
-            padding: 16px;
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(6, 182, 212, 0.1));
+            margin-top: 18px;
+            padding: 18px;
+            background: linear-gradient(145deg, rgba(108, 121, 255, 0.1), rgba(34, 211, 238, 0.05));
             border-radius: var(--radius-md);
             text-align: center;
+            border: 1px solid rgba(108, 121, 255, 0.08);
         }
 
         .nilai-akhir h3 {
-            font-size: 1rem;
-            margin-bottom: 8px;
+            font-size: 0.95rem;
+            margin-bottom: 6px;
             font-weight: 700;
         }
 
@@ -522,43 +688,43 @@
         .leaderboard-item {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 10px 12px;
+            gap: 10px;
+            padding: 8px 10px;
             border-radius: var(--radius-sm);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
             transition: background 0.2s;
         }
 
         .leaderboard-item:hover {
-            background: rgba(255, 255, 255, 0.03);
+            background: rgba(255, 255, 255, 0.02);
         }
 
         .leaderboard-rank {
-            width: 28px;
-            height: 28px;
-            background: rgba(99, 102, 241, 0.15);
+            width: 26px;
+            height: 26px;
+            background: rgba(108, 121, 255, 0.08);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 700;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: var(--primary-light);
             flex-shrink: 0;
         }
 
         .leaderboard-rank.top1 {
-            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            background: linear-gradient(145deg, #fbbf24, #f59e0b);
             color: #78350f;
         }
 
         .leaderboard-rank.top2 {
-            background: linear-gradient(135deg, #94a3b8, #64748b);
+            background: linear-gradient(145deg, #94a3b8, #64748b);
             color: #1e293b;
         }
 
         .leaderboard-rank.top3 {
-            background: linear-gradient(135deg, #d97706, #b45309);
+            background: linear-gradient(145deg, #d97706, #b45309);
             color: #451a03;
         }
 
@@ -568,55 +734,49 @@
 
         .leaderboard-username {
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
         .leaderboard-username .me-badge {
-            background: rgba(99, 102, 241, 0.2);
+            background: rgba(108, 121, 255, 0.12);
             color: var(--primary-light);
-            font-size: 0.55rem;
+            font-size: 0.5rem;
             padding: 2px 8px;
             border-radius: 10px;
-            margin-left: 8px;
+            margin-left: 6px;
             font-weight: 700;
         }
 
         .leaderboard-detail {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             color: var(--text-muted);
         }
 
         .leaderboard-iq {
             font-weight: 700;
-            font-size: 1rem;
+            font-size: 0.95rem;
             color: #fcd34d;
         }
 
-        .leaderboard-empty {
-            text-align: center;
-            padding: 30px 0;
-            color: var(--text-muted);
-        }
-
         .profile-avatar {
-            width: 100px;
-            height: 100px;
+            width: 92px;
+            height: 92px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background: linear-gradient(145deg, var(--primary), var(--secondary));
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 16px;
+            margin: 0 auto 14px;
             cursor: pointer;
-            border: 3px solid rgba(255,255,255,0.1);
-            transition: all 0.3s;
+            border: 3px solid rgba(255,255,255,0.06);
+            transition: all 0.3s ease;
             overflow: hidden;
             position: relative;
         }
 
         .profile-avatar:hover {
             border-color: var(--primary);
-            transform: scale(1.02);
+            transform: scale(1.03);
         }
 
         .profile-avatar img {
@@ -626,7 +786,7 @@
         }
 
         .profile-avatar .avatar-placeholder {
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             font-weight: 700;
             color: white;
         }
@@ -637,12 +797,12 @@
             left: 0;
             right: 0;
             background: rgba(0,0,0,0.7);
-            padding: 4px;
-            font-size: 0.55rem;
+            padding: 3px;
+            font-size: 0.5rem;
             text-align: center;
             color: white;
             opacity: 0;
-            transition: opacity 0.3s;
+            transition: opacity 0.3s ease;
         }
 
         .profile-avatar:hover .avatar-overlay {
@@ -651,59 +811,59 @@
 
         .profile-info {
             text-align: center;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
         }
 
         .profile-info .username {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 700;
         }
 
         .profile-info .email {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             color: var(--text-secondary);
         }
 
         .profile-stats {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin: 16px 0;
+            gap: 8px;
+            margin: 14px 0;
         }
 
         .profile-stat-box {
-            background: rgba(255,255,255,0.03);
+            background: rgba(255,255,255,0.02);
             border-radius: var(--radius-sm);
-            padding: 12px;
+            padding: 10px;
             text-align: center;
-            border: 1px solid rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.04);
         }
 
         .profile-stat-box .value {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: 700;
             color: var(--primary-light);
         }
 
         .profile-stat-box .label {
-            font-size: 0.6rem;
+            font-size: 0.55rem;
             color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
         .profile-level-stats {
-            margin-top: 16px;
-            padding-top: 16px;
-            border-top: 1px solid rgba(255,255,255,0.06);
+            margin-top: 14px;
+            padding-top: 14px;
+            border-top: 1px solid rgba(255,255,255,0.04);
         }
 
         .profile-level-item {
             display: flex;
             justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.03);
-            font-size: 0.85rem;
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.02);
+            font-size: 0.8rem;
         }
 
         .profile-level-item .level-name {
@@ -717,7 +877,7 @@
 
         .nav-dock {
             position: fixed;
-            bottom: 20px;
+            bottom: 16px;
             left: 50%;
             transform: translateX(-50%);
             width: calc(100% - 32px);
@@ -727,9 +887,9 @@
             border-radius: 40px;
             display: flex;
             justify-content: space-around;
-            padding: 8px 12px;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            padding: 6px 10px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
             z-index: 100;
         }
 
@@ -738,19 +898,19 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px;
+            gap: 2px;
             background: none;
             border: none;
-            color: var(--text-secondary);
+            color: var(--text-muted);
             cursor: pointer;
-            padding: 8px 4px;
+            padding: 6px 2px;
             border-radius: 30px;
             transition: all 0.2s ease;
         }
 
         .nav-item svg {
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             stroke: currentColor;
             stroke-width: 1.8;
             fill: none;
@@ -758,12 +918,12 @@
 
         .nav-item.active {
             color: var(--primary-light);
-            background: rgba(99, 102, 241, 0.12);
+            background: rgba(108, 121, 255, 0.08);
         }
 
         .nav-label {
-            font-size: 0.6rem;
-            font-weight: 700;
+            font-size: 0.55rem;
+            font-weight: 600;
             letter-spacing: 0.3px;
         }
 
@@ -773,9 +933,9 @@
 
         .loading {
             text-align: center;
-            padding: 20px;
+            padding: 16px;
             color: var(--secondary);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -791,17 +951,17 @@
         }
 
         #previewFoto {
-            margin: 16px 0;
+            margin: 14px 0;
         }
 
         #previewFoto img {
             max-width: 100%;
             border-radius: var(--radius-md);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.06);
         }
 
         .soal-display {
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             font-weight: 700;
             text-align: center;
             word-break: break-word;
@@ -813,24 +973,24 @@
             padding: 4px 14px;
             border-radius: 40px;
             font-weight: 700;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             letter-spacing: 0.5px;
-            background: rgba(99, 102, 241, 0.2);
-            border: 1px solid rgba(99, 102, 241, 0.3);
+            background: rgba(108, 121, 255, 0.15);
+            border: 1px solid rgba(108, 121, 255, 0.2);
             color: var(--primary-light);
         }
 
         .iq-detail {
-            margin-top: 10px;
-            font-size: 0.9rem;
+            margin-top: 8px;
+            font-size: 0.85rem;
             color: var(--text-secondary);
             font-weight: 500;
         }
 
         .chat-messages {
-            max-height: 300px;
+            max-height: 280px;
             overflow-y: auto;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             padding: 8px;
             background: rgba(0,0,0,0.2);
             border-radius: var(--radius-sm);
@@ -839,112 +999,127 @@
             padding: 8px 12px;
             margin-bottom: 6px;
             border-radius: 8px;
-            background: rgba(255,255,255,0.04);
-            font-size: 0.85rem;
+            background: rgba(255,255,255,0.03);
+            font-size: 0.8rem;
         }
         .chat-msg.own {
-            background: rgba(99,102,241,0.15);
+            background: rgba(108,121,255,0.12);
             border-left: 3px solid var(--primary);
         }
         .chat-msg .time {
-            font-size: 0.6rem;
+            font-size: 0.55rem;
             color: var(--text-muted);
-            margin-left: 8px;
+            margin-left: 6px;
         }
 
         .inline-buttons {
             display: flex;
-            gap: 10px;
-            margin-top: 16px;
+            gap: 8px;
+            margin-top: 14px;
             flex-wrap: wrap;
         }
         .inline-buttons .btn-inline {
             flex: 1;
-            min-width: 120px;
-            padding: 12px 20px;
+            min-width: 100px;
+            padding: 10px 16px;
             border: none;
             border-radius: var(--radius-sm);
             font-weight: 700;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             cursor: pointer;
             transition: all 0.25s ease;
             text-align: center;
             text-decoration: none;
             display: inline-block;
-            font-family: 'Inter', monospace;
+            font-family: 'Inter', sans-serif;
         }
         .btn-inline.primary {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            background: linear-gradient(145deg, var(--primary), var(--primary-dark));
             color: white;
         }
         .btn-inline.primary:hover {
             transform: scale(1.02);
-            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+            box-shadow: 0 4px 16px rgba(108, 121, 255, 0.3);
         }
         .btn-inline.success {
-            background: linear-gradient(135deg, #10b981, #059669);
+            background: linear-gradient(145deg, #34d399, #059669);
             color: white;
         }
         .btn-inline.success:hover {
             transform: scale(1.02);
-            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+            box-shadow: 0 4px 16px rgba(52, 211, 153, 0.3);
         }
 
         @media (max-width: 480px) {
             .card {
-                padding: 18px;
+                padding: 16px 14px;
             }
             .calc-btn {
-                font-size: 1rem;
+                font-size: 0.95rem;
             }
             .brand-info h1 {
-                font-size: 1.1rem;
+                font-size: 1.05rem;
             }
             .logo-shape {
-                width: 40px;
-                height: 40px;
+                width: 36px;
+                height: 36px;
             }
             .timer-display {
-                font-size: 1.8rem;
+                font-size: 1.6rem;
             }
             .soal-display {
-                font-size: 1.1rem;
+                font-size: 1rem;
             }
             .result-table th,
             .result-table td {
-                padding: 8px 4px;
-                font-size: 0.75rem;
+                padding: 6px 4px;
+                font-size: 0.7rem;
             }
             .nav-label {
-                font-size: 0.55rem;
+                font-size: 0.5rem;
             }
             .nav-item svg {
-                width: 18px;
-                height: 18px;
+                width: 16px;
+                height: 16px;
             }
             .menu-grid-box {
                 grid-template-columns: repeat(2, 1fr);
             }
             .inline-buttons .btn-inline {
-                min-width: 100px;
-                font-size: 0.75rem;
-                padding: 10px 14px;
+                min-width: 80px;
+                font-size: 0.7rem;
+                padding: 8px 12px;
             }
             .leaderboard-item {
-                padding: 8px 10px;
+                padding: 6px 8px;
             }
             .leaderboard-username {
-                font-size: 0.8rem;
+                font-size: 0.75rem;
             }
             .leaderboard-iq {
-                font-size: 0.9rem;
+                font-size: 0.85rem;
             }
             .profile-stats {
                 grid-template-columns: repeat(3, 1fr);
-                gap: 6px;
+                gap: 4px;
             }
             .profile-stat-box .value {
-                font-size: 1rem;
+                font-size: 0.95rem;
+            }
+            .hero-slider {
+                min-height: 130px;
+                margin: 2px 0 14px;
+            }
+            .slider-overlay h3 {
+                font-size: 0.85rem;
+            }
+            .slider-overlay p {
+                font-size: 0.6rem;
+            }
+            .slider-btn {
+                width: 26px;
+                height: 26px;
+                font-size: 0.7rem;
             }
         }
     </style>
@@ -954,7 +1129,7 @@
     <header>
         <div class="brand">
             <div class="logo-shape">
-                <svg viewBox="0 0 24 24" width="22" height="22" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <svg viewBox="0 0 24 24" width="20" height="20" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
                 </svg>
             </div>
@@ -972,15 +1147,45 @@
         
         <!-- Main Menu -->
         <div id="mainMenu" class="card">
+            <!-- HERO SLIDER -->
+            <div class="hero-slider" id="heroSlider">
+                <div class="slider-track" id="sliderTrack">
+                    <div class="slider-slide">
+                        <img src="https://files.catbox.moe/8zcuge.jpeg" alt="Math Quiz Challenge" loading="lazy">
+                        <div class="slider-overlay">
+                            <span class="badge-slide">🎯 Main Feature</span>
+                            <h3>Math Quiz Challenge</h3>
+                            <p>Uji kemampuan matematika dengan timer & scoring system</p>
+                        </div>
+                    </div>
+                    <div class="slider-slide">
+                        <img src="https://files.catbox.moe/cjbd74.jpeg" alt="Scientific Calculator" loading="lazy">
+                        <div class="slider-overlay">
+                            <span class="badge-slide">🧮 Tools</span>
+                            <h3>Scientific Calculator</h3>
+                            <p>Kalkulator lengkap dengan fungsi trigonometri & OCR</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="slider-btn prev" onclick="moveSlider(-1)">‹</button>
+                <button class="slider-btn next" onclick="moveSlider(1)">›</button>
+                
+                <div class="slider-dots" id="sliderDots">
+                    <button class="slider-dot active" data-index="0" onclick="goToSlide(0)"></button>
+                    <button class="slider-dot" data-index="1" onclick="goToSlide(1)"></button>
+                </div>
+            </div>
+
             <div class="card-header">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="1.8">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8b98ff" stroke-width="1.8">
                     <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
                     <polyline points="9 22 9 12 15 12 15 22"/>
                 </svg>
                 <h2>Dashboard</h2>
             </div>
-            <p style="color: var(--text-secondary); margin-bottom: 20px; line-height: 1.5; font-size: 0.85rem; font-weight: 500;">
-                Aplikasi matematika ujian simulasi dengan dukungan BigNumber & OCR.
+            <p style="color: var(--text-secondary); margin-bottom: 16px; line-height: 1.5; font-size: 0.8rem; font-weight: 400;">
+                Aplikasi matematika untuk ujian simulasi dengan dukungan BigNumber & OCR.
             </p>
             
             <div class="menu-grid-box">
@@ -1078,13 +1283,13 @@
         <!-- Calculator Section -->
         <div id="calculator" class="card hidden">
             <div class="card-header">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="1.8">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8b98ff" stroke-width="1.8">
                     <rect x="4" y="2" width="16" height="20" rx="2"/>
                 </svg>
                 <h2>Scientific Calculator</h2>
             </div>
             
-            <div style="background: rgba(0,0,0,0.4); border-radius: var(--radius-sm); padding: 16px; margin-bottom: 16px; text-align: right; font-size: 1.5rem; font-weight: 700; font-family: 'Inter', monospace; min-height: 60px;" id="calcDisplay">0</div>
+            <div style="background: rgba(0,0,0,0.35); border-radius: var(--radius-sm); padding: 14px; margin-bottom: 14px; text-align: right; font-size: 1.4rem; font-weight: 700; font-family: 'Inter', monospace; min-height: 54px;" id="calcDisplay">0</div>
             
             <div class="calc-grid">
                 <button class="calc-btn fn" onclick="clearCalc()">AC</button>
@@ -1119,14 +1324,14 @@
             </div>
             
             <div id="loadingCalculator" class="loading hidden">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
                 </svg>
                 Memproses...
             </div>
             
             <div>
-                <label style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">Hasil</label>
+                <label style="font-size: 0.65rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">Hasil</label>
                 <div class="output-display" id="outputHasilCalc"></div>
             </div>
         </div>
@@ -1134,7 +1339,7 @@
         <!-- Quiz Section -->
         <div id="quiz" class="card hidden">
             <div class="card-header">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="1.8">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="1.8">
                     <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
                 </svg>
                 <h2>Math Quiz Challenge</h2>
@@ -1145,7 +1350,7 @@
                 <div class="timer-display" id="timerDisplay">00:00</div>
             </div>
             
-            <div style="display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px;">
+            <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;">
                 <select id="tingkatPendidikan" onchange="updateQuizOptions()">
                     <option value="tk">🎨 TK (Usia 4-6)</option>
                     <option value="sd">👦 SD (Usia 6-12) - 5 Menit</option>
@@ -1165,27 +1370,27 @@
                 </select>
             </div>
             
-            <div class="output-display" id="quizSoal" style="text-align: center; display: flex; align-items: center; justify-content: center; min-height: 80px;">
+            <div class="output-display" id="quizSoal" style="text-align: center; display: flex; align-items: center; justify-content: center; min-height: 72px;">
                 <span class="soal-display">Klik Mulai Ujian</span>
             </div>
             
-            <input type="text" id="jawabanQuiz" placeholder="Masukkan jawaban..." style="text-align: center; margin-bottom: 12px;">
+            <input type="text" id="jawabanQuiz" placeholder="Masukkan jawaban..." style="text-align: center; margin-bottom: 10px;">
             
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
                 <button class="btn-primary" onclick="cekJawaban()">Jawab</button>
                 <button class="btn-primary btn-secondary" id="btnNextSoal" onclick="nextSoal()" style="display:none;">Lanjut ➡️</button>
             </div>
             
-            <div id="quizFeedback" style="text-align: center; margin: 16px 0; font-size: 0.9rem;"></div>
+            <div id="quizFeedback" style="text-align: center; margin: 14px 0; font-size: 0.85rem;"></div>
             <div class="score" id="quizScore">SCORE: 0</div>
             
-            <button class="btn-primary" style="margin-top: 20px; background: linear-gradient(135deg, #10b981, #059669);" onclick="mulaiQuiz()">Mulai Ujian</button>
+            <button class="btn-primary" style="margin-top: 16px; background: linear-gradient(145deg, #34d399, #059669);" onclick="mulaiQuiz()">Mulai Ujian</button>
         </div>
 
         <!-- Result Section -->
         <div id="result" class="card hidden">
             <div class="card-header">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="1.8">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="1.8">
                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
                     <polyline points="14 2 14 8 20 8"/>
                     <line x1="16" y1="13" x2="8" y2="13"/>
@@ -1209,27 +1414,27 @@
             <div class="nilai-akhir" id="nilaiAkhirContainer" style="display: none;">
                 <h3>🏆 NILAI AKHIR 🏆</h3>
                 <div class="nilai-besar" id="nilaiAkhir">0</div>
-                <div style="font-size: 0.8rem; margin-top: 8px; font-weight: 600;" id="predikatAkhir"></div>
+                <div style="font-size: 0.75rem; margin-top: 6px; font-weight: 600;" id="predikatAkhir"></div>
                 
-                <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.1);">
-                    <div style="font-size: 0.8rem; color: var(--text-secondary); letter-spacing: 0.5px; font-weight: 600;">🧠 ESTIMASI IQ RATA-RATA</div>
-                    <div style="font-size: 2.2rem; font-weight: 800; color: #fcd34d; margin: 8px 0;" id="iqEstimasiDisplay">--</div>
+                <div style="margin-top: 16px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.06);">
+                    <div style="font-size: 0.75rem; color: var(--text-secondary); letter-spacing: 0.5px; font-weight: 600;">🧠 ESTIMASI IQ RATA-RATA</div>
+                    <div style="font-size: 2rem; font-weight: 800; color: #fcd34d; margin: 6px 0;" id="iqEstimasiDisplay">--</div>
                     <div class="iq-badge" id="iqKategoriDisplay">-</div>
                     <div class="iq-detail" id="iqDetailDisplay"></div>
                 </div>
 
                 <!-- Tombol Kirim ke Channel & Inline Buttons -->
-                <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.1);">
+                <div style="margin-top: 16px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.06);">
                     <button class="btn-primary btn-success" onclick="kirimHasilIQKeChannel()" id="btnKirimChannel">
                         📤 Kirim Hasil IQ ke Channel
                     </button>
-                    <div id="statusKirimChannel" style="margin-top: 8px; font-size: 0.8rem; color: var(--text-muted);"></div>
+                    <div id="statusKirimChannel" style="margin-top: 6px; font-size: 0.75rem; color: var(--text-muted);"></div>
                     
                     <!-- TOMBOL MASUKAN KE PROFILE -->
-                    <button class="btn-primary btn-save" onclick="masukanKeProfile()" id="btnMasukanProfile" style="margin-top: 10px;">
+                    <button class="btn-primary btn-save" onclick="masukanKeProfile()" id="btnMasukanProfile" style="margin-top: 8px;">
                         📥 Masukan ke Profile
                     </button>
-                    <div id="statusMasukanProfile" style="margin-top: 8px; font-size: 0.8rem; color: var(--text-muted);"></div>
+                    <div id="statusMasukanProfile" style="margin-top: 6px; font-size: 0.75rem; color: var(--text-muted);"></div>
                     
                     <div class="inline-buttons">
                         <a href="https://t.me/MTKS_VBOT" target="_blank" class="btn-inline primary">
@@ -1243,17 +1448,16 @@
             </div>
 
             <!-- LEADERBOARD -->
-            <div style="margin-top: 24px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.08);">
-                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2">
+            <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.05);">
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 14px;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2">
                         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
                     </svg>
-                    <h2 style="font-size: 1.1rem; font-weight: 700;">🏆 Papan Peringkat</h2>
-                    <span style="font-size: 0.65rem; color: var(--text-muted); margin-left: auto; background: rgba(255,255,255,0.05); padding: 4px 12px; border-radius: 12px;">Total Nilai</span>
+                    <h2 style="font-size: 1rem; font-weight: 700;">🏆 Papan Peringkat</h2>
+                    <span style="font-size: 0.6rem; color: var(--text-muted); margin-left: auto; background: rgba(255,255,255,0.03); padding: 3px 10px; border-radius: 12px;">Total Nilai</span>
                 </div>
                 <div id="leaderboardContainer">
                     <div id="leaderboardList">
-                        <!-- PLAYER MANUAL - TAMPIL LANGSUNG -->
                         <div class="leaderboard-item" style="border-left: 3px solid var(--primary);">
                             <div class="leaderboard-rank top1">🥇</div>
                             <div class="leaderboard-info">
@@ -1306,13 +1510,13 @@
                 </div>
             </div>
             
-            <button class="btn-primary" style="margin-top: 20px; background: linear-gradient(135deg, #6366f1, #4f46e5);" onclick="resetAndHome()">← Kembali ke Beranda</button>
+            <button class="btn-primary" style="margin-top: 16px; background: linear-gradient(145deg, #6c79ff, #5661e6);" onclick="resetAndHome()">← Kembali ke Beranda</button>
         </div>
 
         <!-- OCR & Custom -->
         <div id="customSoal" class="card hidden">
             <div class="card-header">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f43f5e" stroke-width="1.8">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="1.8">
                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
                     <polyline points="14 2 14 8 20 8"/>
                     <line x1="16" y1="13" x2="8" y2="13"/>
@@ -1321,17 +1525,17 @@
                 <h2>Tools & OCR Scanner</h2>
             </div>
             
-            <div style="margin-bottom: 28px;">
-                <label style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 6px; display: block; font-weight: 600;">MANUAL INPUT</label>
+            <div style="margin-bottom: 24px;">
+                <label style="font-size: 0.65rem; color: var(--text-muted); margin-bottom: 4px; display: block; font-weight: 600;">MANUAL INPUT</label>
                 <textarea id="soalUser" rows="2" placeholder="Contoh: 15% dari 500 + 20"></textarea>
-                <button class="btn-primary" onclick="hitungCustomSoal()" style="margin-top: 12px;">Hitung</button>
-                <div class="output-display" id="outputCustomSoal" style="margin-top: 16px;"></div>
+                <button class="btn-primary" onclick="hitungCustomSoal()" style="margin-top: 10px;">Hitung</button>
+                <div class="output-display" id="outputCustomSoal" style="margin-top: 14px;"></div>
             </div>
 
-            <div style="border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 20px;">
-                <label style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 6px; display: block; font-weight: 600;">OCR SCANNER (BETA)</label>
+            <div style="border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 18px;">
+                <label style="font-size: 0.65rem; color: var(--text-muted); margin-bottom: 4px; display: block; font-weight: 600;">OCR SCANNER (BETA)</label>
                 <input type="file" id="fotoSoal" accept="image/*">
-                <div id="previewFoto" style="margin: 16px 0;"></div>
+                <div id="previewFoto" style="margin: 14px 0;"></div>
                 <button class="btn-primary btn-secondary" onclick="kirimFotoSoal()">🔍 Scan Gambar</button>
             </div>
         </div>
@@ -1339,25 +1543,25 @@
         <!-- History -->
         <div id="history" class="card hidden">
             <div class="card-header">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                     <circle cx="12" cy="12" r="10"/>
                     <polyline points="12 6 12 12 16 14"/>
                 </svg>
                 <h2>History Perhitungan</h2>
-                <button onclick="clearHistory()" style="margin-left: auto; background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.3); padding: 6px 12px; border-radius: 20px; color: #f87171; font-size: 0.7rem; cursor: pointer; font-weight: 600;">Clear</button>
+                <button onclick="clearHistory()" style="margin-left: auto; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.2); padding: 4px 12px; border-radius: 20px; color: #f87171; font-size: 0.65rem; cursor: pointer; font-weight: 600;">Clear</button>
             </div>
-            <div id="historyList" style="max-height: 350px; overflow-y: auto;"></div>
+            <div id="historyList" style="max-height: 320px; overflow-y: auto;"></div>
         </div>
 
         <!-- Profile -->
         <div id="profile" class="card hidden">
             <div class="card-header">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="1.8">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8b98ff" stroke-width="1.8">
                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
                     <circle cx="12" cy="7" r="4"/>
                 </svg>
                 <h2>👤 Profile</h2>
-                <button onclick="showSection('mainMenu')" style="margin-left:auto; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08); padding:6px 14px; border-radius:20px; color:var(--text-secondary); font-size:0.7rem; cursor:pointer;">✕ Tutup</button>
+                <button onclick="showSection('mainMenu')" style="margin-left:auto; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.06); padding:4px 12px; border-radius:20px; color:var(--text-secondary); font-size:0.65rem; cursor:pointer;">✕ Tutup</button>
             </div>
 
             <!-- Avatar -->
@@ -1374,10 +1578,10 @@
             </div>
 
             <!-- TOMBOL SIMPAN PROFILE -->
-            <button class="btn-primary btn-save" onclick="simpanProfile()" style="margin: 10px 0;">
+            <button class="btn-primary btn-save" onclick="simpanProfile()" style="margin: 8px 0;">
                 💾 Simpan Profile
             </button>
-            <div id="statusSimpanProfile" style="text-align:center; font-size:0.8rem; color:var(--text-muted); margin-bottom:10px;"></div>
+            <div id="statusSimpanProfile" style="text-align:center; font-size:0.75rem; color:var(--text-muted); margin-bottom:8px;"></div>
 
             <div class="profile-stats">
                 <div class="profile-stat-box">
@@ -1395,7 +1599,7 @@
             </div>
 
             <div class="profile-level-stats">
-                <div style="font-size:0.8rem; font-weight:700; margin-bottom:8px; color:var(--text-secondary);">📊 RINCIAN PER TINGKATAN</div>
+                <div style="font-size:0.75rem; font-weight:600; margin-bottom:6px; color:var(--text-secondary);">📊 RINCIAN PER TINGKATAN</div>
                 <div class="profile-level-item">
                     <span class="level-name">🎨 TK</span>
                     <span class="level-value" id="profileLevelTk">0</span>
@@ -1416,35 +1620,35 @@
                     <span class="level-name">🎓 Universitas</span>
                     <span class="level-value" id="profileLevelUniv">0</span>
                 </div>
-                <div class="profile-level-item" style="border-top:1px solid rgba(255,255,255,0.1); padding-top:10px; margin-top:6px;">
+                <div class="profile-level-item" style="border-top:1px solid rgba(255,255,255,0.06); padding-top:8px; margin-top:4px;">
                     <span class="level-name" style="font-weight:700; color:var(--primary-light);">📈 TOTAL SEMUA</span>
                     <span class="level-value" style="font-weight:800; color:var(--primary-light);" id="profileLevelTotal">0</span>
                 </div>
             </div>
 
-            <button class="btn-primary" style="margin-top:20px; background: linear-gradient(135deg, #6366f1, #4f46e5);" onclick="showSection('mainMenu')">← Kembali ke Beranda</button>
+            <button class="btn-primary" style="margin-top:16px; background: linear-gradient(145deg, #6c79ff, #5661e6);" onclick="showSection('mainMenu')">← Kembali ke Beranda</button>
         </div>
 
         <!-- Chat Owner -->
         <div id="chatOwner" class="card hidden">
             <div class="card-header">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="1.8">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="1.8">
                     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
                 </svg>
                 <h2>💬 Chat Owner</h2>
-                <button onclick="showSection('mainMenu')" style="margin-left:auto; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08); padding:6px 14px; border-radius:20px; color:var(--text-secondary); font-size:0.7rem; cursor:pointer;">✕ Tutup</button>
+                <button onclick="showSection('mainMenu')" style="margin-left:auto; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.06); padding:4px 12px; border-radius:20px; color:var(--text-secondary); font-size:0.65rem; cursor:pointer;">✕ Tutup</button>
             </div>
-            <p style="color:var(--text-secondary); font-size:0.8rem; margin-bottom:16px;">Kirim pesan ke Channel & Bot Telegram.</p>
+            <p style="color:var(--text-secondary); font-size:0.75rem; margin-bottom:14px;">Kirim pesan ke Channel & Bot Telegram.</p>
             
             <div class="chat-messages" id="chatMessages">
-                <div class="chat-msg" style="text-align:center; color:var(--text-muted); font-size:0.75rem;">Kirim pesan untuk memulai percakapan</div>
+                <div class="chat-msg" style="text-align:center; color:var(--text-muted); font-size:0.7rem;">Kirim pesan untuk memulai percakapan</div>
             </div>
             
-            <div style="display:flex; gap:10px;">
+            <div style="display:flex; gap:8px;">
                 <input type="text" id="chatInput" placeholder="Tulis pesan..." style="flex:1;" onkeypress="if(event.key==='Enter') sendChat()">
-                <button class="btn-primary" style="width:auto; padding:14px 24px;" onclick="sendChat()">Kirim</button>
+                <button class="btn-primary" style="width:auto; padding:12px 20px;" onclick="sendChat()">Kirim</button>
             </div>
-            <div id="chatStatus" style="margin-top:10px; font-size:0.8rem; color:var(--text-muted); text-align:center;"></div>
+            <div id="chatStatus" style="margin-top:8px; font-size:0.75rem; color:var(--text-muted); text-align:center;"></div>
         </div>
         
     </div>
@@ -1474,6 +1678,41 @@
     </nav>
 
     <script>
+        // ========== SLIDER ==========
+        let currentSlide = 0;
+        const totalSlides = 2;
+        let slideInterval;
+
+        function moveSlider(direction) {
+            currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
+            updateSlider();
+            resetSlideTimer();
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            updateSlider();
+            resetSlideTimer();
+        }
+
+        function updateSlider() {
+            const track = document.getElementById('sliderTrack');
+            const dots = document.querySelectorAll('.slider-dot');
+            track.style.transform = `translateX(-${currentSlide * 100}%)`;
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === currentSlide);
+            });
+        }
+
+        function resetSlideTimer() {
+            if (slideInterval) {
+                clearInterval(slideInterval);
+            }
+            slideInterval = setInterval(() => {
+                moveSlider(1);
+            }, 5000);
+        }
+
         // ========== FIREBASE KONFIGURASI ==========
         const firebaseConfig = {
             apiKey: "AIzaSyBteqG8vcS_GXAYuQMIceM017KNyxNm80M",
@@ -1484,7 +1723,6 @@
             appId: "1:1071549664337:web:ae60886b5e15f257a23c70"
         };
 
-        // Inisialisasi Firebase
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
@@ -1494,7 +1732,6 @@
         const BOT_TOKEN = '8560885133:AAF7heamasTq4YeD7mO6TZPYEpversCLUA4';
         const OWNER_ID = '8533245075';
         const CHANNEL_ID = '-1003400502811';
-        // ===============================================
 
         // ========== CEK SESSION ==========
         const SESSION_KEY = 'mtks_session';
@@ -1521,7 +1758,6 @@
                 currentUserPhotoURL = data.photoURL || null;
                 document.getElementById('userDisplay').textContent = currentUser;
                 
-                // Load foto profile jika ada
                 if (currentUserPhotoURL) {
                     loadProfilePhoto(currentUserPhotoURL);
                 }
@@ -1569,7 +1805,6 @@
             const reader = new FileReader();
             reader.onload = function(e) {
                 tempPhotoDataURL = e.target.result;
-                // Tampilkan preview
                 const img = document.getElementById('avatarImage');
                 const placeholder = document.getElementById('avatarPlaceholder');
                 img.src = e.target.result;
@@ -1589,9 +1824,7 @@
             try {
                 let photoURL = currentUserPhotoURL;
                 
-                // Jika ada foto baru yang dipilih
                 if (tempPhotoFile && currentUserUID) {
-                    // Upload ke Firebase Storage
                     const storageRef = storage.ref(`profile_photos/${currentUserUID}/avatar.jpg`);
                     await storageRef.put(tempPhotoFile);
                     photoURL = await storageRef.getDownloadURL();
@@ -1600,7 +1833,6 @@
                     tempPhotoDataURL = null;
                 }
                 
-                // Simpan ke Firestore
                 if (currentUserUID) {
                     await db.collection('users').doc(currentUserUID).set({
                         username: currentUser,
@@ -1609,14 +1841,12 @@
                         updatedAt: firebase.firestore.FieldValue.serverTimestamp()
                     }, { merge: true });
                     
-                    // Update session
                     const session = JSON.parse(sessionStorage.getItem(SESSION_KEY) || '{}');
                     session.photoURL = photoURL;
                     sessionStorage.setItem(SESSION_KEY, JSON.stringify(session));
                     
                     statusEl.innerHTML = '<span style="color:#34d399;">✅ Profile berhasil disimpan!</span>';
                     
-                    // Update tampilan foto
                     if (photoURL) {
                         loadProfilePhoto(photoURL);
                     }
@@ -1629,7 +1859,7 @@
             }
         }
 
-        // ========== KIRIM KE TELEGRAM (umum) ==========
+        // ========== KIRIM KE TELEGRAM ==========
         async function sendToTelegram(chatId, text, parseMode = 'Markdown') {
             const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
             try {
@@ -1650,38 +1880,9 @@
             }
         }
 
-        // ========== KIRIM FOTO KE TELEGRAM ==========
-        async function sendPhotoToTelegram(chatId, photoData, caption = '') {
-            const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendPhoto`;
-            try {
-                const formData = new FormData();
-                formData.append('chat_id', chatId);
-                formData.append('photo', photoData);
-                if (caption) formData.append('caption', caption);
-                
-                const response = await fetch(url, {
-                    method: 'POST',
-                    body: formData
-                });
-                const result = await response.json();
-                return result.ok;
-            } catch (error) {
-                console.error('Telegram send photo error:', error);
-                return false;
-            }
-        }
-
-        // ========== KIRIM KE CHANNEL & BOT ==========
         async function sendToChannelAndBot(text) {
             const channelSuccess = await sendToTelegram(CHANNEL_ID, text);
             const botSuccess = await sendToTelegram(OWNER_ID, text);
-            return channelSuccess && botSuccess;
-        }
-
-        // ========== KIRIM FOTO KE CHANNEL & BOT ==========
-        async function sendPhotoToChannelAndBot(photoData, caption = '') {
-            const channelSuccess = await sendPhotoToTelegram(CHANNEL_ID, photoData, caption);
-            const botSuccess = await sendPhotoToTelegram(OWNER_ID, photoData, caption);
             return channelSuccess && botSuccess;
         }
 
@@ -1731,13 +1932,11 @@
                     updatedAt: firebase.firestore.FieldValue.serverTimestamp()
                 }, { merge: true });
                 
-                // Update level stats
                 const levelStats = JSON.parse(localStorage.getItem('mtks_level_stats') || '{}');
                 const currentValue = levelStats[tingkat] || 0;
                 levelStats[tingkat] = currentValue + nilaiAkhir;
                 localStorage.setItem('mtks_level_stats', JSON.stringify(levelStats));
                 
-                // Update tampilan profile
                 document.getElementById('profileTotalNilai').textContent = totalNilai;
                 document.getElementById('profileTotalUjian').textContent = totalUjian;
                 document.getElementById('profileRataNilai').textContent = rataNilai;
@@ -1751,7 +1950,7 @@
             }
         }
 
-        // ========== KIRIM HASIL IQ KE CHANNEL & FIREBASE ==========
+        // ========== KIRIM HASIL IQ KE CHANNEL ==========
         async function kirimHasilIQKeChannel() {
             const btn = document.getElementById('btnKirimChannel');
             const statusEl = document.getElementById('statusKirimChannel');
@@ -1785,7 +1984,6 @@
 
             const success = await sendToChannelAndBot(pesan);
 
-            // Simpan ke Firestore untuk Leaderboard
             if (currentUserUID) {
                 try {
                     const docRef = db.collection('leaderboard').doc(currentUserUID);
@@ -1820,7 +2018,6 @@
             if (success) {
                 statusEl.innerHTML = '<span style="color: #34d399;">✅ Berhasil dikirim ke Channel & Bot!</span>';
                 btn.textContent = '✅ Terkirim!';
-                loadLeaderboard();
                 loadProfile();
             } else {
                 statusEl.innerHTML = '<span style="color: #ef4444;">❌ Gagal mengirim. Coba lagi nanti.</span>';
@@ -1834,11 +2031,6 @@
             }, 5000);
         }
 
-        // ========== LEADERBOARD ==========
-        async function loadLeaderboard() {
-            console.log('Leaderboard loaded with manual data');
-        }
-
         // ========== PROFILE ==========
         function loadProfile() {
             if (!currentUser) return;
@@ -1846,7 +2038,6 @@
             document.getElementById('profileUsername').textContent = currentUser;
             document.getElementById('profileEmail').textContent = currentUserEmail || 'email@example.com';
             
-            // Load from Firestore
             if (currentUserUID) {
                 db.collection('leaderboard').doc(currentUserUID).get().then(doc => {
                     if (doc.exists) {
@@ -1861,7 +2052,6 @@
                     }
                 }).catch(err => console.error('Error loading profile:', err));
                 
-                // Load photo from Firestore
                 db.collection('users').doc(currentUserUID).get().then(doc => {
                     if (doc.exists) {
                         const data = doc.data();
@@ -1939,7 +2129,6 @@
         let timerInterval = null;
         let timeLeft = 0;
         let isQuizActive = false;
-        let currentLevel = 'sd';
 
         let calcExpression = '';
 
@@ -1994,7 +2183,7 @@
         function handleTimeout() {
             if (!isQuizActive) return;
             const feedback = document.getElementById('quizFeedback');
-            feedback.innerHTML = '<span style="color:#f59e0b; font-weight:bold;">⏰ Waktu habis! Melanjutkan...</span>';
+            feedback.innerHTML = '<span style="color:#fbbf24; font-weight:bold;">⏰ Waktu habis! Melanjutkan...</span>';
             if (indexSoal < poolSoal.length) {
                 hasilPerSoal.push({
                     soal: poolSoal[indexSoal].soal,
@@ -2088,7 +2277,7 @@
             if (iq >= 130) return { label: 'SANGAT CERDAS', color: '#f59e0b' };
             if (iq >= 120) return { label: 'CERDAS', color: '#34d399' };
             if (iq >= 110) return { label: 'NORMAL BRIGHT', color: '#60a5fa' };
-            if (iq >= 90) return { label: 'NILAI RATA-RATA', color: '#818cf8' };
+            if (iq >= 90) return { label: 'NILAI RATA-RATA', color: '#8b98ff' };
             if (iq >= 80) return { label: 'LUMAYAN', color: '#a78bfa' };
             if (iq >= 69) return { label: 'LAMBAT', color: '#f87171' };
             if (iq >= 40) return { label: 'RENDAH', color: '#fca5a5' };
@@ -2138,7 +2327,7 @@
                 const kategori = getKategoriIQ(iq);
                 document.getElementById('iqEstimasiDisplay').textContent = iq;
                 document.getElementById('iqKategoriDisplay').textContent = kategori.label;
-                document.getElementById('iqKategoriDisplay').style.background = `rgba(99,102,241,0.2)`;
+                document.getElementById('iqKategoriDisplay').style.background = `rgba(108,121,255,0.12)`;
                 document.getElementById('iqKategoriDisplay').style.borderColor = kategori.color;
                 document.getElementById('iqKategoriDisplay').style.color = kategori.color;
                 
@@ -2176,19 +2365,24 @@
             window.scrollTo(0, 0);
             if (sectionId === 'history') displayHistory();
             if (sectionId === 'profile') loadProfile();
+            
+            // Reset slider timer when returning to main menu
+            if (sectionId === 'mainMenu') {
+                resetSlideTimer();
+            }
         }
 
         function displayHistory() {
             const list = document.getElementById('historyList');
             if (calculationHistory.length === 0) {
-                list.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:20px;">Belum ada riwayat</div>';
+                list.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:16px;">Belum ada riwayat</div>';
                 return;
             }
             list.innerHTML = calculationHistory.slice(-20).reverse().map(item => `
                 <div class="history-item">
                     <div style="font-family: monospace; color: #fff; font-weight:600;">${item.expression}</div>
-                    <div style="color: #10b981; font-weight: bold; font-size: 1.1rem;">= ${item.result}</div>
-                    <small style="color: var(--text-muted); font-size: 0.7rem;">${item.timestamp}</small>
+                    <div style="color: #34d399; font-weight: bold; font-size: 1rem;">= ${item.result}</div>
+                    <small style="color: var(--text-muted); font-size: 0.65rem;">${item.timestamp}</small>
                 </div>
             `).join('');
         }
@@ -2338,7 +2532,7 @@
                     rating: isCorrect ? '1/1' : '0/1',
                     nilai: isCorrect ? 100 : 0
                 });
-                if (isCorrect) { feedback.innerHTML = '<span style="color:#10b981;font-weight:bold;">✅ BENAR!</span>'; skor++; }
+                if (isCorrect) { feedback.innerHTML = '<span style="color:#34d399;font-weight:bold;">✅ BENAR!</span>'; skor++; }
                 else { feedback.innerHTML = `<span style="color:#ef4444">❌ Salah. Jawabannya: ${currentHasil}</span>`; }
                 document.getElementById('quizScore').textContent = `SCORE: ${skor}`;
                 document.getElementById('btnNextSoal').style.display = 'block';
@@ -2372,16 +2566,16 @@
             if (fileInput.files.length === 0) { preview.innerHTML = '<span style="color:#ef4444">Pilih gambar!</span>'; return; }
             const file = fileInput.files[0];
             const imgURL = URL.createObjectURL(file);
-            preview.innerHTML = `<img src="${imgURL}" style="max-width:100%; border-radius:10px; margin-bottom:10px;">`;
+            preview.innerHTML = `<img src="${imgURL}" style="max-width:100%; border-radius:10px; margin-bottom:8px;">`;
             preview.innerHTML += '<div class="loading">🔍 Scanning AI...</div>';
             try {
                 const { data: { text } } = await Tesseract.recognize(file, 'eng');
                 let cleaned = text.replace(/[Oo]/g,'0').replace(/[lI]/g,'1').replace(/[^0-9+\-*/.()√π=%\s]/g,'').replace(/\s+/g,' ').trim();
                 preview.querySelector('.loading').remove();
-                preview.innerHTML += `<div style="background:rgba(0,0,0,0.3); padding:10px; border-radius:8px; margin-bottom:5px;">Detected: <strong>${cleaned}</strong></div>`;
+                preview.innerHTML += `<div style="background:rgba(0,0,0,0.25); padding:8px; border-radius:8px; margin-bottom:4px;">Detected: <strong>${cleaned}</strong></div>`;
                 if (cleaned) {
                     const hasil = evaluasiEkspresi(cleaned);
-                    preview.innerHTML += `<div class="output-result" style="font-size:1.2rem;">= ${hasil}</div>`;
+                    preview.innerHTML += `<div class="output-result" style="font-size:1.1rem;">= ${hasil}</div>`;
                     addToHistory(cleaned, hasil);
                 } else { preview.innerHTML += '<div style="color:#ef4444">Teks tidak terbaca</div>'; }
             } catch(err) { preview.innerHTML += `<div style="color:#ef4444">Error: ${err.message}</div>`; }
@@ -2394,6 +2588,23 @@
             updateTimerDisplay();
             updateCalcDisplay();
             loadProfile();
+            resetSlideTimer();
+            
+            // Touch support for slider
+            let touchStartX = 0;
+            let touchEndX = 0;
+            const slider = document.getElementById('heroSlider');
+            slider.addEventListener('touchstart', (e) => {
+                touchStartX = e.changedTouches[0].screenX;
+            }, { passive: true });
+            slider.addEventListener('touchend', (e) => {
+                touchEndX = e.changedTouches[0].screenX;
+                const diff = touchStartX - touchEndX;
+                if (Math.abs(diff) > 30) {
+                    if (diff > 0) moveSlider(1);
+                    else moveSlider(-1);
+                }
+            }, { passive: true });
         });
     </script>
 </body>
