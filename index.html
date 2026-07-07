@@ -1091,7 +1091,7 @@
                         <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
                     </svg>
                     <h2 style="font-size: 1.1rem; font-weight: 700;">🏆 Papan Peringkat</h2>
-                    <span style="font-size: 0.65rem; color: var(--text-muted); margin-left: auto; background: rgba(255,255,255,0.05); padding: 4px 12px; border-radius: 12px;">7 Hari Terakhir</span>
+                    <span style="font-size: 0.65rem; color: var(--text-muted); margin-left: auto; background: rgba(255,255,255,0.05); padding: 4px 12px; border-radius: 12px;">Semua Player</span>
                 </div>
                 <div id="leaderboardContainer">
                     <div class="loading" id="leaderboardLoading">
@@ -1156,7 +1156,7 @@
                 <h2>💬 Chat Owner</h2>
                 <button onclick="showSection('mainMenu')" style="margin-left:auto; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08); padding:6px 14px; border-radius:20px; color:var(--text-secondary); font-size:0.7rem; cursor:pointer;">✕ Tutup</button>
             </div>
-            <p style="color:var(--text-secondary); font-size:0.8rem; margin-bottom:16px;">Kirim pesan ke pengembang aplikasi. Pesan akan dikirim via Telegram.</p>
+            <p style="color:var(--text-secondary); font-size:0.8rem; margin-bottom:16px;">Kirim pesan ke pengembang aplikasi. Pesan akan dikirim ke Channel Telegram.</p>
             
             <div class="chat-messages" id="chatMessages">
                 <div class="chat-msg" style="text-align:center; color:var(--text-muted); font-size:0.75rem;">Kirim pesan untuk memulai percakapan</div>
@@ -1359,20 +1359,16 @@
             container.innerHTML = '';
 
             try {
-                // Ambil data leaderboard dari Firestore (7 hari terakhir)
-                const sevenDaysAgo = new Date();
-                sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-
+                // Ambil data leaderboard dari Firestore (SEMUA PLAYER)
                 const snapshot = await db.collection('leaderboard')
-                    .where('updatedAt', '>=', sevenDaysAgo)
                     .orderBy('iq', 'desc')
-                    .limit(50)
+                    .limit(100)
                     .get();
 
                 loading.style.display = 'none';
 
                 if (snapshot.empty) {
-                    container.innerHTML = `<div class="leaderboard-empty">📭 Belum ada data peringkat untuk 7 hari terakhir.</div>`;
+                    container.innerHTML = `<div class="leaderboard-empty">📭 Belum ada data peringkat. Mulai ujian dan kirim hasil!</div>`;
                     return;
                 }
 
@@ -1426,7 +1422,7 @@
             }
         }
 
-        // ========== CHAT OWNER ==========
+        // ========== CHAT OWNER (Kirim ke Channel) ==========
         async function sendChat() {
             const input = document.getElementById('chatInput');
             const status = document.getElementById('chatStatus');
@@ -1442,12 +1438,13 @@
             input.disabled = true;
 
             const user = currentUser || 'Anonim';
-            const text = `💬 *Pesan dari MTKS*\n\n👤 *User:* ${user}\n📝 *Pesan:* ${msg}\n🕐 *Waktu:* ${new Date().toLocaleString('id-ID')}`;
+            const text = `💬 *Pesan dari MTKS - Chat Owner*\n\n👤 *User:* ${user}\n📝 *Pesan:* ${msg}\n🕐 *Waktu:* ${new Date().toLocaleString('id-ID')}`;
             
-            const success = await sendToTelegram(OWNER_ID, text);
+            // Kirim ke Channel Telegram
+            const success = await sendToChannel(text);
             
             if (success) {
-                status.textContent = '✅ Pesan terkirim!';
+                status.textContent = '✅ Pesan terkirim ke Channel!';
                 status.style.color = '#34d399';
                 const container = document.getElementById('chatMessages');
                 const time = new Date().toLocaleTimeString('id-ID');
