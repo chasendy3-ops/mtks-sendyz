@@ -1793,7 +1793,7 @@
             }
         }
 
-        // ========== PILIH FOTO PROFILE ==========
+        // ========== PILIH FOTO PROFILE (OTOMATIS SIMPAN) ==========
         let tempPhotoFile = null;
         let tempPhotoDataURL = null;
 
@@ -1805,18 +1805,63 @@
             const reader = new FileReader();
             reader.onload = function(e) {
                 tempPhotoDataURL = e.target.result;
+                // Tampilkan preview
                 const img = document.getElementById('avatarImage');
                 const placeholder = document.getElementById('avatarPlaceholder');
                 img.src = e.target.result;
                 img.style.display = 'block';
                 placeholder.style.display = 'none';
                 
-                document.getElementById('statusSimpanProfile').innerHTML = '<span style="color:var(--warning);">📷 Foto baru dipilih, klik Simpan Profile untuk menyimpan.</span>';
+                // OTOMATIS SIMPAN SETELAH MEMILIH FOTO
+                document.getElementById('statusSimpanProfile').innerHTML = '<span style="color:var(--warning);">⏳ Menyimpan foto otomatis...</span>';
+                simpanProfileOtomatis();
             };
             reader.readAsDataURL(file);
         }
 
-        // ========== SIMPAN PROFILE ==========
+        // ========== SIMPAN PROFILE OTOMATIS ==========
+        async function simpanProfileOtomatis() {
+            const statusEl = document.getElementById('statusSimpanProfile');
+            
+            try {
+                let photoURL = currentUserPhotoURL;
+                
+                if (tempPhotoFile && currentUserUID) {
+                    const storageRef = storage.ref(`profile_photos/${currentUserUID}/avatar.jpg`);
+                    await storageRef.put(tempPhotoFile);
+                    photoURL = await storageRef.getDownloadURL();
+                    currentUserPhotoURL = photoURL;
+                    tempPhotoFile = null;
+                    tempPhotoDataURL = null;
+                }
+                
+                if (currentUserUID) {
+                    await db.collection('users').doc(currentUserUID).set({
+                        username: currentUser,
+                        email: currentUserEmail,
+                        photoURL: photoURL,
+                        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                    }, { merge: true });
+                    
+                    const session = JSON.parse(sessionStorage.getItem(SESSION_KEY) || '{}');
+                    session.photoURL = photoURL;
+                    sessionStorage.setItem(SESSION_KEY, JSON.stringify(session));
+                    
+                    statusEl.innerHTML = '<span style="color:#34d399;">✅ Foto profile berhasil disimpan otomatis!</span>';
+                    
+                    if (photoURL) {
+                        loadProfilePhoto(photoURL);
+                    }
+                } else {
+                    statusEl.innerHTML = '<span style="color:#ef4444;">❌ UID tidak ditemukan.</span>';
+                }
+            } catch (error) {
+                console.error('Error saving profile:', error);
+                statusEl.innerHTML = `<span style="color:#ef4444;">❌ Gagal menyimpan: ${error.message}</span>`;
+            }
+        }
+
+        // ========== SIMPAN PROFILE (MANUAL) ==========
         async function simpanProfile() {
             const statusEl = document.getElementById('statusSimpanProfile');
             statusEl.innerHTML = '<span style="color:var(--text-secondary);">⏳ Menyimpan profile...</span>';
@@ -2366,7 +2411,6 @@
             if (sectionId === 'history') displayHistory();
             if (sectionId === 'profile') loadProfile();
             
-            // Reset slider timer when returning to main menu
             if (sectionId === 'mainMenu') {
                 resetSlideTimer();
             }
@@ -2590,7 +2634,6 @@
             loadProfile();
             resetSlideTimer();
             
-            // Touch support for slider
             let touchStartX = 0;
             let touchEndX = 0;
             const slider = document.getElementById('heroSlider');
