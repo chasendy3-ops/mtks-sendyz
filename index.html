@@ -1352,10 +1352,10 @@
             
             <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;">
                 <select id="tingkatPendidikan" onchange="updateQuizOptions()">
-                    <option value="tk">🎨 TK (Usia 4-6)</option>
-                    <option value="sd">👦 SD (Usia 6-12) - 5 Menit</option>
-                    <option value="smp">👨‍🎓 SMP (Usia 12-15) - 8 Menit</option>
-                    <option value="sma">👩‍🎓 SMA (Usia 15-18) - 12 Menit</option>
+                    <option value="tk">🎨 TK </option>
+                    <option value="sd">👦 SD </option>
+                    <option value="smp">👨‍🎓 SMP </option>
+                    <option value="sma">👩‍🎓 SMA </option>
                     <option value="mahasiswa">🎓 Universitas (Usia 18-20) - 15 Menit</option>
                 </select>
                 
@@ -1714,14 +1714,7 @@
         }
 
         // ========== FIREBASE KONFIGURASI ==========
-        const firebaseConfig = {
-            apiKey: "AIzaSyBteqG8vcS_GXAYuQMIceM017KNyxNm80M",
-            authDomain: "endymtks.firebaseapp.com",
-            projectId: "endymtks",
-            storageBucket: "endymtks.firebasestorage.app",
-            messagingSenderId: "1071549664337",
-            appId: "1:1071549664337:web:ae60886b5e15f257a23c70"
-        };
+        const firebaseConfig = "firebase-config.js";
 
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
