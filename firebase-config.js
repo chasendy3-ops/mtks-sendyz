@@ -1,17 +1,9 @@
 // ========== FIREBASE KONFIGURASI ==========
 const firebaseConfig = {
-    apiKey: "AIzaSyBteqG8vcS_GXAYuQMIceM017KNyxNm80M",
-    authDomain: "endymtks.firebaseapp.com",
-    projectId: "endymtks",
-    storageBucket: "endymtks.firebasestorage.app",
-    messagingSenderId: "1071549664337",
-    appId: "1:1071549664337:web:ae60886b5e15f257a23c70"
+    apiKey: "AIzaSyDGF1agSEfEd2mzAMG8KYqt---LG9PW6as",
+  authDomain: "sendychat-7b5fb.firebaseapp.com",
+  projectId: "sendychat-7b5fb",
+  storageBucket: "sendychat-7b5fb.firebasestorage.app",
+  messagingSenderId: "537431303083",
+  appId: "1:537431303083:web:d609d7b9e4ce51b575e8ee"
 };
-
-// ========== KONFIGURASI BOT TELEGRAM ==========
-const BOT_TOKEN = '8560885133:AAF7heamasTq4YeD7mO6TZPYEpversCLUA4';
-const OWNER_ID = '8533245075';
-const CHANNEL_ID = '-1003400502811';
-
-// ========== SESSION KEY ==========
-const SESSION_KEY = 'mtks_session';
